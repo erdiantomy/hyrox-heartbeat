@@ -188,7 +188,7 @@ const Card = ({ children, p = 20 }: { children: React.ReactNode; p?: number }) =
 // ─── SLIDES ───
 function S0() {
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
       <div>
         <Tag>INVESTOR PITCH DECK · CONFIDENTIAL</Tag>
       </div>
@@ -221,7 +221,7 @@ function S1() {
     ["2025–NOW", "HYROX", "The hybrid. Strength meets endurance. Race culture meets gym culture."],
   ];
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="01 / 10" t="Why Now" />
       <p style={{ fontSize: 18, color: C.mid, maxWidth: 720, marginBottom: 40 }}>
         Jakarta has a pattern. Every 2–3 years, a fitness format explodes. Each wave creates identity, community, and spending behavior.
@@ -251,7 +251,7 @@ function S1() {
 
 function S2() {
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="02 / 10" t="The Gap" />
       <p style={{ fontSize: 18, color: C.mid, maxWidth: 720, marginBottom: 32 }}>
         52 HYROX-listed gyms in Jakarta. Zero purpose-built compounds in South Jakarta's premium residential corridor.
@@ -318,7 +318,7 @@ function S3() {
     { z: "Circulation & Structure", m: 100, pct: 13, desc: "Hallways, walls, structural columns. Non-negotiable in any layout." },
   ];
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="03 / 10" t="The Compound" />
       <p style={{ fontSize: 18, color: C.mid, maxWidth: 720, marginBottom: 32 }}>
         750m². 4 revenue-driving zones. Every square meter earns or retains. Not a gym — a compound with spa, café, and flex space.
@@ -358,7 +358,7 @@ function S4() {
     { name: "Edward Triharto", tag: "DESIGN & BUILDOUT LEAD", bio: "6+ years interior design. Principal at Inhaustudio since 2020. UPH Interior Design graduate. Leads space layout, material sourcing, contractor coordination.", owns: "Space design · Buildout PM · Vendor coordination · Aesthetics", strength: "Can design a premium space on a controlled budget." },
   ];
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="04 / 10" t="The Team" />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 32 }}>
         {team.map((p) => (
@@ -403,7 +403,7 @@ function S5() {
     { name: "ELITE", price: "2.5M", target: "15%", who: "Executives & transformation clients", features: ["Everything in HYROX", "2× PT sessions/month", "Body composition scans", "Towel service", "Priority lockers", "Exclusive events", "Recovery access"] },
   ];
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="05 / 10" t="Membership" />
       <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>3 tiers. Clear value steps. Blended ARPU: IDR 1.15M.</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 32 }}>
@@ -520,7 +520,7 @@ function fmtIDR(m: number) {
 function S6() {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="06 / 10" t="CAPEX · IDR 8.2B" />
       <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Every line item. Tap to expand. 48% below original IDR 15.7B proposal.</p>
       <div style={{ height: 280, marginBottom: 32 }}>
@@ -557,7 +557,7 @@ function S6() {
 function S7() {
   const [openOp, setOpenOp] = useState<number | null>(0);
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="07 / 10" t="OPEX & P&L" />
       <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Monthly operating cost: IDR 225M. No rent. That's the thesis.</p>
       <Card p={0}>
@@ -616,7 +616,7 @@ function S7() {
 
 function S8() {
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="08 / 10" t="Cash Flow & Ramp" />
       <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Break-even Month 5–6. Working capital recovered by Month 9. IDR 636M cash generated in Year 1.</p>
       <div style={{ height: 300, marginBottom: 24 }}>
@@ -674,7 +674,7 @@ function S9() {
     { ph: "05–06", t: "Launch", items: ["Equipment install & testing", "Full staff training (2 weeks)", "Invite-only soft launch", "Feedback loop → fix operations", "Full public opening", "First community race event"] },
   ];
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="09 / 10" t="Go-to-Market" />
       <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Build community before walls. Pre-sell before opening. The product is the marketing.</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 32 }}>
@@ -715,7 +715,7 @@ function S9() {
 
 function S10() {
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="10 / 10" t="The Investment" />
       <div style={{ background: C.white, color: C.bg, padding: 48, marginBottom: 32, textAlign: "center" }}>
         <div style={{ fontSize: 11, letterSpacing: 3, opacity: 0.6 }}>TOTAL RAISE</div>
