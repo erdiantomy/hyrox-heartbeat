@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area,
   LineChart, Line, CartesianGrid, Legend, RadarChart, Radar, PolarGrid,
@@ -1104,13 +1104,72 @@ function SModel() {
 
 function Deck() {
   const slides = [S0, S1, S2, S3, S4, S5, S6, S7, SModel, S8, S9, SFAQ, S10];
+  const [idx, setIdx] = useState(0);
+  const total = slides.length;
+  const touchStart = useRef<number | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const go = (n: number) => setIdx(Math.max(0, Math.min(total - 1, n)));
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); go(idx + 1); }
+      if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); go(idx - 1); }
+      if (e.key === "Home") go(0);
+      if (e.key === "End") go(total - 1);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [idx, total]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: 0, behavior: "auto" });
+  }, [idx]);
+
+  const onTouchStart = (e: React.TouchEvent) => { touchStart.current = e.touches[0].clientX; };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStart.current == null) return;
+    const dx = e.changedTouches[0].clientX - touchStart.current;
+    if (Math.abs(dx) > 50) go(idx + (dx < 0 ? 1 : -1));
+    touchStart.current = null;
+  };
+
+  const Slide = slides[idx];
+
   return (
-    <div style={{ background: C.bg, color: C.off, fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', sans-serif", maxWidth: 1280, margin: "0 auto" }}>
-      {slides.map((S, i) => (
-        <div key={i} style={{ borderBottom: i < slides.length - 1 ? `1px solid ${C.border}` : "none" }}>
-          <S />
+    <div style={{ background: C.bg, color: C.off, fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', sans-serif", minHeight: "100vh", position: "relative", overflow: "hidden" }}>
+      <div
+        ref={scrollRef}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        style={{ height: "100vh", overflowY: "auto", maxWidth: 1280, margin: "0 auto", paddingBottom: 80 }}
+      >
+        <Slide />
+      </div>
+
+      {/* Tap zones (mobile) */}
+      <button
+        aria-label="Previous slide"
+        onClick={() => go(idx - 1)}
+        style={{ position: "fixed", left: 0, top: 0, bottom: 80, width: "20%", background: "transparent", border: 0, cursor: "pointer", zIndex: 5 }}
+      />
+      <button
+        aria-label="Next slide"
+        onClick={() => go(idx + 1)}
+        style={{ position: "fixed", right: 0, top: 0, bottom: 80, width: "20%", background: "transparent", border: 0, cursor: "pointer", zIndex: 5 }}
+      />
+
+      {/* Nav bar */}
+      <div style={{ position: "fixed", left: 0, right: 0, bottom: 0, padding: "12px 16px", background: "rgba(0,0,0,0.85)", backdropFilter: "blur(12px)", borderTop: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, zIndex: 10 }}>
+        <button onClick={() => go(idx - 1)} disabled={idx === 0} style={{ background: "transparent", border: `1px solid ${C.border2}`, color: idx === 0 ? C.mute : C.white, padding: "8px 14px", fontSize: 11, letterSpacing: 1.5, cursor: idx === 0 ? "default" : "pointer" }}>← PREV</button>
+        <div style={{ display: "flex", gap: 6, flex: 1, justifyContent: "center", flexWrap: "wrap" }}>
+          {slides.map((_, i) => (
+            <button key={i} onClick={() => go(i)} aria-label={`Slide ${i + 1}`} style={{ width: i === idx ? 24 : 8, height: 4, padding: 0, border: 0, background: i === idx ? C.white : C.mute, cursor: "pointer", transition: "all 0.2s" }} />
+          ))}
         </div>
-      ))}
+        <div style={{ fontSize: 10, color: C.dim, letterSpacing: 1.5, minWidth: 48, textAlign: "right" }}>{String(idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</div>
+        <button onClick={() => go(idx + 1)} disabled={idx === total - 1} style={{ background: C.white, border: `1px solid ${C.white}`, color: C.bg, padding: "8px 14px", fontSize: 11, letterSpacing: 1.5, fontWeight: 700, cursor: idx === total - 1 ? "default" : "pointer", opacity: idx === total - 1 ? 0.3 : 1 }}>NEXT →</button>
+      </div>
     </div>
   );
 }
