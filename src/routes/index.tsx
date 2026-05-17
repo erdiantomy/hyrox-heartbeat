@@ -776,8 +776,163 @@ function S10() {
   );
 }
 
+// ─── LIVE MODEL ───
+const CAPEX_TOTAL_M = 8200; // IDR M
+const BASE = { members: 380, arpu: 1.15, opex: 225 };
+
+function ModelInput({
+  label, unit, value, min, max, step, base, onChange,
+}: {
+  label: string; unit: string; value: number; min: number; max: number;
+  step: number; base: number; onChange: (v: number) => void;
+}) {
+  const delta = value - base;
+  const deltaPct = ((value - base) / base) * 100;
+  const fmt = (n: number) => Number.isInteger(step) ? n.toFixed(0) : n.toFixed(2);
+  return (
+    <div style={{ background: C.card, border: `1px solid ${C.border}`, padding: 16 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
+        <span style={{ fontSize: 10, color: C.dim, letterSpacing: 1.5, fontWeight: 600 }}>{label}</span>
+        <span style={{ fontSize: 10, color: delta === 0 ? C.dim : (delta > 0 ? C.white : C.mid), fontFamily: "monospace" }}>
+          {delta === 0 ? "BASE" : `${delta > 0 ? "+" : ""}${fmt(delta)} (${deltaPct > 0 ? "+" : ""}${deltaPct.toFixed(0)}%)`}
+        </span>
+      </div>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 10 }}>
+        <span style={{ fontSize: 32, fontWeight: 800, letterSpacing: -1, fontVariantNumeric: "tabular-nums" }}>
+          {fmt(value)}
+        </span>
+        <span style={{ fontSize: 11, color: C.dim, letterSpacing: 1 }}>{unit}</span>
+      </div>
+      <input
+        type="range" min={min} max={max} step={step} value={value}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
+        style={{
+          width: "100%", accentColor: C.white, height: 4, background: "transparent", cursor: "pointer",
+        }}
+      />
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 9, color: C.mute, marginTop: 4, fontFamily: "monospace" }}>
+        <span>{min}</span><span>{max}</span>
+      </div>
+    </div>
+  );
+}
+
+function Stat({ label, value, delta, big }: { label: string; value: string; delta?: string; big?: boolean }) {
+  return (
+    <div style={{ padding: 16, background: C.card, border: `1px solid ${C.border}` }}>
+      <div style={{ fontSize: 10, color: C.dim, letterSpacing: 1.5, marginBottom: 6 }}>{label}</div>
+      <div style={{ fontSize: big ? 28 : 22, fontWeight: 800, letterSpacing: -0.5, fontVariantNumeric: "tabular-nums" }}>{value}</div>
+      {delta && <div style={{ fontSize: 10, color: C.mid, marginTop: 4, fontFamily: "monospace" }}>{delta}</div>}
+    </div>
+  );
+}
+
+function SModel() {
+  const [members, setMembers] = useState(BASE.members);
+  const [arpu, setArpu] = useState(BASE.arpu);
+  const [opex, setOpex] = useState(BASE.opex);
+
+  // Live projections
+  const revenue = members * arpu; // IDR M / month
+  const noi = revenue - opex;
+  const margin = revenue > 0 ? (noi / revenue) * 100 : 0;
+  const paybackMo = noi > 0 ? CAPEX_TOTAL_M / noi : Infinity;
+  const annualNOI = noi * 12;
+
+  // Project 12-month ramp: assume linear member ramp from 100 to target, ARPU & opex constant.
+  const projection = Array.from({ length: 12 }, (_, i) => {
+    const m = i + 1;
+    const ramp = Math.min(1, 0.25 + (m / 12) * 0.75); // 25% → 100%
+    const mMembers = Math.round(100 + (members - 100) * ramp);
+    const mRevenue = Math.round(mMembers * arpu);
+    const mNOI = mRevenue - opex;
+    return { month: `M${m}`, revenue: mRevenue, noi: mNOI, members: mMembers };
+  });
+  let cum = 0;
+  const cashFlowProj = projection.map(p => {
+    cum += p.noi;
+    return { ...p, cumulative: cum };
+  });
+
+  // Comparison to base
+  const baseRevenue = BASE.members * BASE.arpu;
+  const baseNOI = baseRevenue - BASE.opex;
+  const noiDelta = noi - baseNOI;
+
+  const reset = () => { setMembers(BASE.members); setArpu(BASE.arpu); setOpex(BASE.opex); };
+
+  return (
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 32, flexWrap: "wrap", gap: 16 }}>
+        <SectionTitle n="BONUS" t="Live Model" />
+        <button
+          onClick={reset}
+          style={{
+            padding: "8px 14px", background: "transparent", color: C.off,
+            border: `1px solid ${C.border2}`, fontSize: 10, letterSpacing: 2, cursor: "pointer",
+            fontWeight: 600,
+          }}
+        >
+          ↻ RESET TO BASE
+        </button>
+      </div>
+      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32, marginTop: -16, maxWidth: 720 }}>
+        Drag the sliders. Every projection updates instantly. Test your own assumptions.
+      </p>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginBottom: 24 }}>
+        <ModelInput label="MEMBERS" unit="active" value={members} min={100} max={600} step={10} base={BASE.members} onChange={setMembers} />
+        <ModelInput label="ARPU" unit="IDR M / month" value={arpu} min={0.6} max={2.0} step={0.05} base={BASE.arpu} onChange={setArpu} />
+        <ModelInput label="MONTHLY OPEX" unit="IDR M" value={opex} min={150} max={350} step={5} base={BASE.opex} onChange={setOpex} />
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 1, background: C.border, marginBottom: 32 }}>
+        <Stat label="MONTHLY REVENUE" value={`IDR ${Math.round(revenue)}M`} delta={`vs base ${revenue - baseRevenue >= 0 ? "+" : ""}${Math.round(revenue - baseRevenue)}M`} big />
+        <Stat label="MONTHLY NOI" value={`IDR ${Math.round(noi)}M`} delta={`${noiDelta >= 0 ? "+" : ""}${Math.round(noiDelta)}M vs base`} big />
+        <Stat label="MARGIN" value={`${margin.toFixed(0)}%`} delta={noi > 0 ? "operating" : "LOSS"} big />
+        <Stat label="PAYBACK" value={isFinite(paybackMo) ? `${paybackMo.toFixed(0)} mo` : "—"} delta={isFinite(paybackMo) ? `${(paybackMo / 12).toFixed(1)} years` : "no NOI"} big />
+        <Stat label="ANNUAL NOI" value={`IDR ${(annualNOI / 1000).toFixed(2)}B`} delta="if steady state" big />
+      </div>
+
+      <div style={{ marginBottom: 12, fontSize: 10, color: C.dim, letterSpacing: 2 }}>
+        12-MONTH PROJECTION · linear ramp from 100 members to target
+      </div>
+      <div style={{ height: 280, background: C.card, border: `1px solid ${C.border}`, padding: 16 }}>
+        <ResponsiveContainer>
+          <ComposedChart data={cashFlowProj}>
+            <CartesianGrid stroke={C.border} vertical={false} />
+            <XAxis dataKey="month" tick={{ fill: C.dim, fontSize: 11 }} />
+            <YAxis tick={{ fill: C.dim, fontSize: 10 }} />
+            <Tooltip contentStyle={tt} />
+            <Legend wrapperStyle={{ fontSize: 11, color: C.mid }} />
+            <Bar dataKey="revenue" fill={C.mute} name="Revenue (IDR M)" />
+            <Bar dataKey="noi" name="Monthly NOI">
+              {cashFlowProj.map((d, i) => (
+                <Cell key={i} fill={d.noi >= 0 ? C.off : "#3a1a1a"} />
+              ))}
+            </Bar>
+            <Line type="monotone" dataKey="cumulative" stroke={C.white} strokeWidth={2} dot={{ fill: C.white, r: 3 }} name="Cumulative NOI" />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+
+      <div style={{ marginTop: 32, padding: 20, borderLeft: `2px solid ${C.white}`, background: C.card2 }}>
+        <div style={{ fontSize: 11, color: C.dim, letterSpacing: 2, marginBottom: 8 }}>SCENARIO READOUT</div>
+        <p style={{ fontSize: 14, color: C.off, lineHeight: 1.6, margin: 0 }}>
+          At <strong>{members} members</strong> paying <strong>IDR {arpu.toFixed(2)}M</strong> against <strong>IDR {opex}M</strong> monthly opex, this generates{" "}
+          <strong style={{ color: noi >= 0 ? C.white : "#ff6b6b" }}>
+            IDR {Math.round(noi)}M/mo NOI ({margin.toFixed(0)}% margin)
+          </strong>
+          {noi > 0 && <> and pays back the IDR 8.2B raise in <strong>{paybackMo.toFixed(0)} months</strong>.</>}
+          {noi <= 0 && <> — burning cash. Increase members, raise ARPU, or cut opex.</>}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function Deck() {
-  const slides = [S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10];
+  const slides = [S0, S1, S2, S3, S4, S5, S6, S7, SModel, S8, S9, S10];
   return (
     <div style={{ background: C.bg, color: C.off, fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', sans-serif", maxWidth: 1280, margin: "0 auto" }}>
       {slides.map((S, i) => (
@@ -788,3 +943,4 @@ function Deck() {
     </div>
   );
 }
+
