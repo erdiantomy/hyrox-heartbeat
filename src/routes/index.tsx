@@ -188,7 +188,7 @@ const Card = ({ children, p = 20 }: { children: React.ReactNode; p?: number }) =
 // ─── SLIDES ───
 function S0() {
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
       <div>
         <Tag>INVESTOR PITCH DECK · CONFIDENTIAL</Tag>
       </div>
@@ -221,7 +221,7 @@ function S1() {
     ["2025–NOW", "HYROX", "The hybrid. Strength meets endurance. Race culture meets gym culture."],
   ];
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="01 / 10" t="Why Now" />
       <p style={{ fontSize: 18, color: C.mid, maxWidth: 720, marginBottom: 40 }}>
         Jakarta has a pattern. Every 2–3 years, a fitness format explodes. Each wave creates identity, community, and spending behavior.
@@ -251,7 +251,7 @@ function S1() {
 
 function S2() {
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="02 / 10" t="The Gap" />
       <p style={{ fontSize: 18, color: C.mid, maxWidth: 720, marginBottom: 32 }}>
         52 HYROX-listed gyms in Jakarta. Zero purpose-built compounds in South Jakarta's premium residential corridor.
@@ -318,7 +318,7 @@ function S3() {
     { z: "Circulation & Structure", m: 100, pct: 13, desc: "Hallways, walls, structural columns. Non-negotiable in any layout." },
   ];
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="03 / 10" t="The Compound" />
       <p style={{ fontSize: 18, color: C.mid, maxWidth: 720, marginBottom: 32 }}>
         750m². 4 revenue-driving zones. Every square meter earns or retains. Not a gym — a compound with spa, café, and flex space.
@@ -358,7 +358,7 @@ function S4() {
     { name: "Edward Triharto", tag: "DESIGN & BUILDOUT LEAD", bio: "6+ years interior design. Principal at Inhaustudio since 2020. UPH Interior Design graduate. Leads space layout, material sourcing, contractor coordination.", owns: "Space design · Buildout PM · Vendor coordination · Aesthetics", strength: "Can design a premium space on a controlled budget." },
   ];
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="04 / 10" t="The Team" />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 32 }}>
         {team.map((p) => (
@@ -403,7 +403,7 @@ function S5() {
     { name: "ELITE", price: "2.5M", target: "15%", who: "Executives & transformation clients", features: ["Everything in HYROX", "2× PT sessions/month", "Body composition scans", "Towel service", "Priority lockers", "Exclusive events", "Recovery access"] },
   ];
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="05 / 10" t="Membership" />
       <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>3 tiers. Clear value steps. Blended ARPU: IDR 1.15M.</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 32 }}>
@@ -437,12 +437,92 @@ function S5() {
   );
 }
 
-function S6() {
-  const [open, setOpen] = useState<number | null>(null);
+type CollapseRow = { label: string; cost: number; notes?: string };
+
+function CollapsibleSection({
+  title, total, items, isOpen, onToggle,
+}: {
+  title: string; total: string; items: CollapseRow[];
+  isOpen: boolean; onToggle: () => void;
+}) {
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ borderBottom: `1px solid ${C.border}` }}>
+      <button
+        onClick={onToggle}
+        aria-expanded={isOpen}
+        style={{
+          width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center",
+          padding: "14px 16px", background: isOpen ? C.card2 : "transparent",
+          border: "none", color: "inherit", cursor: "pointer", textAlign: "left",
+          transition: "background .15s",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0, flex: 1 }}>
+          <span style={{
+            display: "inline-block", color: C.dim, fontSize: 10, lineHeight: 1,
+            transform: isOpen ? "rotate(90deg)" : "rotate(0deg)", transition: "transform .2s",
+          }}>▶</span>
+          <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1.2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            {title}
+          </span>
+          <span style={{ fontSize: 10, color: C.dim, fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>
+            ({items.length})
+          </span>
+        </div>
+        <div style={{ fontFamily: "monospace", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", marginLeft: 12 }}>
+          {total}
+        </div>
+      </button>
+      <div style={{
+        display: "grid", gridTemplateRows: isOpen ? "1fr" : "0fr",
+        transition: "grid-template-rows .3s ease", background: C.card2,
+      }}>
+        <div style={{ overflow: "hidden" }}>
+          <div style={{ padding: "4px 16px 14px 32px" }}>
+            {items.map((it, idx) => (
+              <div key={it.label} style={{
+                display: "grid", gridTemplateColumns: "1fr auto", gap: 12,
+                padding: "8px 0", borderTop: idx === 0 ? "none" : `1px solid ${C.border}`,
+                fontSize: 12,
+              }}>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ color: C.off, lineHeight: 1.4 }}>{it.label}</div>
+                  {it.notes && (
+                    <div style={{ color: C.dim, fontSize: 11, fontStyle: "italic", marginTop: 2, lineHeight: 1.4 }}>
+                      {it.notes}
+                    </div>
+                  )}
+                </div>
+                <div style={{ color: C.white, fontFamily: "monospace", fontWeight: 600, whiteSpace: "nowrap" }}>
+                  IDR {it.cost}M
+                </div>
+              </div>
+            ))}
+            <div style={{
+              display: "flex", justifyContent: "space-between",
+              padding: "10px 0 0", marginTop: 6, borderTop: `1px solid ${C.border2}`,
+              fontSize: 10, color: C.dim, letterSpacing: 1.5,
+            }}>
+              <span>SUBTOTAL</span>
+              <span style={{ fontFamily: "monospace", color: C.off }}>{total}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function fmtIDR(m: number) {
+  return `IDR ${m >= 1000 ? (m / 1000).toFixed(1) + "B" : m + "M"}`;
+}
+
+function S6() {
+  const [open, setOpen] = useState<number | null>(0);
+  return (
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="06 / 10" t="CAPEX · IDR 8.2B" />
-      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Every line item. Click to expand. 48% below original IDR 15.7B proposal.</p>
+      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Every line item. Tap to expand. 48% below original IDR 15.7B proposal.</p>
       <div style={{ height: 280, marginBottom: 32 }}>
         <ResponsiveContainer>
           <BarChart data={capexDetailed} margin={{ top: 10, right: 10, left: 0, bottom: 60 }}>
@@ -456,25 +536,14 @@ function S6() {
       </div>
       <Card p={0}>
         {capexDetailed.map((cat, i) => (
-          <div key={cat.cat}>
-            <div onClick={() => setOpen(open === i ? null : i)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 20px", borderBottom: `1px solid ${C.border}`, cursor: "pointer" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <span style={{ color: C.dim, fontSize: 10, transform: open === i ? "rotate(90deg)" : "none", transition: "transform .2s" }}>▶</span>
-                <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: 1 }}>{cat.cat}</span>
-              </div>
-              <div style={{ fontFamily: "monospace", fontSize: 14, fontWeight: 700 }}>IDR {cat.total >= 1000 ? (cat.total / 1000).toFixed(1) + "B" : cat.total + "M"}</div>
-            </div>
-            {open === i && (
-              <div style={{ background: C.card2, padding: "8px 20px 16px" }}>
-                {cat.items.map((it) => (
-                  <div key={it.name} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", fontSize: 12 }}>
-                    <span style={{ color: C.mid }}>{it.name}</span>
-                    <span style={{ color: C.off, fontFamily: "monospace" }}>{it.cost}M</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <CollapsibleSection
+            key={cat.cat}
+            title={cat.cat}
+            total={fmtIDR(cat.total)}
+            items={cat.items.map(it => ({ label: it.name, cost: it.cost }))}
+            isOpen={open === i}
+            onToggle={() => setOpen(open === i ? null : i)}
+          />
         ))}
         <div style={{ display: "flex", justifyContent: "space-between", padding: "16px 20px", background: C.white, color: C.bg, fontWeight: 800 }}>
           <span style={{ letterSpacing: 1 }}>TOTAL CAPEX</span>
@@ -486,39 +555,28 @@ function S6() {
 }
 
 function S7() {
-  const [openOp, setOpenOp] = useState<number | null>(null);
+  const [openOp, setOpenOp] = useState<number | null>(0);
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="07 / 10" t="OPEX & P&L" />
       <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Monthly operating cost: IDR 225M. No rent. That's the thesis.</p>
       <Card p={0}>
         {opexDetailed.map((cat, i) => (
-          <div key={cat.cat}>
-            <div onClick={() => setOpenOp(openOp === i ? null : i)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 20px", borderBottom: `1px solid ${C.border}`, cursor: "pointer" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <span style={{ color: C.dim, fontSize: 10, transform: openOp === i ? "rotate(90deg)" : "none", transition: "transform .2s" }}>▶</span>
-                <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: 1 }}>{cat.cat}</span>
-              </div>
-              <div style={{ fontFamily: "monospace", fontSize: 14, fontWeight: 700 }}>IDR {cat.total}M</div>
-            </div>
-            {openOp === i && (
-              <div style={{ background: C.card2, padding: "8px 20px 16px" }}>
-                {cat.items.map((it) => (
-                  <div key={it.role} style={{ display: "grid", gridTemplateColumns: "1fr 2fr auto", gap: 16, padding: "6px 0", fontSize: 12 }}>
-                    <span style={{ color: C.off }}>{it.role}</span>
-                    <span style={{ color: C.dim, fontStyle: "italic" }}>{it.notes}</span>
-                    <span style={{ color: C.off, fontFamily: "monospace" }}>{it.cost}M</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <CollapsibleSection
+            key={cat.cat}
+            title={cat.cat}
+            total={`IDR ${cat.total}M`}
+            items={cat.items.map(it => ({ label: it.role, cost: it.cost, notes: it.notes }))}
+            isOpen={openOp === i}
+            onToggle={() => setOpenOp(openOp === i ? null : i)}
+          />
         ))}
         <div style={{ display: "flex", justifyContent: "space-between", padding: "16px 20px", background: C.white, color: C.bg, fontWeight: 800 }}>
           <span style={{ letterSpacing: 1 }}>TOTAL MONTHLY OPEX</span>
           <span style={{ fontFamily: "monospace" }}>IDR 225M</span>
         </div>
       </Card>
+
       <div style={{ marginTop: 24, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
         {[["IDR 2.54B", "Annual NOI"], ["IDR 583K", "Revenue / m² / mo"], ["IDR 3.9–6.6B", "5yr rent savings vs competitors"]].map(([v, l]) => (
           <Card key={l}><div style={{ fontSize: 22, fontWeight: 800 }}>{v}</div><div style={{ fontSize: 11, color: C.dim, marginTop: 6 }}>{l}</div></Card>
@@ -558,7 +616,7 @@ function S7() {
 
 function S8() {
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="08 / 10" t="Cash Flow & Ramp" />
       <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Break-even Month 5–6. Working capital recovered by Month 9. IDR 636M cash generated in Year 1.</p>
       <div style={{ height: 300, marginBottom: 24 }}>
@@ -616,7 +674,7 @@ function S9() {
     { ph: "05–06", t: "Launch", items: ["Equipment install & testing", "Full staff training (2 weeks)", "Invite-only soft launch", "Feedback loop → fix operations", "Full public opening", "First community race event"] },
   ];
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="09 / 10" t="Go-to-Market" />
       <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Build community before walls. Pre-sell before opening. The product is the marketing.</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 32 }}>
@@ -657,7 +715,7 @@ function S9() {
 
 function S10() {
   return (
-    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="10 / 10" t="The Investment" />
       <div style={{ background: C.white, color: C.bg, padding: 48, marginBottom: 32, textAlign: "center" }}>
         <div style={{ fontSize: 11, letterSpacing: 3, opacity: 0.6 }}>TOTAL RAISE</div>
