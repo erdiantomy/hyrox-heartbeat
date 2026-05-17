@@ -1103,7 +1103,7 @@ function SModel() {
 }
 
 function Deck() {
-  const slides = [S0, S1, S2, S3, S4, S5, S6, S7, SModel, S8, S9, S10];
+  const slides = [S0, S1, S2, S3, S4, S5, S6, S7, SModel, S8, S9, SFAQ, S10];
   return (
     <div style={{ background: C.bg, color: C.off, fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', sans-serif", maxWidth: 1280, margin: "0 auto" }}>
       {slides.map((S, i) => (
