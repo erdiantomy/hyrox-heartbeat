@@ -257,7 +257,7 @@ function S2() {
         52 HYROX-listed gyms in Jakarta. Zero purpose-built compounds in South Jakarta's premium residential corridor.
       </p>
       <Card p={0}>
-        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+        <div className="deck-table-wrap"><table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
           <thead>
             <tr style={{ background: C.card2 }}>
               {["", "Area", "Format", "Price", "HYROX", "Gym", "Compound", "No Rent"].map(h => (
@@ -289,7 +289,7 @@ function S2() {
               <td style={{ padding: 12, fontWeight: 800 }}>●</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
       </Card>
       <div style={{ marginTop: 32, height: 360 }}>
         <ResponsiveContainer>
@@ -585,7 +585,7 @@ function S7() {
       <div style={{ marginTop: 32 }}>
         <div style={{ fontSize: 10, color: C.dim, letterSpacing: 2, marginBottom: 12 }}>SENSITIVITY ANALYSIS</div>
         <Card p={0}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+          <div className="deck-table-wrap"><table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
             <thead>
               <tr style={{ background: C.card2 }}>
                 {["Scenario", "Members", "ARPU", "Revenue", "Opex", "NOI", "Margin", "Payback"].map(h => (
@@ -607,7 +607,7 @@ function S7() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
         </Card>
       </div>
     </div>
