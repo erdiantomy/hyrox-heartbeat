@@ -222,7 +222,7 @@ function S1() {
   ];
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
-      <SectionTitle n="01 / 10" t="Why Now" />
+      <SectionTitle n="01 / 11" t="Why Now" />
       <p style={{ fontSize: 18, color: C.mid, maxWidth: 720, marginBottom: 40 }}>
         Jakarta has a pattern. Every 2–3 years, a fitness format explodes. Each wave creates identity, community, and spending behavior.
       </p>
@@ -252,7 +252,7 @@ function S1() {
 function S2() {
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
-      <SectionTitle n="02 / 10" t="The Gap" />
+      <SectionTitle n="02 / 11" t="The Gap" />
       <p style={{ fontSize: 18, color: C.mid, maxWidth: 720, marginBottom: 32 }}>
         52 HYROX-listed gyms in Jakarta. Zero purpose-built compounds in South Jakarta's premium residential corridor.
       </p>
@@ -319,7 +319,7 @@ function S3() {
   ];
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
-      <SectionTitle n="03 / 10" t="The Compound" />
+      <SectionTitle n="03 / 11" t="The Compound" />
       <p style={{ fontSize: 18, color: C.mid, maxWidth: 720, marginBottom: 32 }}>
         750m². 4 revenue-driving zones. Every square meter earns or retains. Not a gym — a compound with spa, café, and flex space.
       </p>
@@ -359,7 +359,7 @@ function S4() {
   ];
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
-      <SectionTitle n="04 / 10" t="The Team" />
+      <SectionTitle n="04 / 11" t="The Team" />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 32 }}>
         {team.map((p) => (
           <Card key={p.name}>
@@ -404,7 +404,7 @@ function S5() {
   ];
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
-      <SectionTitle n="05 / 10" t="Membership" />
+      <SectionTitle n="05 / 11" t="Membership" />
       <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>3 tiers. Clear value steps. Blended ARPU: IDR 1.15M.</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 32 }}>
         {tiers.map((t, i) => (
@@ -521,7 +521,7 @@ function S6() {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
-      <SectionTitle n="06 / 10" t="CAPEX · IDR 8.2B" />
+      <SectionTitle n="06 / 11" t="CAPEX · IDR 8.2B" />
       <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Every line item. Tap to expand. 48% below original IDR 15.7B proposal.</p>
       <div style={{ height: 280, marginBottom: 32 }}>
         <ResponsiveContainer>
@@ -558,7 +558,7 @@ function S7() {
   const [openOp, setOpenOp] = useState<number | null>(0);
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
-      <SectionTitle n="07 / 10" t="OPEX & P&L" />
+      <SectionTitle n="07 / 11" t="OPEX & P&L" />
       <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Monthly operating cost: IDR 225M. No rent. That's the thesis.</p>
       <Card p={0}>
         {opexDetailed.map((cat, i) => (
@@ -617,7 +617,7 @@ function S7() {
 function S8() {
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
-      <SectionTitle n="08 / 10" t="Cash Flow & Ramp" />
+      <SectionTitle n="08 / 11" t="Cash Flow & Ramp" />
       <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Break-even Month 5–6. Working capital recovered by Month 9. IDR 636M cash generated in Year 1.</p>
       <div style={{ height: 300, marginBottom: 24 }}>
         <ResponsiveContainer>
@@ -675,7 +675,7 @@ function S9() {
   ];
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
-      <SectionTitle n="09 / 10" t="Go-to-Market" />
+      <SectionTitle n="09 / 11" t="Go-to-Market" />
       <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Build community before walls. Pre-sell before opening. The product is the marketing.</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 32 }}>
         {phases.map((p) => (
