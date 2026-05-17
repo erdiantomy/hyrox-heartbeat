@@ -713,10 +713,181 @@ function S9() {
   );
 }
 
+function SFAQ() {
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  const useOfProceeds = [
+    { label: "Facility Buildout", amount: 2800, pct: 34, desc: "Construction, MEP, HVAC, flooring, lockers, finishing" },
+    { label: "Strength Equipment", amount: 1600, pct: 20, desc: "Racks, platforms, dumbbells, cardio, accessories" },
+    { label: "HYROX Equipment", amount: 1400, pct: 17, desc: "Ergs, rowers, sleds, turf lane, timing systems" },
+    { label: "Working Capital", amount: 1000, pct: 12, desc: "6-month salary + utilities runway" },
+    { label: "Contingency", amount: 600, pct: 7, desc: "10% buffer across construction & FX" },
+    { label: "Pre-Opening Marketing", amount: 400, pct: 5, desc: "Brand, founding member campaign, launch event" },
+    { label: "Technology & Systems", amount: 200, pct: 3, desc: "Gym SaaS, access control, CCTV, body scan" },
+    { label: "Legal & Permits", amount: 200, pct: 2, desc: "PT formation, permits, insurance, contracts" },
+  ];
+
+  const risks = [
+    { risk: "Member ramp slower than projected", likelihood: "MED", impact: "HIGH",
+      mitigation: "100-person founding member pre-sale validates demand before opening. IDR 1B working capital covers 6 months of full burn even at zero new sign-ups. Sensitivity model shows positive NOI even in Bear case (250 members)." },
+    { risk: "HYROX format doesn't reach mainstream in Indonesia", likelihood: "LOW", impact: "HIGH",
+      mitigation: "Space designed as strength + conditioning compound with HYROX as hero program — not single-format dependent. Strength floor, flex studio, and spa drive revenue independent of HYROX. We pivot the brand, not the building." },
+    { risk: "Construction cost overrun", likelihood: "MED", impact: "MED",
+      mitigation: "10% contingency (IDR 600M) explicitly budgeted. Fixed-price contracts with vetted vendors. Edward (co-founder) personally manages buildout — same playbook as 6+ years of Inhaustudio projects." },
+    { risk: "Key person dependency on Amelie", likelihood: "LOW", impact: "HIGH",
+      mitigation: "Equity vesting tied to 4-year tenure with 1-year cliff. Head Coach (HYROX certified) hired as operational backup. Programming systematized and documented. Tom handles all non-floor functions." },
+    { risk: "New competitor enters Cilandak with similar format", likelihood: "MED", impact: "MED",
+      mitigation: "Free land creates a permanent 15–20% cost structural advantage no rented competitor can match. First-mover community lock-in via race teams and 8-week training cycles." },
+    { risk: "FX / equipment price volatility (IDR vs USD)", likelihood: "MED", impact: "LOW",
+      mitigation: "IDR 50M FX buffer in contingency. Equipment POs placed early in funding cycle to lock pricing. Domestic substitutes identified for non-critical items." },
+    { risk: "Regulatory / permit delays", likelihood: "LOW", impact: "MED",
+      mitigation: "Pre-application engagement with local authorities. Legal advisory retained. Buffer built into Phase 1 timeline (Months 1–2 design + permits)." },
+    { risk: "Recession / discretionary spend pullback", likelihood: "LOW", impact: "MED",
+      mitigation: "SEC A/B target market is recession-resilient. Open tier at IDR 850K is price-competitive even in downturn. Corporate B2B revenue (TB Simatupang) is sticky." },
+  ];
+
+  const faqs = [
+    { q: "Why no rent? What's the actual land arrangement?",
+      a: "The 750m² site is owned within the founder structure — there is no third-party lease. This creates a permanent cost moat: every competitor in South Jakarta pays IDR 65–110M/month in rent on comparable space. Over 5 years that's IDR 3.9–6.6B in savings flowing directly to NOI." },
+    { q: "Who is on the cap table and what are investors getting?",
+      a: "Specific terms (equity %, valuation, preference) are discussed in person. Structure: SPV with founders holding majority, with investor seats sized to the IDR 8.2B raise. Standard preferred equity with liquidation preference and standard protective provisions." },
+    { q: "What happens if you miss the 380-member base case?",
+      a: "Conservative case (320 members) still generates IDR 132M/mo NOI and 38% margin with 62-month payback. Bear case (250 members) is break-even-ish at 16% margin. Working capital covers 6 months at zero new revenue. The downside is slower returns, not a blown business." },
+    { q: "What's the exit?",
+      a: "Three credible paths: (1) Cash-flow asset held 5–10 years generating IDR 2.5B+ annual NOI distributable to investors. (2) Phase 2 expansion to 2–3 sites and sale to a regional fitness operator or PE rollup. (3) Master franchise/licensing of the Tom's HYROX brand once proven. Not optimizing for a quick flip." },
+    { q: "Why not franchise an existing HYROX brand instead?",
+      a: "Existing HYROX-affiliated clubs in Jakarta are constrained: small footprints, rented space, single-format. We're building a compound — the format HYROX itself doesn't operate. Plus, we own the brand and IP, which is the long-term value driver." },
+    { q: "What's the timeline from funding close to opening?",
+      a: "6 months. Months 1–2: design + procurement + permits. Months 3–4: construction + hiring + pre-sale. Months 5–6: install + soft launch + grand opening. Funding close triggers Day 1 of this clock." },
+    { q: "Who's actually running this day-to-day?",
+      a: "Amelie — full-time CEO/Head of Operations from Day 1. She's on the floor, in the gym, with the members. 5 years at F45 Kemang gives her the muscle memory. Tom is upstream (capital, strategy, IR). Edward transitions to advisory post-launch." },
+    { q: "What if the funding round doesn't fully close?",
+      a: "Minimum viable raise is IDR 6.5B (cuts: Phase 2 deferral, reduced working capital buffer to 4 months, contingency to 7%). Below that, we delay. We will not under-capitalize and over-promise — that's how gyms die in Month 9." },
+  ];
+
+  return (
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
+      <SectionTitle n="10 / 11" t="Risks, FAQ & Use of Proceeds" />
+      <p style={{ fontSize: 18, color: C.mid, marginBottom: 40, maxWidth: 720 }}>
+        Where the money goes. What can go wrong. How we've thought about it. The questions investors keep asking.
+      </p>
+
+      {/* USE OF PROCEEDS */}
+      <div style={{ marginBottom: 48 }}>
+        <div style={{ fontSize: 10, color: C.dim, letterSpacing: 2, marginBottom: 16 }}>USE OF PROCEEDS · IDR 8.2B</div>
+        <div style={{ display: "flex", height: 32, marginBottom: 16, border: `1px solid ${C.border}` }}>
+          {useOfProceeds.map((u, i) => (
+            <div key={u.label} title={`${u.label}: ${u.pct}%`} style={{
+              width: `${u.pct}%`,
+              background: i % 2 === 0 ? C.off : C.dim,
+              borderRight: i < useOfProceeds.length - 1 ? `1px solid ${C.bg}` : "none",
+            }} />
+          ))}
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 1, background: C.border }}>
+          {useOfProceeds.map((u, i) => (
+            <div key={u.label} style={{ background: C.bg, padding: 14 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1 }}>{u.label.toUpperCase()}</span>
+                <span style={{ fontSize: 10, color: C.dim, fontFamily: "monospace" }}>{u.pct}%</span>
+              </div>
+              <div style={{ fontSize: 18, fontWeight: 800, fontFamily: "monospace", marginBottom: 4 }}>
+                IDR {u.amount >= 1000 ? (u.amount / 1000).toFixed(1) + "B" : u.amount + "M"}
+              </div>
+              <div style={{ fontSize: 11, color: C.mid, lineHeight: 1.4 }}>{u.desc}</div>
+              <div style={{ height: 2, background: C.border2, marginTop: 8 }}>
+                <div style={{ height: "100%", width: `${u.pct * 2.94}%`, background: i % 2 === 0 ? C.off : C.dim }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* RISK MATRIX */}
+      <div style={{ marginBottom: 48 }}>
+        <div style={{ fontSize: 10, color: C.dim, letterSpacing: 2, marginBottom: 16 }}>RISK MATRIX · 8 KEY RISKS</div>
+        <Card p={0}>
+          <div style={{ display: "grid", gridTemplateColumns: "1.4fr 70px 70px 2fr", gap: 12, padding: "12px 16px", background: C.card2, borderBottom: `1px solid ${C.border}`, fontSize: 9, color: C.dim, letterSpacing: 1.5, fontWeight: 600 }}>
+            <span>RISK</span><span>LIKELI.</span><span>IMPACT</span><span>MITIGATION</span>
+          </div>
+          {risks.map((r, i) => {
+            const tone = (l: string) => l === "HIGH" ? C.white : l === "MED" ? C.off : C.mid;
+            return (
+              <div key={i} style={{
+                display: "grid", gridTemplateColumns: "1.4fr 70px 70px 2fr",
+                gap: 12, padding: "14px 16px",
+                borderBottom: i < risks.length - 1 ? `1px solid ${C.border}` : "none",
+                fontSize: 12, alignItems: "start",
+              }}>
+                <div style={{ color: C.off, fontWeight: 600, lineHeight: 1.4 }}>{r.risk}</div>
+                <div style={{ fontSize: 10, letterSpacing: 1, color: tone(r.likelihood), fontFamily: "monospace" }}>{r.likelihood}</div>
+                <div style={{ fontSize: 10, letterSpacing: 1, color: tone(r.impact), fontFamily: "monospace" }}>{r.impact}</div>
+                <div style={{ color: C.mid, lineHeight: 1.5 }}>{r.mitigation}</div>
+              </div>
+            );
+          })}
+        </Card>
+      </div>
+
+      {/* FAQ */}
+      <div>
+        <div style={{ fontSize: 10, color: C.dim, letterSpacing: 2, marginBottom: 16 }}>FREQUENTLY ASKED · TAP TO EXPAND</div>
+        <Card p={0}>
+          {faqs.map((f, i) => {
+            const isOpen = openFaq === i;
+            return (
+              <div key={i} style={{ borderBottom: i < faqs.length - 1 ? `1px solid ${C.border}` : "none" }}>
+                <button
+                  onClick={() => setOpenFaq(isOpen ? null : i)}
+                  aria-expanded={isOpen}
+                  style={{
+                    width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center",
+                    gap: 16, padding: "16px 20px", background: isOpen ? C.card2 : "transparent",
+                    border: "none", color: "inherit", cursor: "pointer", textAlign: "left",
+                    transition: "background .15s",
+                  }}
+                >
+                  <div style={{ display: "flex", gap: 14, alignItems: "center", minWidth: 0 }}>
+                    <span style={{ fontSize: 10, color: C.dim, fontFamily: "monospace", letterSpacing: 1, flexShrink: 0 }}>
+                      Q{(i + 1).toString().padStart(2, "0")}
+                    </span>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: C.off }}>{f.q}</span>
+                  </div>
+                  <span style={{
+                    fontSize: 18, color: C.dim, lineHeight: 1, flexShrink: 0,
+                    transform: isOpen ? "rotate(45deg)" : "rotate(0deg)", transition: "transform .2s",
+                  }}>+</span>
+                </button>
+                <div style={{
+                  display: "grid", gridTemplateRows: isOpen ? "1fr" : "0fr",
+                  transition: "grid-template-rows .3s ease", background: C.card2,
+                }}>
+                  <div style={{ overflow: "hidden" }}>
+                    <div style={{ padding: "0 20px 18px 52px" }}>
+                      <p style={{ fontSize: 13, color: C.off, lineHeight: 1.6, margin: 0 }}>{f.a}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </Card>
+      </div>
+
+      <div style={{ marginTop: 40, padding: 24, borderLeft: `2px solid ${C.white}`, background: C.card2 }}>
+        <div style={{ fontSize: 10, color: C.dim, letterSpacing: 2, marginBottom: 8 }}>STILL HAVE QUESTIONS?</div>
+        <p style={{ fontSize: 14, color: C.off, lineHeight: 1.6, margin: 0 }}>
+          Reach out directly. Data room, financial model, and reference calls with Amelie's F45 leadership are available on request.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function S10() {
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
-      <SectionTitle n="10 / 10" t="The Investment" />
+      <SectionTitle n="11 / 11" t="The Investment" />
       <div style={{ background: C.white, color: C.bg, padding: 48, marginBottom: 32, textAlign: "center" }}>
         <div style={{ fontSize: 11, letterSpacing: 3, opacity: 0.6 }}>TOTAL RAISE</div>
         <div style={{ fontSize: 96, fontWeight: 900, letterSpacing: -4, lineHeight: 1, margin: "8px 0" }}>IDR 8.2B</div>
