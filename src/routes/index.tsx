@@ -1126,13 +1126,7 @@ function Deck() {
     scrollRef.current?.scrollTo({ top: 0, behavior: "auto" });
   }, [idx]);
 
-  const onTouchStart = (e: React.TouchEvent) => { touchStart.current = e.touches[0].clientX; };
-  const onTouchEnd = (e: React.TouchEvent) => {
-    if (touchStart.current == null) return;
-    const dx = e.changedTouches[0].clientX - touchStart.current;
-    if (Math.abs(dx) > 50) go(idx + (dx < 0 ? 1 : -1));
-    touchStart.current = null;
-  };
+  // Swipe disabled: horizontal gestures must reach tables/charts.
 
   const Slide = slides[idx];
 
