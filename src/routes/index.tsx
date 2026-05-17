@@ -257,7 +257,7 @@ function S2() {
         52 HYROX-listed gyms in Jakarta. Zero purpose-built compounds in South Jakarta's premium residential corridor.
       </p>
       <Card p={0}>
-        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+        <div className="deck-table-wrap"><table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
           <thead>
             <tr style={{ background: C.card2 }}>
               {["", "Area", "Format", "Price", "HYROX", "Gym", "Compound", "No Rent"].map(h => (
@@ -289,7 +289,7 @@ function S2() {
               <td style={{ padding: 12, fontWeight: 800 }}>●</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
       </Card>
       <div style={{ marginTop: 32, height: 360 }}>
         <ResponsiveContainer>
@@ -585,7 +585,7 @@ function S7() {
       <div style={{ marginTop: 32 }}>
         <div style={{ fontSize: 10, color: C.dim, letterSpacing: 2, marginBottom: 12 }}>SENSITIVITY ANALYSIS</div>
         <Card p={0}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+          <div className="deck-table-wrap"><table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
             <thead>
               <tr style={{ background: C.card2 }}>
                 {["Scenario", "Members", "ARPU", "Revenue", "Opex", "NOI", "Margin", "Payback"].map(h => (
@@ -607,7 +607,7 @@ function S7() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
         </Card>
       </div>
     </div>
@@ -1137,12 +1137,23 @@ function Deck() {
   const Slide = slides[idx];
 
   return (
-    <div style={{ background: C.bg, color: C.off, fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', sans-serif", minHeight: "100vh", position: "relative", overflow: "hidden" }}>
+    <div className="deck-root" style={{ background: C.bg, color: C.off, fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', sans-serif", minHeight: "100vh", position: "relative", overflow: "hidden" }}>
+      <style>{`
+        @media (max-width: 720px) {
+          .deck-root h1 { font-size: clamp(56px, 16vw, 96px) !important; letter-spacing: -3px !important; }
+          .deck-root h2 { font-size: clamp(28px, 9vw, 40px) !important; letter-spacing: -1px !important; }
+          .deck-root div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+          .deck-root div[style*="overflow-x"], .deck-root .deck-scroll-x { overflow-x: auto; }
+          .deck-root table { font-size: 11px !important; min-width: 560px; }
+          .deck-root th, .deck-root td { padding: 8px !important; }
+          .deck-root .deck-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        }
+      `}</style>
       <div
         ref={scrollRef}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
-        style={{ height: "100vh", overflowY: "auto", maxWidth: 1280, margin: "0 auto", paddingBottom: 80 }}
+        style={{ height: "100vh", overflowY: "auto", maxWidth: 1280, margin: "0 auto", paddingBottom: 96 }}
       >
         <Slide />
       </div>
