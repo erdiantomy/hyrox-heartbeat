@@ -72,14 +72,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Tom's HYROX — Investor Pitch Deck" },
+      { title: "TOMS HYROX — Investor Pitch Deck" },
       { name: "description", content: "Jakarta's first capital-efficient HYROX sports compound. IDR 8.2B raise." },
       { name: "author", content: "Tom's Ventures" },
-      { property: "og:title", content: "Tom's HYROX — Investor Pitch Deck" },
+      { property: "og:title", content: "TOMS HYROX — Investor Pitch Deck" },
       { property: "og:description", content: "Jakarta's first capital-efficient HYROX sports compound. IDR 8.2B raise." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "TOMS HYROX — Investor Pitch Deck" },
+      { name: "twitter:description", content: "Jakarta's first capital-efficient HYROX sports compound. IDR 8.2B raise." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/6eSzKyIqppU18gsIked8YPCqEht1/social-images/social-1779030232335-7F3348D0-92DD-44E9-B61A-E134889B155F.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/6eSzKyIqppU18gsIked8YPCqEht1/social-images/social-1779030232335-7F3348D0-92DD-44E9-B61A-E134889B155F.webp" },
     ],
     links: [
       {
