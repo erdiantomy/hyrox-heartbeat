@@ -1126,13 +1126,7 @@ function Deck() {
     scrollRef.current?.scrollTo({ top: 0, behavior: "auto" });
   }, [idx]);
 
-  const onTouchStart = (e: React.TouchEvent) => { touchStart.current = e.touches[0].clientX; };
-  const onTouchEnd = (e: React.TouchEvent) => {
-    if (touchStart.current == null) return;
-    const dx = e.changedTouches[0].clientX - touchStart.current;
-    if (Math.abs(dx) > 50) go(idx + (dx < 0 ? 1 : -1));
-    touchStart.current = null;
-  };
+  // Swipe disabled: horizontal gestures must reach tables/charts.
 
   const Slide = slides[idx];
 
@@ -1151,24 +1145,10 @@ function Deck() {
       `}</style>
       <div
         ref={scrollRef}
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
         style={{ height: "100vh", overflowY: "auto", maxWidth: 1280, margin: "0 auto", paddingBottom: 96 }}
       >
         <Slide />
       </div>
-
-      {/* Tap zones (mobile) */}
-      <button
-        aria-label="Previous slide"
-        onClick={() => go(idx - 1)}
-        style={{ position: "fixed", left: 0, top: 0, bottom: 80, width: "20%", background: "transparent", border: 0, cursor: "pointer", zIndex: 5 }}
-      />
-      <button
-        aria-label="Next slide"
-        onClick={() => go(idx + 1)}
-        style={{ position: "fixed", right: 0, top: 0, bottom: 80, width: "20%", background: "transparent", border: 0, cursor: "pointer", zIndex: 5 }}
-      />
 
       {/* Nav bar */}
       <div style={{ position: "fixed", left: 0, right: 0, bottom: 0, padding: "12px 16px", background: "rgba(0,0,0,0.85)", backdropFilter: "blur(12px)", borderTop: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, zIndex: 10 }}>
