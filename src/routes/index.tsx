@@ -1137,12 +1137,23 @@ function Deck() {
   const Slide = slides[idx];
 
   return (
-    <div style={{ background: C.bg, color: C.off, fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', sans-serif", minHeight: "100vh", position: "relative", overflow: "hidden" }}>
+    <div className="deck-root" style={{ background: C.bg, color: C.off, fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', sans-serif", minHeight: "100vh", position: "relative", overflow: "hidden" }}>
+      <style>{`
+        @media (max-width: 720px) {
+          .deck-root h1 { font-size: clamp(56px, 16vw, 96px) !important; letter-spacing: -3px !important; }
+          .deck-root h2 { font-size: clamp(28px, 9vw, 40px) !important; letter-spacing: -1px !important; }
+          .deck-root div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+          .deck-root div[style*="overflow-x"], .deck-root .deck-scroll-x { overflow-x: auto; }
+          .deck-root table { font-size: 11px !important; min-width: 560px; }
+          .deck-root th, .deck-root td { padding: 8px !important; }
+          .deck-root .deck-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        }
+      `}</style>
       <div
         ref={scrollRef}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
-        style={{ height: "100vh", overflowY: "auto", maxWidth: 1280, margin: "0 auto", paddingBottom: 80 }}
+        style={{ height: "100vh", overflowY: "auto", maxWidth: 1280, margin: "0 auto", paddingBottom: 96 }}
       >
         <Slide />
       </div>
