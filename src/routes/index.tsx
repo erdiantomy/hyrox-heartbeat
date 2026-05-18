@@ -682,11 +682,11 @@ function S8() {
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 16 }}>
         {[
-          { yr: "Y1", rev: "3,740M", noi: "636M", note: "Ramp year" },
-          { yr: "Y2", rev: "5,244M", noi: "2,544M", note: "Steady state" },
-          { yr: "Y3", rev: "5,506M", noi: "2,706M", note: "+5% growth" },
-          { yr: "Y4", rev: "5,782M", noi: "2,882M", note: "Phase 2 triggers" },
-          { yr: "Y5", rev: "6,071M", noi: "3,071M", note: "Expansion ready" },
+          { yr: "Y1", rev: "3,825M", noi: "580M", note: "Ramp year (15% margin)" },
+          { yr: "Y2", rev: "6,036M", noi: "2,688M", note: "Steady moderate" },
+          { yr: "Y3", rev: "6,338M", noi: "2,856M", note: "+5% growth" },
+          { yr: "Y4", rev: "6,655M", noi: "3,024M", note: "Phase 2 triggers" },
+          { yr: "Y5", rev: "6,988M", noi: "3,192M", note: "Expansion ready" },
         ].map((y) => (
           <Card key={y.yr}>
             <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: -0.5, marginBottom: 8 }}>{y.yr}</div>
