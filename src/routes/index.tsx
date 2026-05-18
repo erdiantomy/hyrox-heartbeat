@@ -245,18 +245,14 @@ const Card = ({ children, p = 20 }: { children: React.ReactNode; p?: number }) =
 // ─── SLIDES ───
 function S0() {
   return (
-    <div style={{ minHeight: "100vh", position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "hidden" }}>
+    <div style={{ minHeight: "100vh", position: "relative", display: "flex", flexDirection: "column", overflow: "hidden", background: "#000" }}>
       <img
         src={heroImage}
         alt="TOM'S HYROX — Strength. Endurance. No Excuses."
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", zIndex: 0 }}
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", zIndex: 0 }}
       />
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.6) 100%)", zIndex: 1 }} />
-      <div style={{ position: "relative", zIndex: 2, padding: "clamp(24px, 6vw, 48px)" }}>
+      <div style={{ position: "relative", zIndex: 2, padding: "clamp(16px, 4vw, 32px)" }}>
         <Tag>INVESTOR PITCH DECK · CONFIDENTIAL</Tag>
-      </div>
-      <div style={{ position: "relative", zIndex: 2, padding: "clamp(24px, 6vw, 48px)", display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 16 }}>
-        <div style={{ fontSize: 11, color: C.off, letterSpacing: 2 }}>SCROLL TO BEGIN ↓</div>
       </div>
     </div>
   );
