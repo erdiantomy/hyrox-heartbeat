@@ -504,9 +504,13 @@ function CollapsibleSection({
       >
         <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0, flex: 1 }}>
           <span style={{
-            display: "inline-block", color: C.dim, fontSize: 10, lineHeight: 1,
-            transform: isOpen ? "rotate(90deg)" : "rotate(0deg)", transition: "transform .2s",
-          }}>▶</span>
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            width: 18, height: 18, borderRadius: 4,
+            border: `1px solid ${isOpen ? C.white : C.border2}`,
+            background: isOpen ? C.white : "transparent",
+            color: isOpen ? C.bg : C.off, fontSize: 11, lineHeight: 1, fontWeight: 700,
+            transition: "all .2s", flexShrink: 0,
+          }}>{isOpen ? "−" : "+"}</span>
           <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1.2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
             {title}
           </span>
@@ -514,8 +518,17 @@ function CollapsibleSection({
             ({items.length})
           </span>
         </div>
-        <div style={{ fontFamily: "monospace", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", marginLeft: 12 }}>
-          {total}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginLeft: 12 }}>
+          {!isOpen && (
+            <span style={{
+              fontSize: 9, letterSpacing: 1.2, color: C.dim,
+              border: `1px solid ${C.border2}`, borderRadius: 999,
+              padding: "3px 8px", whiteSpace: "nowrap", fontFamily: "monospace",
+            }}>TAP TO OPEN</span>
+          )}
+          <div style={{ fontFamily: "monospace", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap" }}>
+            {total}
+          </div>
         </div>
       </button>
       <div style={{
