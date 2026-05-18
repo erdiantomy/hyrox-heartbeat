@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
+import heroImage from "@/assets/hero-toms-hyrox.png";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area,
   LineChart, Line, CartesianGrid, Legend, RadarChart, Radar, PolarGrid,
@@ -244,27 +245,19 @@ const Card = ({ children, p = 20 }: { children: React.ReactNode; p?: number }) =
 // ─── SLIDES ───
 function S0() {
   return (
-    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-      <div>
+    <div style={{ minHeight: "100vh", position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "hidden" }}>
+      <img
+        src={heroImage}
+        alt="TOM'S HYROX — Strength. Endurance. No Excuses."
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", zIndex: 0 }}
+      />
+      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.6) 100%)", zIndex: 1 }} />
+      <div style={{ position: "relative", zIndex: 2, padding: "clamp(24px, 6vw, 48px)" }}>
         <Tag>INVESTOR PITCH DECK · CONFIDENTIAL</Tag>
       </div>
-      <div>
-        <h1 style={{ fontSize: "clamp(80px, 14vw, 220px)", fontWeight: 900, lineHeight: 0.9, letterSpacing: -6, margin: 0 }}>
-          TOM'S<br />HYROX
-        </h1>
-        <p style={{ fontSize: 18, color: C.mid, marginTop: 32, maxWidth: 640, lineHeight: 1.5 }}>
-          Jakarta's first capital-efficient HYROX sports compound. 750m² on free land. Cilandak, South Jakarta.
-        </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 48, maxWidth: 720 }}>
-          {[["IDR 10.4B", "Total Raise"], ["37 mo", "Payback (Moderate)"], ["50%", "NOI Margin"]].map(([v, l]) => (
-            <div key={l} style={{ borderTop: `1px solid ${C.border2}`, paddingTop: 12 }}>
-              <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: -1 }}>{v}</div>
-              <div style={{ fontSize: 11, color: C.dim, letterSpacing: 1, marginTop: 4 }}>{l}</div>
-            </div>
-          ))}
-        </div>
+      <div style={{ position: "relative", zIndex: 2, padding: "clamp(24px, 6vw, 48px)", display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 16 }}>
+        <div style={{ fontSize: 11, color: C.off, letterSpacing: 2 }}>SCROLL TO BEGIN ↓</div>
       </div>
-      <div style={{ fontSize: 11, color: C.dim, letterSpacing: 2 }}>SCROLL TO BEGIN ↓</div>
     </div>
   );
 }
