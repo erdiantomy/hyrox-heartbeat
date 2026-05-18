@@ -1411,6 +1411,7 @@ function Deck() {
           .deck-root .deck-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
         }
       `}</style>
+      <SlideHints idx={idx} />
       <div
         ref={scrollRef}
         style={{ height: "100vh", overflowY: "auto", maxWidth: 1280, margin: "0 auto", paddingBottom: 96 }}
