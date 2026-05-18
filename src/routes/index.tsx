@@ -928,12 +928,12 @@ function S10() {
       <SectionTitle n="11 / 11" t="The Investment" />
       <div style={{ background: C.white, color: C.bg, padding: 48, marginBottom: 32, textAlign: "center" }}>
         <div style={{ fontSize: 11, letterSpacing: 3, opacity: 0.6 }}>TOTAL RAISE</div>
-        <div style={{ fontSize: 96, fontWeight: 900, letterSpacing: -4, lineHeight: 1, margin: "8px 0" }}>IDR 8.2B</div>
-        <div style={{ fontSize: 14, opacity: 0.6, letterSpacing: 2 }}>~USD 500,000</div>
+        <div style={{ fontSize: 96, fontWeight: 900, letterSpacing: -4, lineHeight: 1, margin: "8px 0" }}>IDR 10.4B</div>
+        <div style={{ fontSize: 14, opacity: 0.6, letterSpacing: 2 }}>~USD 630,000</div>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 1, background: C.border, marginBottom: 32 }}>
-        {[["380", "Target Members"], ["IDR 437M", "Monthly Revenue"], ["IDR 212M", "Monthly NOI"], ["49%", "Operating Margin"],
-          ["33 mo", "Payback Period"], ["IDR 11.84B", "5-Year Cum. NOI"], ["1.44×", "5-Yr CAPEX Multiple"], ["IDR 0", "Monthly Rent"]].map(([v, l]) => (
+        {[["380", "Target Members"], ["IDR 503M", "Monthly Revenue (incl ancillary)"], ["IDR 224M", "Monthly NOI"], ["45%", "Operating Margin"],
+          ["46 mo", "Payback Period"], ["IDR 12.34B", "5-Year Cum. NOI"], ["1.19×", "5-Yr CAPEX Multiple"], ["IDR 0", "Monthly Rent"]].map(([v, l]) => (
           <div key={l} style={{ background: C.bg, padding: 20 }}>
             <div style={{ fontSize: 20, fontWeight: 800 }}>{v}</div>
             <div style={{ fontSize: 10, color: C.dim, letterSpacing: 1, marginTop: 4 }}>{l}</div>
