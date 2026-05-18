@@ -1197,12 +1197,6 @@ function SRevenue() {
       </p>
 
       {/* Tabs */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10, flexWrap: "wrap" }}>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 10, letterSpacing: 1.5, color: C.dim, border: `1px solid ${C.border2}`, padding: "4px 8px", borderRadius: 999 }}>
-          <span style={{ width: 6, height: 6, borderRadius: 999, background: C.white, animation: "pulseDot 1.6s ease-in-out infinite" }} />
-          TAP EACH TAB TO VIEW ITS CONTENT
-        </span>
-      </div>
       <div style={{ display: "flex", gap: 1, background: C.border, marginBottom: 24, border: `1px solid ${C.border2}` }}>
         {tabs.map(tab => (
           <button key={tab.key} onClick={() => setActiveTab(tab.key)} style={{
@@ -1358,6 +1352,51 @@ function SRevenue() {
   );
 }
 
+// Per-slide interactive hints. Indices map to the `slides` array in Deck.
+// 2: S2 (wide competitor table), 6: SRevenue (tabs + tables),
+// 7: S6 (CAPEX collapsibles), 8: S7 (OPEX collapsibles), 12: SFAQ.
+const SLIDE_HINTS: Record<number, { icon: string; text: string; anim: string }[]> = {
+  2: [{ icon: "↔", text: "DRAG TABLE SIDEWAYS", anim: "nudgeX" }],
+  6: [
+    { icon: "●", text: "TAP EACH TAB ABOVE", anim: "pulseDot" },
+    { icon: "↔", text: "DRAG TABLE SIDEWAYS", anim: "nudgeX" },
+  ],
+  7: [{ icon: "+", text: "TAP ANY ROW TO EXPAND", anim: "pulseDot" }],
+  8: [{ icon: "+", text: "TAP ANY ROW TO EXPAND", anim: "pulseDot" }],
+  12: [{ icon: "+", text: "TAP A QUESTION TO READ ANSWER", anim: "pulseDot" }],
+};
+
+function SlideHints({ idx }: { idx: number }) {
+  const hints = SLIDE_HINTS[idx];
+  const [visible, setVisible] = useState(true);
+  useEffect(() => {
+    setVisible(true);
+    const t = setTimeout(() => setVisible(false), 6000);
+    return () => clearTimeout(t);
+  }, [idx]);
+  if (!hints || !visible) return null;
+  return (
+    <div style={{
+      position: "fixed", top: 12, left: 0, right: 0, zIndex: 9,
+      display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap",
+      padding: "0 12px", pointerEvents: "none",
+    }}>
+      {hints.map((h, i) => (
+        <span key={i} style={{
+          display: "inline-flex", alignItems: "center", gap: 6,
+          padding: "5px 10px", borderRadius: 999,
+          background: "rgba(0,0,0,0.78)", border: `1px solid ${C.border2}`,
+          color: C.off, fontSize: 10, letterSpacing: 1.5, fontWeight: 600,
+          backdropFilter: "blur(8px)",
+        }}>
+          <span style={{ animation: `${h.anim} 1.4s ease-in-out infinite`, color: C.white }}>{h.icon}</span>
+          {h.text}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function Deck() {
   const slides = [S0, S1, S2, S3, S4, S5, SRevenue, S6, S7, SModel, S8, S9, SFAQ, S10];
   const [idx, setIdx] = useState(0);
@@ -1415,15 +1454,9 @@ function Deck() {
           .deck-root table { font-size: 11px !important; min-width: 560px; }
           .deck-root th, .deck-root td { padding: 8px !important; }
           .deck-root .deck-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-          .deck-root .deck-table-wrap::before {
-            content: "← DRAG TABLE SIDEWAYS TO SEE ALL COLUMNS →";
-            position: sticky; left: 0; top: 0; display: block;
-            font-size: 9px; letter-spacing: 1.5px; color: #888;
-            padding: 8px 10px; background: #0A0A0A;
-            border-bottom: 1px solid #1A1A1A; text-align: center;
-          }
         }
       `}</style>
+      <SlideHints idx={idx} />
       <div
         ref={scrollRef}
         style={{ height: "100vh", overflowY: "auto", maxWidth: 1280, margin: "0 auto", paddingBottom: 96 }}
