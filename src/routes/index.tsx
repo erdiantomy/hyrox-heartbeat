@@ -1362,8 +1362,8 @@ function Deck() {
   const slides = [S0, S1, S2, S3, S4, S5, SRevenue, S6, S7, SModel, S8, S9, SFAQ, S10];
   const [idx, setIdx] = useState(0);
   const total = slides.length;
-  const touchStart = useRef<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [scrollState, setScrollState] = useState<"more" | "end" | "none">("none");
 
   const go = (n: number) => setIdx(Math.max(0, Math.min(total - 1, n)));
 
@@ -1382,13 +1382,31 @@ function Deck() {
     scrollRef.current?.scrollTo({ top: 0, behavior: "auto" });
   }, [idx]);
 
-  // Swipe disabled: horizontal gestures must reach tables/charts.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const check = () => {
+      const overflow = el.scrollHeight - el.clientHeight;
+      if (overflow < 24) { setScrollState("none"); return; }
+      const remaining = overflow - el.scrollTop;
+      setScrollState(remaining > 48 ? "more" : "end");
+    };
+    check();
+    el.addEventListener("scroll", check, { passive: true });
+    const ro = new ResizeObserver(check);
+    ro.observe(el);
+    return () => { el.removeEventListener("scroll", check); ro.disconnect(); };
+  }, [idx]);
 
   const Slide = slides[idx];
 
   return (
     <div className="deck-root" style={{ background: C.bg, color: C.off, fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', sans-serif", minHeight: "100vh", position: "relative", overflow: "hidden" }}>
       <style>{`
+        @keyframes pulseDot { 0%,100%{opacity:1} 50%{opacity:.3} }
+        @keyframes nudgeX { 0%,100%{transform:translateX(0)} 50%{transform:translateX(4px)} }
+        @keyframes nudgeY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
+        .deck-table-wrap { position: relative; }
         @media (max-width: 720px) {
           .deck-root h1 { font-size: clamp(56px, 16vw, 96px) !important; letter-spacing: -3px !important; }
           .deck-root h2 { font-size: clamp(28px, 9vw, 40px) !important; letter-spacing: -1px !important; }
@@ -1397,6 +1415,13 @@ function Deck() {
           .deck-root table { font-size: 11px !important; min-width: 560px; }
           .deck-root th, .deck-root td { padding: 8px !important; }
           .deck-root .deck-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+          .deck-root .deck-table-wrap::before {
+            content: "← DRAG TABLE SIDEWAYS TO SEE ALL COLUMNS →";
+            position: sticky; left: 0; top: 0; display: block;
+            font-size: 9px; letter-spacing: 1.5px; color: #888;
+            padding: 8px 10px; background: #0A0A0A;
+            border-bottom: 1px solid #1A1A1A; text-align: center;
+          }
         }
       `}</style>
       <div
@@ -1405,6 +1430,25 @@ function Deck() {
       >
         <Slide />
       </div>
+
+      {/* Scroll affordance */}
+      {scrollState !== "none" && (
+        <div style={{
+          position: "fixed", left: "50%", transform: "translateX(-50%)",
+          bottom: 76, zIndex: 9, pointerEvents: "none",
+          display: "inline-flex", alignItems: "center", gap: 6,
+          padding: "6px 12px", borderRadius: 999,
+          background: "rgba(0,0,0,0.75)", border: `1px solid ${C.border2}`,
+          color: scrollState === "more" ? C.white : C.dim,
+          fontSize: 10, letterSpacing: 1.5, fontWeight: 600,
+          backdropFilter: "blur(8px)",
+          transition: "opacity .25s",
+          opacity: scrollState === "more" ? 1 : 0,
+        }}>
+          <span style={{ animation: "nudgeY 1.4s ease-in-out infinite" }}>↓</span>
+          SCROLL FOR MORE
+        </div>
+      )}
 
       {/* Nav bar */}
       <div style={{ position: "fixed", left: 0, right: 0, bottom: 0, padding: "12px 16px", background: "rgba(0,0,0,0.85)", backdropFilter: "blur(12px)", borderTop: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, zIndex: 10 }}>
