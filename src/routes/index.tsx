@@ -999,7 +999,7 @@ function S10() {
         </div>
       </div>
       <div style={{ textAlign: "center", padding: "80px 0", borderTop: `1px solid ${C.border}` }}>
-        <div style={{ fontSize: 64, fontWeight: 900, letterSpacing: -3, lineHeight: 1 }}>TOM'S HYROX</div>
+        <img src={heroImage} alt="TOM'S HYROX" style={{ maxWidth: "min(640px, 100%)", width: "100%", height: "auto", margin: "0 auto", display: "block" }} />
         <div style={{ fontSize: 11, color: C.mid, letterSpacing: 4, marginTop: 24 }}>BUILT FOR PERFORMANCE</div>
         <div style={{ fontSize: 11, color: C.mid, letterSpacing: 4, marginTop: 6 }}>DESIGNED FOR COMMUNITY</div>
         <div style={{ fontSize: 11, color: C.mid, letterSpacing: 4, marginTop: 6 }}>CAPITALIZED FOR REAL</div>
