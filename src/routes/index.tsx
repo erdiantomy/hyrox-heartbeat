@@ -1197,14 +1197,20 @@ function SRevenue() {
       </p>
 
       {/* Tabs */}
-      <div style={{ display: "flex", gap: 1, background: C.border, marginBottom: 24 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10, flexWrap: "wrap" }}>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 10, letterSpacing: 1.5, color: C.dim, border: `1px solid ${C.border2}`, padding: "4px 8px", borderRadius: 999 }}>
+          <span style={{ width: 6, height: 6, borderRadius: 999, background: C.white, animation: "pulseDot 1.6s ease-in-out infinite" }} />
+          TAP EACH TAB TO VIEW ITS CONTENT
+        </span>
+      </div>
+      <div style={{ display: "flex", gap: 1, background: C.border, marginBottom: 24, border: `1px solid ${C.border2}` }}>
         {tabs.map(tab => (
           <button key={tab.key} onClick={() => setActiveTab(tab.key)} style={{
             flex: 1, padding: "12px 8px", background: activeTab === tab.key ? C.white : C.card2,
             color: activeTab === tab.key ? C.bg : C.mid, border: "none", cursor: "pointer",
             fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase" as const,
             transition: "background .15s",
-          }}>{tab.label}</button>
+          }}>{tab.label}{activeTab !== tab.key ? " ›" : ""}</button>
         ))}
       </div>
 
