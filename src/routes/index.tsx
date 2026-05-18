@@ -547,8 +547,8 @@ function S6() {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
-      <SectionTitle n="06 / 11" t="CAPEX · IDR 8.2B" />
-      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Every line item. Tap to expand. 48% below original IDR 15.7B proposal.</p>
+      <SectionTitle n="06 / 11" t="CAPEX · IDR 10.4B" />
+      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Every line item. Tap to expand. Audited build budget with 12% contingency baked in.</p>
       <div style={{ height: 280, marginBottom: 32 }}>
         <ResponsiveContainer>
           <BarChart data={capexDetailed} margin={{ top: 10, right: 10, left: 0, bottom: 60 }}>
