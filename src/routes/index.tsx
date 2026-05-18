@@ -986,8 +986,8 @@ function S10() {
 }
 
 // ─── LIVE MODEL ───
-const CAPEX_TOTAL_M = 8200; // IDR M
-const BASE = { members: 380, arpu: 1.15, opex: 225 };
+const CAPEX_TOTAL_M = 10400; // IDR M
+const BASE = { members: 380, arpu: 1.15, opex: 279 };
 
 function ModelInput({
   label, unit, value, min, max, step, base, onChange,
