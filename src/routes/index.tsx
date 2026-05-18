@@ -924,9 +924,17 @@ function SFAQ() {
                     <span style={{ fontSize: 14, fontWeight: 600, color: C.off }}>{f.q}</span>
                   </div>
                   <span style={{
-                    fontSize: 18, color: C.dim, lineHeight: 1, flexShrink: 0,
-                    transform: isOpen ? "rotate(45deg)" : "rotate(0deg)", transition: "transform .2s",
-                  }}>+</span>
+                    display: "inline-flex", alignItems: "center", gap: 6,
+                    fontSize: 9, letterSpacing: 1.2, fontFamily: "monospace",
+                    color: isOpen ? C.bg : C.off,
+                    background: isOpen ? C.white : "transparent",
+                    border: `1px solid ${isOpen ? C.white : C.border2}`,
+                    borderRadius: 999, padding: "4px 10px", whiteSpace: "nowrap", flexShrink: 0,
+                    transition: "all .2s",
+                  }}>
+                    <span style={{ fontSize: 12, lineHeight: 1 }}>{isOpen ? "−" : "+"}</span>
+                    {isOpen ? "CLOSE" : "READ ANSWER"}
+                  </span>
                 </button>
                 <div style={{
                   display: "grid", gridTemplateRows: isOpen ? "1fr" : "0fr",
