@@ -963,7 +963,7 @@ function S10() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
           {[
             ["HYROX doesn't go mainstream", "Position as strength + conditioning with HYROX as hero. Format-agnostic space."],
-            ["Slow member ramp", "Pre-sale 100+ founders. IDR 1B working capital covers 6mo burn."],
+            ["Slow member ramp", "Pre-sale 100+ founders. IDR 1.2B working capital covers 5 months at full burn."],
             ["Construction overrun", "Fixed-price contracts. Edward manages. 10% contingency."],
             ["Key person risk", "Equity vesting tied to tenure. Strong Head Coach bench."],
             ["Competitive entry", "Free land = permanent cost moat. Community lock-in."],
