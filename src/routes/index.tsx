@@ -962,8 +962,8 @@ function S10() {
         <div style={{ fontSize: 14, opacity: 0.6, letterSpacing: 2 }}>~USD 630,000</div>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 1, background: C.border, marginBottom: 32 }}>
-        {[["380", "Target Members"], ["IDR 503M", "Monthly Revenue (incl ancillary)"], ["IDR 224M", "Monthly NOI"], ["45%", "Operating Margin"],
-          ["46 mo", "Payback Period"], ["IDR 12.34B", "5-Year Cum. NOI"], ["1.19×", "5-Yr CAPEX Multiple"], ["IDR 0", "Monthly Rent"]].map(([v, l]) => (
+        {[["380", "Target Members"], ["IDR 558M", "Monthly Revenue (incl ancillary)"], ["IDR 279M", "Monthly NOI"], ["50%", "Operating Margin"],
+          ["37 mo", "Payback Period"], ["IDR 15.75B", "5-Year Cum. NOI"], ["1.51×", "5-Yr CAPEX Multiple"], ["IDR 0", "Monthly Rent"]].map(([v, l]) => (
           <div key={l} style={{ background: C.bg, padding: 20 }}>
             <div style={{ fontSize: 20, fontWeight: 800 }}>{v}</div>
             <div style={{ fontSize: 10, color: C.dim, letterSpacing: 1, marginTop: 4 }}>{l}</div>
