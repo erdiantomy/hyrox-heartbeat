@@ -1170,8 +1170,180 @@ function SModel() {
   );
 }
 
+function SRevenue() {
+  const [activeTab, setActiveTab] = useState<"streams" | "daypass" | "partners" | "perM2">("streams");
+  const tabs: { key: typeof activeTab; label: string }[] = [
+    { key: "streams", label: "9 Streams" },
+    { key: "daypass", label: "Day Pass" },
+    { key: "partners", label: "3rd Party" },
+    { key: "perM2", label: "Rev / m²" },
+  ];
+
+  return (
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
+      <SectionTitle n="06 / 12" t="Revenue Architecture" />
+      <p style={{ fontSize: 18, color: C.mid, maxWidth: 720, marginBottom: 32 }}>
+        9 revenue streams. Members are the base; day passes and 3rd-party partnerships are the multiplier. Every zone earns.
+      </p>
+
+      {/* Tabs */}
+      <div style={{ display: "flex", gap: 1, background: C.border, marginBottom: 24 }}>
+        {tabs.map(tab => (
+          <button key={tab.key} onClick={() => setActiveTab(tab.key)} style={{
+            flex: 1, padding: "12px 8px", background: activeTab === tab.key ? C.white : C.card2,
+            color: activeTab === tab.key ? C.bg : C.mid, border: "none", cursor: "pointer",
+            fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase" as const,
+            transition: "background .15s",
+          }}>{tab.label}</button>
+        ))}
+      </div>
+
+      {/* Tab: 9 Streams */}
+      {activeTab === "streams" && (
+        <div>
+          <Card p={0}>
+            <div className="deck-table-wrap"><table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: C.card2 }}>
+                  {["STREAM", "MONTHLY", "%", "OPERATOR", "OUR CAPEX"].map(h => (
+                    <th key={h} style={{ padding: 12, textAlign: "left", color: C.dim, fontSize: 10, letterSpacing: 1, fontWeight: 600, borderBottom: `1px solid ${C.border}` }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {revenueStreams.map((r) => (
+                  <tr key={r.stream} style={{ borderBottom: `1px solid ${C.border}` }}>
+                    <td style={{ padding: 12, color: C.off, fontWeight: 600 }}>{r.stream}</td>
+                    <td style={{ padding: 12, color: r.monthly > 0 ? C.white : C.mute, fontFamily: "monospace" }}>{r.monthly > 0 ? `IDR ${r.monthly}M` : "Phase 2"}</td>
+                    <td style={{ padding: 12, color: C.mid, fontFamily: "monospace" }}>{r.pct > 0 ? `${r.pct}%` : "—"}</td>
+                    <td style={{ padding: 12, color: C.mid }}>{r.operator}</td>
+                    <td style={{ padding: 12, color: C.mid, fontFamily: "monospace" }}>{r.capex}</td>
+                  </tr>
+                ))}
+                <tr style={{ background: C.white, color: C.bg }}>
+                  <td style={{ padding: 12, fontWeight: 800 }}>TOTAL</td>
+                  <td style={{ padding: 12, fontWeight: 800, fontFamily: "monospace" }}>IDR 558M</td>
+                  <td style={{ padding: 12, fontWeight: 800 }}>100%</td>
+                  <td style={{ padding: 12, fontWeight: 600 }} colSpan={2}>Monthly (Moderate, steady state)</td>
+                </tr>
+              </tbody>
+            </table></div>
+          </Card>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 16 }}>
+            {[["IDR 437M", "Membership (78%)"], ["IDR 121M", "Non-Membership (22%)"], ["IDR 0", "Additional CAPEX for 5 streams"]].map(([v, l]) => (
+              <Card key={l}><div style={{ fontSize: 22, fontWeight: 800 }}>{v}</div><div style={{ fontSize: 11, color: C.dim, marginTop: 6 }}>{l}</div></Card>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Day Pass */}
+      {activeTab === "daypass" && (
+        <div>
+          <p style={{ fontSize: 13, color: C.mid, marginBottom: 16, lineHeight: 1.6 }}>
+            Not everyone wants a monthly membership. Day passes open the market to tourists, visiting professionals, trial-before-you-buy, and casual users. 15–20% convert to membership within 3 visits. Day passes also monetize off-peak slots members don't use.
+          </p>
+          <Card p={0}>
+            <div className="deck-table-wrap"><table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: C.card2 }}>
+                  {["TYPE", "PRICE", "VOLUME", "MONTHLY REV"].map(h => (
+                    <th key={h} style={{ padding: 12, textAlign: "left", color: C.dim, fontSize: 10, letterSpacing: 1, fontWeight: 600, borderBottom: `1px solid ${C.border}` }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {dayPassTypes.map((d) => (
+                  <tr key={d.type} style={{ borderBottom: `1px solid ${C.border}` }}>
+                    <td style={{ padding: 12, color: C.off, fontWeight: 600 }}>{d.type}</td>
+                    <td style={{ padding: 12, color: C.white, fontFamily: "monospace" }}>{d.price}</td>
+                    <td style={{ padding: 12, color: C.mid }}>{d.volume}</td>
+                    <td style={{ padding: 12, color: C.white, fontFamily: "monospace" }}>{d.monthly}</td>
+                  </tr>
+                ))}
+                <tr style={{ background: C.white, color: C.bg }}>
+                  <td style={{ padding: 12, fontWeight: 800 }}>TOTAL DAY PASS</td>
+                  <td style={{ padding: 12 }}></td>
+                  <td style={{ padding: 12, fontWeight: 600 }}>~240 visits/month</td>
+                  <td style={{ padding: 12, fontWeight: 800, fontFamily: "monospace" }}>IDR 42M</td>
+                </tr>
+              </tbody>
+            </table></div>
+          </Card>
+          <div style={{ marginTop: 16, padding: 20, borderLeft: `2px solid ${C.white}`, background: C.card2, fontSize: 13, color: C.off, lineHeight: 1.6 }}>
+            Capacity management: day passes capped at 30% of available peak-hour capacity via the booking app. Members always get priority. This prevents overcrowding while monetizing idle capacity during off-peak slots.
+          </div>
+        </div>
+      )}
+
+      {/* Tab: 3rd Party */}
+      {activeTab === "partners" && (
+        <div>
+          <p style={{ fontSize: 13, color: C.mid, marginBottom: 16, lineHeight: 1.6 }}>
+            We operate what we're best at: gym + HYROX + community. Everything else is outsourced to specialists. 5 of 9 revenue streams cost us zero CAPEX and zero headcount.
+          </p>
+          <div style={{ display: "grid", gap: 12 }}>
+            {thirdPartyPartners.map((p) => (
+              <Card key={p.type}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12, flexWrap: "wrap", gap: 8 }}>
+                  <div style={{ fontSize: 15, fontWeight: 700 }}>{p.type}</div>
+                  <div style={{ fontSize: 13, fontWeight: 800, fontFamily: "monospace", color: C.white }}>{p.ourRevenue}</div>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12, fontSize: 12 }}>
+                  <div><div style={{ fontSize: 9, color: C.dim, letterSpacing: 1.5, marginBottom: 4 }}>THEY INVEST</div><div style={{ color: C.off, lineHeight: 1.5 }}>{p.theyInvest}</div></div>
+                  <div><div style={{ fontSize: 9, color: C.dim, letterSpacing: 1.5, marginBottom: 4 }}>WE PROVIDE</div><div style={{ color: C.off, lineHeight: 1.5 }}>{p.weProvide}</div></div>
+                  <div><div style={{ fontSize: 9, color: C.dim, letterSpacing: 1.5, marginBottom: 4 }}>REVENUE MODEL</div><div style={{ color: C.off, lineHeight: 1.5 }}>{p.model}</div></div>
+                  <div><div style={{ fontSize: 9, color: C.dim, letterSpacing: 1.5, marginBottom: 4 }}>OUR CAPEX</div><div style={{ color: C.white, fontFamily: "monospace", fontWeight: 700 }}>{p.ourCapex}</div></div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Rev per m² */}
+      {activeTab === "perM2" && (
+        <div>
+          <p style={{ fontSize: 13, color: C.mid, marginBottom: 16, lineHeight: 1.6 }}>
+            Jakarta premium gym benchmark: IDR 400–600K/m²/month. TOM'S HYROX blended at IDR 744K/m² — top quartile. The HYROX zone at IDR 1,173K/m² is the highest-performing zone.
+          </p>
+          <Card p={0}>
+            <div className="deck-table-wrap"><table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: C.card2 }}>
+                  {["ZONE", "m²", "REVENUE STREAMS", "MONTHLY REV", "IDR/m²/mo"].map(h => (
+                    <th key={h} style={{ padding: 12, textAlign: "left", color: C.dim, fontSize: 10, letterSpacing: 1, fontWeight: 600, borderBottom: `1px solid ${C.border}` }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {revPerM2.map((z) => (
+                  <tr key={z.zone} style={{ borderBottom: `1px solid ${C.border}` }}>
+                    <td style={{ padding: 12, fontWeight: z.revPerM2 > 0 ? 600 : 400, color: z.revPerM2 > 800 ? C.white : z.revPerM2 > 0 ? C.off : C.mute }}>{z.zone}</td>
+                    <td style={{ padding: 12, color: C.mid, fontFamily: "monospace" }}>{z.m2}</td>
+                    <td style={{ padding: 12, color: C.mid }}>{z.streams}</td>
+                    <td style={{ padding: 12, color: z.monthlyRev > 0 ? C.white : C.mute, fontFamily: "monospace" }}>{z.monthlyRev > 0 ? `IDR ${z.monthlyRev}M` : "—"}</td>
+                    <td style={{ padding: 12, fontWeight: z.revPerM2 > 800 ? 800 : 500, color: z.revPerM2 > 800 ? C.white : z.revPerM2 > 0 ? C.off : C.mute, fontFamily: "monospace" }}>{z.revPerM2 > 0 ? `${z.revPerM2.toLocaleString()}K` : "—"}</td>
+                  </tr>
+                ))}
+                <tr style={{ background: C.white, color: C.bg }}>
+                  <td style={{ padding: 12, fontWeight: 800 }}>BLENDED</td>
+                  <td style={{ padding: 12, fontWeight: 800, fontFamily: "monospace" }}>750</td>
+                  <td style={{ padding: 12 }}></td>
+                  <td style={{ padding: 12, fontWeight: 800, fontFamily: "monospace" }}>IDR 558M</td>
+                  <td style={{ padding: 12, fontWeight: 800, fontFamily: "monospace" }}>744K</td>
+                </tr>
+              </tbody>
+            </table></div>
+          </Card>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Deck() {
-  const slides = [S0, S1, S2, S3, S4, S5, S6, S7, SModel, S8, S9, SFAQ, S10];
+  const slides = [S0, S1, S2, S3, S4, S5, SRevenue, S6, S7, SModel, S8, S9, SFAQ, S10];
   const [idx, setIdx] = useState(0);
   const total = slides.length;
   const touchStart = useRef<number | null>(null);
