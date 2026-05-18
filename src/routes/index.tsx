@@ -573,7 +573,7 @@ function S6() {
         ))}
         <div style={{ display: "flex", justifyContent: "space-between", padding: "16px 20px", background: C.white, color: C.bg, fontWeight: 800 }}>
           <span style={{ letterSpacing: 1 }}>TOTAL CAPEX</span>
-          <span style={{ fontFamily: "monospace" }}>IDR 8.2B</span>
+          <span style={{ fontFamily: "monospace" }}>IDR 10.4B</span>
         </div>
       </Card>
     </div>
