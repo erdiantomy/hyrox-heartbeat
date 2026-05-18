@@ -656,7 +656,7 @@ function S8() {
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="08 / 11" t="Cash Flow & Ramp" />
-      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Break-even Month 5–6. Working capital recovered by Month 9. IDR 636M cash generated in Year 1.</p>
+      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Break-even Month 8–9. Working capital recovered by Month 9. IDR 580M cash generated in Year 1.</p>
       <div style={{ height: 300, marginBottom: 24 }}>
         <ResponsiveContainer>
           <ComposedChart data={cashFlow}>
