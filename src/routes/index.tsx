@@ -617,7 +617,7 @@ function S7() {
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="07 / 11" t="OPEX & P&L" />
-      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Monthly operating cost: IDR 279M. No rent. That's the thesis.</p>
+      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Monthly operating cost: IDR 279M. No rent. That's the thesis. <span style={{ fontSize: 12, color: C.dim, letterSpacing: 1.2 }}>· TAP ANY ROW TO EXPAND</span></p>
       <Card p={0}>
         {opexDetailed.map((cat, i) => (
           <CollapsibleSection
