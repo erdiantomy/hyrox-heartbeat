@@ -686,7 +686,7 @@ function S8() {
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="08 / 11" t="Cash Flow & Ramp" />
-      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Break-even Month 8–9. Working capital recovered by Month 9. IDR 580M cash generated in Year 1.</p>
+      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Break-even Month 6. Working capital recovered early. IDR 1,320M cumulative cash generated in Year 1.</p>
       <div style={{ height: 300, marginBottom: 24 }}>
         <ResponsiveContainer>
           <ComposedChart data={cashFlow}>
@@ -712,11 +712,11 @@ function S8() {
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 16 }}>
         {[
-          { yr: "Y1", rev: "3,825M", noi: "580M", note: "Ramp year (15% margin)" },
-          { yr: "Y2", rev: "6,036M", noi: "2,688M", note: "Steady moderate" },
-          { yr: "Y3", rev: "6,338M", noi: "2,856M", note: "+5% growth" },
-          { yr: "Y4", rev: "6,655M", noi: "3,024M", note: "Phase 2 triggers" },
-          { yr: "Y5", rev: "6,988M", noi: "3,192M", note: "Expansion ready" },
+          { yr: "Y1", rev: "4,565M", noi: "1,320M", note: "Ramp year" },
+          { yr: "Y2", rev: "6,696M", noi: "3,348M", note: "Steady moderate" },
+          { yr: "Y3", rev: "7,031M", noi: "3,515M", note: "+5% growth" },
+          { yr: "Y4", rev: "7,382M", noi: "3,691M", note: "Phase 2 triggers" },
+          { yr: "Y5", rev: "7,752M", noi: "3,876M", note: "Expansion ready" },
         ].map((y) => (
           <Card key={y.yr}>
             <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: -0.5, marginBottom: 8 }}>{y.yr}</div>
@@ -729,7 +729,7 @@ function S8() {
         ))}
       </div>
       <p style={{ marginTop: 24, fontSize: 13, color: C.mid, textAlign: "center" }}>
-        5-Year Cumulative NOI: <strong style={{ color: C.white }}>IDR 12.34B</strong> · CAPEX Multiple: <strong style={{ color: C.white }}>1.19×</strong> (~1.5× with ancillary)
+        5-Year Cumulative NOI: <strong style={{ color: C.white }}>IDR 15.75B</strong> · CAPEX Multiple: <strong style={{ color: C.white }}>1.51×</strong>
       </p>
     </div>
   );
