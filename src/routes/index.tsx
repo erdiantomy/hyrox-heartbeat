@@ -22,50 +22,42 @@ const capexDetailed = [
   { cat: "FACILITY BUILDOUT", total: 4500, items: [
     { name: "Demolition & site preparation", cost: 200 },
     { name: "Structural works & partitions", cost: 500 },
-    { name: "MEP (electrical + plumbing heavy)", cost: 650 },
-    { name: "HVAC industrial gym system", cost: 950 },
-    { name: "Flooring (rubber matting + turf)", cost: 450 },
-    { name: "Locker rooms & showers (waterproofed)", cost: 550 },
+    { name: "MEP (electrical + plumbing, heavy-duty)", cost: 650 },
+    { name: "HVAC industrial gym system (3× normal commercial)", cost: 950 },
+    { name: "Flooring (rubber matting + artificial turf)", cost: 450 },
+    { name: "Locker rooms & showers (waterproofed, premium)", cost: 550 },
     { name: "Reception & lounge finishing", cost: 250 },
-    { name: "Lighting design (zoned)", cost: 220 },
+    { name: "Lighting design (zoned by area)", cost: 220 },
     { name: "Signage & exterior branding", cost: 120 },
     { name: "Fire safety & compliance", cost: 180 },
-    { name: "Painting & final touches", cost: 130 },
-    { name: "Permits & building management", cost: 100 },
-    { name: "Waste disposal & cleanup", cost: 50 },
-    { name: "Furniture (lounge + reception)", cost: 80 },
-    { name: "Acoustic treatment", cost: 70 },
+    { name: "Painting, acoustic treatment & final touches", cost: 200 },
+    { name: "Permits, waste disposal & furniture", cost: 230 },
   ]},
   { cat: "STRENGTH EQUIPMENT", total: 1500, items: [
-    { name: "Power racks × 4", cost: 130 },
+    { name: "Power racks × 4 (commercial grade)", cost: 130 },
     { name: "Olympic platforms × 4", cost: 80 },
-    { name: "Dumbbells (5–40kg complete set)", cost: 170 },
+    { name: "Dumbbells 5–40kg complete set", cost: 170 },
     { name: "Barbells & bumper plates", cost: 140 },
     { name: "Cable machines × 3", cost: 180 },
     { name: "Benches × 6 (flat/incline/decline)", cost: 65 },
-    { name: "Kettlebells (8–32kg sets)", cost: 65 },
+    { name: "Kettlebells 8–32kg sets", cost: 65 },
     { name: "Treadmills × 4 commercial", cost: 200 },
     { name: "Spin bikes × 4", cost: 120 },
-    { name: "Accessories (bands, mats, rollers)", cost: 60 },
-    { name: "Delivery & installation", cost: 90 },
-    { name: "Warranty & service contracts (1yr)", cost: 50 },
-    { name: "Spare parts buffer", cost: 50 },
+    { name: "Accessories, delivery, warranty & spares", cost: 250 },
   ]},
   { cat: "HYROX EQUIPMENT", total: 1200, items: [
-    { name: "Concept2 SkiErg × 6 (@IDR 22M)", cost: 132 },
-    { name: "Concept2 RowErg × 6 (@IDR 28M)", cost: 168 },
+    { name: "Concept2 SkiErg × 6 (@IDR 22M each)", cost: 132 },
+    { name: "Concept2 RowErg × 6 (@IDR 28M each)", cost: 168 },
     { name: "Prowler sleds × 2 + weight plates", cost: 65 },
     { name: "Artificial turf lane (20m × 3m)", cost: 55 },
     { name: "Wall ball targets × 8 + balls", cost: 50 },
-    { name: "Sandbags various weights × 20", cost: 20 },
-    { name: "Farmer carry handles × 10 pairs", cost: 30 },
-    { name: "Assault bikes × 4", cost: 130 },
-    { name: "Battle ropes + box jumps + misc", cost: 50 },
+    { name: "Sandbags × 20 + farmer's carry handles × 10", cost: 50 },
+    { name: "Assault/Echo bikes × 4", cost: 130 },
+    { name: "Battle ropes, box jumps & misc", cost: 50 },
     { name: "Sled track rail system", cost: 100 },
     { name: "Timer displays × 3 + sound system", cost: 90 },
-    { name: "Delivery, import duty & install", cost: 110 },
-    { name: "Replacement parts buffer (1yr)", cost: 50 },
-    { name: "HYROX branding & zone graphics", cost: 50 },
+    { name: "Delivery, import duty, install & zone branding", cost: 160 },
+    { name: "Replacement parts buffer (Year 1)", cost: 50 },
   ]},
   { cat: "PRE-OPENING MARKETING", total: 400, items: [
     { name: "Brand identity & design system", cost: 60 },
@@ -74,7 +66,7 @@ const capexDetailed = [
     { name: "Founding member campaign (ads + events)", cost: 100 },
     { name: "Launch event production", cost: 40 },
     { name: "PR & media outreach", cost: 30 },
-    { name: "Merchandise (first batch)", cost: 40 },
+    { name: "Merchandise first batch", cost: 40 },
   ]},
   { cat: "TECHNOLOGY & SYSTEMS", total: 250, items: [
     { name: "Gym management SaaS (annual)", cost: 48 },
@@ -82,21 +74,21 @@ const capexDetailed = [
     { name: "CCTV & security (16 cameras)", cost: 45 },
     { name: "POS terminal & payment gateway", cost: 20 },
     { name: "Wi-Fi commercial grade", cost: 20 },
-    { name: "Body scan InBody device", cost: 40 },
-    { name: "TV displays × 3 for schedules", cost: 27 },
+    { name: "Body scan device (InBody)", cost: 40 },
+    { name: "TV displays × 3 for schedules & content", cost: 27 },
   ]},
-  { cat: "WORKING CAPITAL", total: 1200, items: [
-    { name: "Staff salaries (5-month runway)", cost: 690 },
-    { name: "Staff statutory (BPJS + THR)", cost: 90 },
-    { name: "Utilities buffer (5 months)", cost: 240 },
+  { cat: "WORKING CAPITAL (5 MONTHS)", total: 1200, items: [
+    { name: "Staff salaries 5-month runway", cost: 690 },
+    { name: "Staff statutory BPJS + THR (mandatory)", cost: 90 },
+    { name: "Utilities buffer 5 months", cost: 240 },
     { name: "Consumables & cleaning supplies", cost: 60 },
     { name: "Insurance deposits", cost: 40 },
     { name: "Emergency buffer", cost: 80 },
   ]},
   { cat: "LEGAL & PERMITS", total: 250, items: [
     { name: "PT company formation", cost: 25 },
-    { name: "Building permits (IMB/PBG)", cost: 80 },
-    { name: "Insurance (property + liability)", cost: 70 },
+    { name: "Building permits IMB/PBG", cost: 80 },
+    { name: "Insurance (property + liability + WC)", cost: 70 },
     { name: "Legal advisory & contracts", cost: 40 },
     { name: "Environmental compliance", cost: 20 },
     { name: "Accounting setup", cost: 15 },
@@ -111,68 +103,106 @@ const capexDetailed = [
 ];
 
 const opexDetailed = [
-  { cat: "PEOPLE", total: 138, items: [
+  { cat: "PEOPLE (50%)", total: 138, items: [
     { role: "GM / CEO (Amelie)", cost: 20, notes: "Founder salary, equity-weighted" },
     { role: "Head Coach — HYROX", cost: 18, notes: "Must be HYROX certified" },
-    { role: "Coaches × 3", cost: 36, notes: "IDR 12M avg + commissions" },
+    { role: "Coaches × 3", cost: 36, notes: "IDR 12M avg + PT commissions" },
     { role: "Front Desk / Sales × 2", cost: 16, notes: "Split shifts, 7-day coverage" },
     { role: "Cleaning / Maint × 2", cost: 10, notes: "Daily deep clean required" },
     { role: "Part-time Coaches × 2–3", cost: 20, notes: "Per-class rate for peak hours" },
-    { role: "Staff statutory (BPJS + THR)", cost: 18, notes: "Mandatory employer contributions ~13%" },
+    { role: "Staff statutory (BPJS + prorated THR)", cost: 18, notes: "Mandatory employer contributions ~13%. Most plans miss this." },
   ]},
-  { cat: "FACILITY", total: 56, items: [
-    { role: "Electricity (heavy AC + equipment)", cost: 45, notes: "750m² industrial HVAC 15hrs/day" },
-    { role: "Water", cost: 8, notes: "6 showers peak usage" },
-    { role: "Internet & telecom", cost: 3, notes: "Fiber + backup" },
+  { cat: "FACILITY (21%)", total: 59, items: [
+    { role: "Electricity (industrial HVAC + equipment)", cost: 45, notes: "750m² gym, 15hrs/day, Jakarta heat. IDR 1,500/kWh commercial." },
+    { role: "Water", cost: 8, notes: "6 showers running during peak hours" },
+    { role: "Internet & telecom", cost: 3, notes: "Fiber + backup connection" },
+    { role: "Equipment maintenance", cost: 10, notes: "Monthly preventive servicing. Concept2, cables, wear items." },
+    { role: "Consumables", cost: 8, notes: "Towels, toiletries, cleaning products" },
   ]},
-  { cat: "MAINTENANCE", total: 18, items: [
-    { role: "Equipment servicing", cost: 10, notes: "Monthly preventive" },
-    { role: "Cleaning supplies & consumables", cost: 8, notes: "Towels, toiletries, etc" },
-  ]},
-  { cat: "MARKETING & GROWTH", total: 27, items: [
+  { cat: "MARKETING & GROWTH (10%)", total: 27, items: [
     { role: "Digital ads (IG, Google)", cost: 12, notes: "Performance marketing" },
     { role: "Content creation", cost: 5, notes: "Photo/video production" },
-    { role: "Events & community", cost: 7, notes: "Monthly HYROX races" },
+    { role: "Events & community", cost: 7, notes: "Monthly HYROX races, workshops" },
     { role: "Partnerships & collabs", cost: 3, notes: "Brand activation budget" },
   ]},
-  { cat: "TECHNOLOGY", total: 10, items: [
+  { cat: "TECHNOLOGY (4%)", total: 10, items: [
     { role: "Gym management SaaS", cost: 4, notes: "Glofox or equivalent" },
     { role: "Payment processing fees", cost: 4, notes: "~1% of revenue" },
     { role: "App & digital tools", cost: 2, notes: "Booking, CRM" },
   ]},
-  { cat: "ADMIN & INSURANCE", total: 30, items: [
-    { role: "Insurance premiums", cost: 10, notes: "Property + liability + WC" },
+  { cat: "ADMIN & INSURANCE (15%)", total: 44, items: [
+    { role: "Insurance premiums", cost: 10, notes: "Property + liability + workers' comp" },
     { role: "Accounting & bookkeeping", cost: 8, notes: "Outsourced initially" },
     { role: "Legal retainer", cost: 4, notes: "Contract review, compliance" },
+    { role: "Café 3rd party (our opex portion)", cost: 0, notes: "Zero — fully outsourced to operator" },
     { role: "Miscellaneous buffer", cost: 8, notes: "Unplanned operational costs" },
+    { role: "PT trainer bonuses (40% of PT revenue)", cost: 8, notes: "Performance bonus pool on IDR 20M gross PT revenue" },
+    { role: "Flex instructor payouts (50% of class rev)", cost: 6, notes: "Revenue share on IDR 12M gross class revenue" },
   ]},
 ];
 
 const cashFlow = [
-  { month: "M1", inflow: 115, outflow: -250, cumulative: -135, members: 100, label: "Founding member cash" },
-  { month: "M2", inflow: 161, outflow: -255, cumulative: -229, members: 140, label: "Pre-sales ramp" },
-  { month: "M3", inflow: 207, outflow: -260, cumulative: -282, members: 180, label: "Word of mouth kicks in" },
-  { month: "M4", inflow: 247, outflow: -265, cumulative: -300, members: 215, label: "Corporate packages start" },
-  { month: "M5", inflow: 288, outflow: -270, cumulative: -282, members: 250, label: "Approaching break-even" },
-  { month: "M6", inflow: 322, outflow: -275, cumulative: -235, members: 280, label: "Margin building" },
-  { month: "M7", inflow: 357, outflow: -275, cumulative: -153, members: 310, label: "Momentum building" },
-  { month: "M8", inflow: 391, outflow: -279, cumulative: -41, members: 340, label: "Near working capital recovery" },
-  { month: "M9", inflow: 414, outflow: -279, cumulative: 94, members: 360, label: "Working capital recovered" },
-  { month: "M10", inflow: 431, outflow: -279, cumulative: 246, members: 375, label: "Profit accumulation" },
-  { month: "M11", inflow: 443, outflow: -279, cumulative: 410, members: 385, label: "Steady state nearing" },
-  { month: "M12", inflow: 449, outflow: -279, cumulative: 580, members: 390, label: "Year 1 complete" },
+  { month: "M1", inflow: 133, outflow: -250, cumulative: -117, members: 100, label: "Founding members + day passes" },
+  { month: "M2", inflow: 188, outflow: -255, cumulative: -184, members: 140, label: "Pre-sales ramp" },
+  { month: "M3", inflow: 245, outflow: -260, cumulative: -199, members: 180, label: "Word of mouth kicks in" },
+  { month: "M4", inflow: 297, outflow: -265, cumulative: -167, members: 215, label: "Corporate packages start" },
+  { month: "M5", inflow: 348, outflow: -270, cumulative: -89, members: 250, label: "Turning the corner" },
+  { month: "M6", inflow: 390, outflow: -275, cumulative: 26, members: 280, label: "Cash flow positive" },
+  { month: "M7", inflow: 431, outflow: -275, cumulative: 182, members: 310, label: "Momentum building" },
+  { month: "M8", inflow: 469, outflow: -279, cumulative: 372, members: 340, label: "Ancillary scaling" },
+  { month: "M9", inflow: 496, outflow: -279, cumulative: 589, members: 360, label: "Waitlist forming" },
+  { month: "M10", inflow: 515, outflow: -279, cumulative: 825, members: 375, label: "Profit accumulation" },
+  { month: "M11", inflow: 523, outflow: -279, cumulative: 1069, members: 380, label: "Steady state nearing" },
+  { month: "M12", inflow: 530, outflow: -279, cumulative: 1320, members: 385, label: "Year 1 complete" },
 ];
 
 const sensitivity = [
-  { scenario: "Conservative", members: 300, arpu: 1.05, revenue: 347, opex: 250, noi: 97, margin: "28%", payback: "107 mo",
-    tagline: "Survive — free land means no death spiral even at worst case",
-    drivers: "Lean staffing, 300 members, ARPU IDR 1.05M, +10% ancillary. Annual NOI IDR 1.16B." },
-  { scenario: "Moderate", members: 380, arpu: 1.15, revenue: 503, opex: 279, noi: 224, margin: "45%", payback: "46 mo",
+  { scenario: "Conservative", members: 300, arpu: 1.05, revenue: 365, opex: 255, noi: 110, margin: "30%", payback: "95 mo",
+    tagline: "Survive — free land = no death spiral even at worst case",
+    drivers: "315M membership + 50M ancillary. Lean staffing, 300 members, ARPU IDR 1.05M. Annual NOI IDR 1.32B." },
+  { scenario: "Moderate", members: 380, arpu: 1.15, revenue: 558, opex: 279, noi: 279, margin: "50%", payback: "37 mo",
     tagline: "Base case — solid return with realistic execution",
-    drivers: "Full staffing, 380 members, ARPU IDR 1.15M, +15% ancillary. Annual NOI IDR 2.69B." },
-  { scenario: "Aggressive", members: 440, arpu: 1.3, revenue: 686, opex: 295, noi: 391, margin: "57%", payback: "27 mo",
-    tagline: "Full potential — if HYROX wave hits and compound fires on all cylinders",
-    drivers: "Premium mix, 440 members, ARPU IDR 1.3M, +20% ancillary. Annual NOI IDR 4.69B." },
+    drivers: "437M membership + 121M ancillary. Full staffing, 380 members, ARPU IDR 1.15M. Annual NOI IDR 3.35B." },
+  { scenario: "Aggressive", members: 440, arpu: 1.30, revenue: 754, opex: 295, noi: 459, margin: "61%", payback: "23 mo",
+    tagline: "Full potential — HYROX wave hits, compound fires on all cylinders",
+    drivers: "Premium mix, 440 members, ARPU IDR 1.3M, full ancillary stack. Annual NOI IDR 5.51B." },
+];
+
+const revenueStreams = [
+  { stream: "1. Membership (recurring)", monthly: 437, pct: 78, operator: "Us (core)", capex: "Included", color: "#FFFFFF" },
+  { stream: "2. Day Pass / Non-Member", monthly: 42, pct: 8, operator: "Us (booking app)", capex: "IDR 0", color: "#CCCCCC" },
+  { stream: "3. Personal Training", monthly: 18, pct: 3, operator: "In-house trainers (60/40 split)", capex: "IDR 0", color: "#AAAAAA" },
+  { stream: "4. Flex Studio Classes", monthly: 19, pct: 3, operator: "External instructors (50/50 split)", capex: "IDR 0", color: "#888888" },
+  { stream: "5. Café / Smoothie Bar", monthly: 8, pct: 1, operator: "3rd party F&B operator", capex: "IDR 0", color: "#666666" },
+  { stream: "6. Retail & Merchandise", monthly: 10, pct: 2, operator: "Us (branded) + consignment", capex: "IDR 40M initial", color: "#555555" },
+  { stream: "7. Corporate Wellness", monthly: 12, pct: 2, operator: "Us (B2B sales)", capex: "IDR 0", color: "#444444" },
+  { stream: "8. Events & Workshops", monthly: 10, pct: 2, operator: "Us + brand partners", capex: "IDR 0", color: "#333333" },
+  { stream: "9. Sports Spa (Phase 2)", monthly: 0, pct: 0, operator: "3rd party spa operator (Month 12–18)", capex: "IDR 0 from us", color: "#222222" },
+];
+
+const dayPassTypes = [
+  { type: "Open Gym (strength floor only)", price: "IDR 150K", volume: "5–8 visits/day", monthly: "IDR 27M" },
+  { type: "HYROX Class (single session)", price: "IDR 250K", volume: "2–4 visits/day", monthly: "IDR 23M" },
+  { type: "Flex Studio Drop-in", price: "IDR 150K", volume: "3–5 visits/day", monthly: "IDR 18M" },
+  { type: "Premium Workshop / Race Prep", price: "IDR 350K", volume: "2–3 per week", monthly: "IDR 3M" },
+  { type: "Trial Week Pass", price: "IDR 400K", volume: "5–8 per week", monthly: "IDR 10M" },
+];
+
+const thirdPartyPartners = [
+  { type: "F&B Operator (café)", theyInvest: "Equipment, inventory, 1–2 staff, F&B license", weProvide: "10m² counter, water/electrical hookup, 380+ captive members", model: "IDR 5M/mo base + 10% of gross above IDR 30M", ourRevenue: "IDR 8M/month", ourCapex: "IDR 0" },
+  { type: "Flex Instructors (yoga, pilates)", theyInvest: "Certification, marketing, props", weProvide: "80m² studio, booking system, member audience", model: "50/50 class revenue split", ourRevenue: "IDR 19M/month (our 50%)", ourCapex: "IDR 0" },
+  { type: "Retail Consignment Brands", theyInvest: "Product inventory, packaging, sourcing", weProvide: "Display units, POS, foot traffic", model: "We keep 30–40% of sales", ourRevenue: "IDR 4M/month (consignment portion)", ourCapex: "IDR 0" },
+  { type: "Brand Activations (Uniqlo, Rexona, etc)", theyInvest: "Event production, product, marketing budget", weProvide: "Flex studio + HYROX zone as venue, audience access", model: "IDR 10–20M flat fee per event", ourRevenue: "IDR 5M/month average", ourCapex: "IDR 0" },
+  { type: "Sports Spa Operator (Phase 2, M12–18)", theyInvest: "Cold plunge, sauna, beds, staff — IDR 400–600M buildout", weProvide: "40–60m² dedicated zone, utilities, member traffic", model: "IDR 15M/mo base + 15% of gross above IDR 50M", ourRevenue: "IDR 18–25M/month when live", ourCapex: "IDR 0 from us" },
+];
+
+const revPerM2 = [
+  { zone: "HYROX Performance Zone", m2: 220, streams: "HYROX membership + day pass classes + race events", monthlyRev: 258, revPerM2: 1173 },
+  { zone: "Strength Floor", m2: 180, streams: "Open/Elite membership + gym day pass + PT sessions", monthlyRev: 195, revPerM2: 1083 },
+  { zone: "Flex Studio", m2: 80, streams: "Class drop-ins + instructor share + corporate + workshops", monthlyRev: 43, revPerM2: 538 },
+  { zone: "Reception + Café + Retail", m2: 50, streams: "Café rev share + branded merch + consignment", monthlyRev: 18, revPerM2: 360 },
+  { zone: "Lockers & Showers", m2: 90, streams: "Retention driver (no direct revenue)", monthlyRev: 0, revPerM2: 0 },
+  { zone: "Back of House + Circulation", m2: 130, streams: "Operations support", monthlyRev: 0, revPerM2: 0 },
 ];
 
 const competitorData = [
@@ -226,7 +256,7 @@ function S0() {
           Jakarta's first capital-efficient HYROX sports compound. 750m² on free land. Cilandak, South Jakarta.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 48, maxWidth: 720 }}>
-          {[["IDR 10.4B", "Total Raise"], ["3.8 yr", "Payback"], ["45%", "NOI Margin"]].map(([v, l]) => (
+          {[["IDR 10.4B", "Total Raise"], ["37 mo", "Payback (Moderate)"], ["50%", "NOI Margin"]].map(([v, l]) => (
             <div key={l} style={{ borderTop: `1px solid ${C.border2}`, paddingTop: 12 }}>
               <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: -1 }}>{v}</div>
               <div style={{ fontSize: 11, color: C.dim, letterSpacing: 1, marginTop: 4 }}>{l}</div>
@@ -604,7 +634,7 @@ function S7() {
       </Card>
 
       <div style={{ marginTop: 24, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
-        {[["IDR 2.69B", "Annual NOI (Moderate)"], ["IDR 671K", "Revenue / m² / mo"], ["IDR 3.9–6.6B", "5yr rent savings vs competitors"]].map(([v, l]) => (
+        {[["IDR 3.35B", "Annual NOI (Moderate)"], ["IDR 744K", "Revenue / m² / mo"], ["IDR 3.9–6.6B", "5yr rent savings vs competitors"]].map(([v, l]) => (
           <Card key={l}><div style={{ fontSize: 22, fontWeight: 800 }}>{v}</div><div style={{ fontSize: 11, color: C.dim, marginTop: 6 }}>{l}</div></Card>
         ))}
       </div>
@@ -656,7 +686,7 @@ function S8() {
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="08 / 11" t="Cash Flow & Ramp" />
-      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Break-even Month 8–9. Working capital recovered by Month 9. IDR 580M cash generated in Year 1.</p>
+      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Break-even Month 6. Working capital recovered early. IDR 1,320M cumulative cash generated in Year 1.</p>
       <div style={{ height: 300, marginBottom: 24 }}>
         <ResponsiveContainer>
           <ComposedChart data={cashFlow}>
@@ -682,11 +712,11 @@ function S8() {
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 16 }}>
         {[
-          { yr: "Y1", rev: "3,825M", noi: "580M", note: "Ramp year (15% margin)" },
-          { yr: "Y2", rev: "6,036M", noi: "2,688M", note: "Steady moderate" },
-          { yr: "Y3", rev: "6,338M", noi: "2,856M", note: "+5% growth" },
-          { yr: "Y4", rev: "6,655M", noi: "3,024M", note: "Phase 2 triggers" },
-          { yr: "Y5", rev: "6,988M", noi: "3,192M", note: "Expansion ready" },
+          { yr: "Y1", rev: "4,565M", noi: "1,320M", note: "Ramp year" },
+          { yr: "Y2", rev: "6,696M", noi: "3,348M", note: "Steady moderate" },
+          { yr: "Y3", rev: "7,031M", noi: "3,515M", note: "+5% growth" },
+          { yr: "Y4", rev: "7,382M", noi: "3,691M", note: "Phase 2 triggers" },
+          { yr: "Y5", rev: "7,752M", noi: "3,876M", note: "Expansion ready" },
         ].map((y) => (
           <Card key={y.yr}>
             <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: -0.5, marginBottom: 8 }}>{y.yr}</div>
@@ -699,7 +729,7 @@ function S8() {
         ))}
       </div>
       <p style={{ marginTop: 24, fontSize: 13, color: C.mid, textAlign: "center" }}>
-        5-Year Cumulative NOI: <strong style={{ color: C.white }}>IDR 12.34B</strong> · CAPEX Multiple: <strong style={{ color: C.white }}>1.19×</strong> (~1.5× with ancillary)
+        5-Year Cumulative NOI: <strong style={{ color: C.white }}>IDR 15.75B</strong> · CAPEX Multiple: <strong style={{ color: C.white }}>1.51×</strong>
       </p>
     </div>
   );
@@ -932,8 +962,8 @@ function S10() {
         <div style={{ fontSize: 14, opacity: 0.6, letterSpacing: 2 }}>~USD 630,000</div>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 1, background: C.border, marginBottom: 32 }}>
-        {[["380", "Target Members"], ["IDR 503M", "Monthly Revenue (incl ancillary)"], ["IDR 224M", "Monthly NOI"], ["45%", "Operating Margin"],
-          ["46 mo", "Payback Period"], ["IDR 12.34B", "5-Year Cum. NOI"], ["1.19×", "5-Yr CAPEX Multiple"], ["IDR 0", "Monthly Rent"]].map(([v, l]) => (
+        {[["380", "Target Members"], ["IDR 558M", "Monthly Revenue (incl ancillary)"], ["IDR 279M", "Monthly NOI"], ["50%", "Operating Margin"],
+          ["37 mo", "Payback Period"], ["IDR 15.75B", "5-Year Cum. NOI"], ["1.51×", "5-Yr CAPEX Multiple"], ["IDR 0", "Monthly Rent"]].map(([v, l]) => (
           <div key={l} style={{ background: C.bg, padding: 20 }}>
             <div style={{ fontSize: 20, fontWeight: 800 }}>{v}</div>
             <div style={{ fontSize: 10, color: C.dim, letterSpacing: 1, marginTop: 4 }}>{l}</div>
@@ -1140,8 +1170,180 @@ function SModel() {
   );
 }
 
+function SRevenue() {
+  const [activeTab, setActiveTab] = useState<"streams" | "daypass" | "partners" | "perM2">("streams");
+  const tabs: { key: typeof activeTab; label: string }[] = [
+    { key: "streams", label: "9 Streams" },
+    { key: "daypass", label: "Day Pass" },
+    { key: "partners", label: "3rd Party" },
+    { key: "perM2", label: "Rev / m²" },
+  ];
+
+  return (
+    <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
+      <SectionTitle n="06 / 12" t="Revenue Architecture" />
+      <p style={{ fontSize: 18, color: C.mid, maxWidth: 720, marginBottom: 32 }}>
+        9 revenue streams. Members are the base; day passes and 3rd-party partnerships are the multiplier. Every zone earns.
+      </p>
+
+      {/* Tabs */}
+      <div style={{ display: "flex", gap: 1, background: C.border, marginBottom: 24 }}>
+        {tabs.map(tab => (
+          <button key={tab.key} onClick={() => setActiveTab(tab.key)} style={{
+            flex: 1, padding: "12px 8px", background: activeTab === tab.key ? C.white : C.card2,
+            color: activeTab === tab.key ? C.bg : C.mid, border: "none", cursor: "pointer",
+            fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase" as const,
+            transition: "background .15s",
+          }}>{tab.label}</button>
+        ))}
+      </div>
+
+      {/* Tab: 9 Streams */}
+      {activeTab === "streams" && (
+        <div>
+          <Card p={0}>
+            <div className="deck-table-wrap"><table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: C.card2 }}>
+                  {["STREAM", "MONTHLY", "%", "OPERATOR", "OUR CAPEX"].map(h => (
+                    <th key={h} style={{ padding: 12, textAlign: "left", color: C.dim, fontSize: 10, letterSpacing: 1, fontWeight: 600, borderBottom: `1px solid ${C.border}` }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {revenueStreams.map((r) => (
+                  <tr key={r.stream} style={{ borderBottom: `1px solid ${C.border}` }}>
+                    <td style={{ padding: 12, color: C.off, fontWeight: 600 }}>{r.stream}</td>
+                    <td style={{ padding: 12, color: r.monthly > 0 ? C.white : C.mute, fontFamily: "monospace" }}>{r.monthly > 0 ? `IDR ${r.monthly}M` : "Phase 2"}</td>
+                    <td style={{ padding: 12, color: C.mid, fontFamily: "monospace" }}>{r.pct > 0 ? `${r.pct}%` : "—"}</td>
+                    <td style={{ padding: 12, color: C.mid }}>{r.operator}</td>
+                    <td style={{ padding: 12, color: C.mid, fontFamily: "monospace" }}>{r.capex}</td>
+                  </tr>
+                ))}
+                <tr style={{ background: C.white, color: C.bg }}>
+                  <td style={{ padding: 12, fontWeight: 800 }}>TOTAL</td>
+                  <td style={{ padding: 12, fontWeight: 800, fontFamily: "monospace" }}>IDR 558M</td>
+                  <td style={{ padding: 12, fontWeight: 800 }}>100%</td>
+                  <td style={{ padding: 12, fontWeight: 600 }} colSpan={2}>Monthly (Moderate, steady state)</td>
+                </tr>
+              </tbody>
+            </table></div>
+          </Card>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 16 }}>
+            {[["IDR 437M", "Membership (78%)"], ["IDR 121M", "Non-Membership (22%)"], ["IDR 0", "Additional CAPEX for 5 streams"]].map(([v, l]) => (
+              <Card key={l}><div style={{ fontSize: 22, fontWeight: 800 }}>{v}</div><div style={{ fontSize: 11, color: C.dim, marginTop: 6 }}>{l}</div></Card>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Day Pass */}
+      {activeTab === "daypass" && (
+        <div>
+          <p style={{ fontSize: 13, color: C.mid, marginBottom: 16, lineHeight: 1.6 }}>
+            Not everyone wants a monthly membership. Day passes open the market to tourists, visiting professionals, trial-before-you-buy, and casual users. 15–20% convert to membership within 3 visits. Day passes also monetize off-peak slots members don't use.
+          </p>
+          <Card p={0}>
+            <div className="deck-table-wrap"><table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: C.card2 }}>
+                  {["TYPE", "PRICE", "VOLUME", "MONTHLY REV"].map(h => (
+                    <th key={h} style={{ padding: 12, textAlign: "left", color: C.dim, fontSize: 10, letterSpacing: 1, fontWeight: 600, borderBottom: `1px solid ${C.border}` }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {dayPassTypes.map((d) => (
+                  <tr key={d.type} style={{ borderBottom: `1px solid ${C.border}` }}>
+                    <td style={{ padding: 12, color: C.off, fontWeight: 600 }}>{d.type}</td>
+                    <td style={{ padding: 12, color: C.white, fontFamily: "monospace" }}>{d.price}</td>
+                    <td style={{ padding: 12, color: C.mid }}>{d.volume}</td>
+                    <td style={{ padding: 12, color: C.white, fontFamily: "monospace" }}>{d.monthly}</td>
+                  </tr>
+                ))}
+                <tr style={{ background: C.white, color: C.bg }}>
+                  <td style={{ padding: 12, fontWeight: 800 }}>TOTAL DAY PASS</td>
+                  <td style={{ padding: 12 }}></td>
+                  <td style={{ padding: 12, fontWeight: 600 }}>~240 visits/month</td>
+                  <td style={{ padding: 12, fontWeight: 800, fontFamily: "monospace" }}>IDR 42M</td>
+                </tr>
+              </tbody>
+            </table></div>
+          </Card>
+          <div style={{ marginTop: 16, padding: 20, borderLeft: `2px solid ${C.white}`, background: C.card2, fontSize: 13, color: C.off, lineHeight: 1.6 }}>
+            Capacity management: day passes capped at 30% of available peak-hour capacity via the booking app. Members always get priority. This prevents overcrowding while monetizing idle capacity during off-peak slots.
+          </div>
+        </div>
+      )}
+
+      {/* Tab: 3rd Party */}
+      {activeTab === "partners" && (
+        <div>
+          <p style={{ fontSize: 13, color: C.mid, marginBottom: 16, lineHeight: 1.6 }}>
+            We operate what we're best at: gym + HYROX + community. Everything else is outsourced to specialists. 5 of 9 revenue streams cost us zero CAPEX and zero headcount.
+          </p>
+          <div style={{ display: "grid", gap: 12 }}>
+            {thirdPartyPartners.map((p) => (
+              <Card key={p.type}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12, flexWrap: "wrap", gap: 8 }}>
+                  <div style={{ fontSize: 15, fontWeight: 700 }}>{p.type}</div>
+                  <div style={{ fontSize: 13, fontWeight: 800, fontFamily: "monospace", color: C.white }}>{p.ourRevenue}</div>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12, fontSize: 12 }}>
+                  <div><div style={{ fontSize: 9, color: C.dim, letterSpacing: 1.5, marginBottom: 4 }}>THEY INVEST</div><div style={{ color: C.off, lineHeight: 1.5 }}>{p.theyInvest}</div></div>
+                  <div><div style={{ fontSize: 9, color: C.dim, letterSpacing: 1.5, marginBottom: 4 }}>WE PROVIDE</div><div style={{ color: C.off, lineHeight: 1.5 }}>{p.weProvide}</div></div>
+                  <div><div style={{ fontSize: 9, color: C.dim, letterSpacing: 1.5, marginBottom: 4 }}>REVENUE MODEL</div><div style={{ color: C.off, lineHeight: 1.5 }}>{p.model}</div></div>
+                  <div><div style={{ fontSize: 9, color: C.dim, letterSpacing: 1.5, marginBottom: 4 }}>OUR CAPEX</div><div style={{ color: C.white, fontFamily: "monospace", fontWeight: 700 }}>{p.ourCapex}</div></div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Rev per m² */}
+      {activeTab === "perM2" && (
+        <div>
+          <p style={{ fontSize: 13, color: C.mid, marginBottom: 16, lineHeight: 1.6 }}>
+            Jakarta premium gym benchmark: IDR 400–600K/m²/month. TOM'S HYROX blended at IDR 744K/m² — top quartile. The HYROX zone at IDR 1,173K/m² is the highest-performing zone.
+          </p>
+          <Card p={0}>
+            <div className="deck-table-wrap"><table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: C.card2 }}>
+                  {["ZONE", "m²", "REVENUE STREAMS", "MONTHLY REV", "IDR/m²/mo"].map(h => (
+                    <th key={h} style={{ padding: 12, textAlign: "left", color: C.dim, fontSize: 10, letterSpacing: 1, fontWeight: 600, borderBottom: `1px solid ${C.border}` }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {revPerM2.map((z) => (
+                  <tr key={z.zone} style={{ borderBottom: `1px solid ${C.border}` }}>
+                    <td style={{ padding: 12, fontWeight: z.revPerM2 > 0 ? 600 : 400, color: z.revPerM2 > 800 ? C.white : z.revPerM2 > 0 ? C.off : C.mute }}>{z.zone}</td>
+                    <td style={{ padding: 12, color: C.mid, fontFamily: "monospace" }}>{z.m2}</td>
+                    <td style={{ padding: 12, color: C.mid }}>{z.streams}</td>
+                    <td style={{ padding: 12, color: z.monthlyRev > 0 ? C.white : C.mute, fontFamily: "monospace" }}>{z.monthlyRev > 0 ? `IDR ${z.monthlyRev}M` : "—"}</td>
+                    <td style={{ padding: 12, fontWeight: z.revPerM2 > 800 ? 800 : 500, color: z.revPerM2 > 800 ? C.white : z.revPerM2 > 0 ? C.off : C.mute, fontFamily: "monospace" }}>{z.revPerM2 > 0 ? `${z.revPerM2.toLocaleString()}K` : "—"}</td>
+                  </tr>
+                ))}
+                <tr style={{ background: C.white, color: C.bg }}>
+                  <td style={{ padding: 12, fontWeight: 800 }}>BLENDED</td>
+                  <td style={{ padding: 12, fontWeight: 800, fontFamily: "monospace" }}>750</td>
+                  <td style={{ padding: 12 }}></td>
+                  <td style={{ padding: 12, fontWeight: 800, fontFamily: "monospace" }}>IDR 558M</td>
+                  <td style={{ padding: 12, fontWeight: 800, fontFamily: "monospace" }}>744K</td>
+                </tr>
+              </tbody>
+            </table></div>
+          </Card>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Deck() {
-  const slides = [S0, S1, S2, S3, S4, S5, S6, S7, SModel, S8, S9, SFAQ, S10];
+  const slides = [S0, S1, S2, S3, S4, S5, SRevenue, S6, S7, SModel, S8, S9, SFAQ, S10];
   const [idx, setIdx] = useState(0);
   const total = slides.length;
   const touchStart = useRef<number | null>(null);
