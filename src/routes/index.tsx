@@ -1409,13 +1409,6 @@ function Deck() {
           .deck-root table { font-size: 11px !important; min-width: 560px; }
           .deck-root th, .deck-root td { padding: 8px !important; }
           .deck-root .deck-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-          .deck-root .deck-table-wrap::before {
-            content: "← DRAG TABLE SIDEWAYS TO SEE ALL COLUMNS →";
-            position: sticky; left: 0; top: 0; display: block;
-            font-size: 9px; letter-spacing: 1.5px; color: #888;
-            padding: 8px 10px; background: #0A0A0A;
-            border-bottom: 1px solid #1A1A1A; text-align: center;
-          }
         }
       `}</style>
       <div
