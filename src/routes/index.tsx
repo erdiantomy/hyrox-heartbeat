@@ -504,9 +504,13 @@ function CollapsibleSection({
       >
         <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0, flex: 1 }}>
           <span style={{
-            display: "inline-block", color: C.dim, fontSize: 10, lineHeight: 1,
-            transform: isOpen ? "rotate(90deg)" : "rotate(0deg)", transition: "transform .2s",
-          }}>▶</span>
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            width: 18, height: 18, borderRadius: 4,
+            border: `1px solid ${isOpen ? C.white : C.border2}`,
+            background: isOpen ? C.white : "transparent",
+            color: isOpen ? C.bg : C.off, fontSize: 11, lineHeight: 1, fontWeight: 700,
+            transition: "all .2s", flexShrink: 0,
+          }}>{isOpen ? "−" : "+"}</span>
           <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1.2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
             {title}
           </span>
@@ -514,8 +518,17 @@ function CollapsibleSection({
             ({items.length})
           </span>
         </div>
-        <div style={{ fontFamily: "monospace", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", marginLeft: 12 }}>
-          {total}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginLeft: 12 }}>
+          {!isOpen && (
+            <span style={{
+              fontSize: 9, letterSpacing: 1.2, color: C.dim,
+              border: `1px solid ${C.border2}`, borderRadius: 999,
+              padding: "3px 8px", whiteSpace: "nowrap", fontFamily: "monospace",
+            }}>TAP TO OPEN</span>
+          )}
+          <div style={{ fontFamily: "monospace", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap" }}>
+            {total}
+          </div>
         </div>
       </button>
       <div style={{
@@ -604,7 +617,7 @@ function S7() {
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="07 / 11" t="OPEX & P&L" />
-      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Monthly operating cost: IDR 279M. No rent. That's the thesis.</p>
+      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Monthly operating cost: IDR 279M. No rent. That's the thesis. <span style={{ fontSize: 12, color: C.dim, letterSpacing: 1.2 }}>· TAP ANY ROW TO EXPAND</span></p>
       <Card p={0}>
         {opexDetailed.map((cat, i) => (
           <CollapsibleSection
@@ -911,9 +924,17 @@ function SFAQ() {
                     <span style={{ fontSize: 14, fontWeight: 600, color: C.off }}>{f.q}</span>
                   </div>
                   <span style={{
-                    fontSize: 18, color: C.dim, lineHeight: 1, flexShrink: 0,
-                    transform: isOpen ? "rotate(45deg)" : "rotate(0deg)", transition: "transform .2s",
-                  }}>+</span>
+                    display: "inline-flex", alignItems: "center", gap: 6,
+                    fontSize: 9, letterSpacing: 1.2, fontFamily: "monospace",
+                    color: isOpen ? C.bg : C.off,
+                    background: isOpen ? C.white : "transparent",
+                    border: `1px solid ${isOpen ? C.white : C.border2}`,
+                    borderRadius: 999, padding: "4px 10px", whiteSpace: "nowrap", flexShrink: 0,
+                    transition: "all .2s",
+                  }}>
+                    <span style={{ fontSize: 12, lineHeight: 1 }}>{isOpen ? "−" : "+"}</span>
+                    {isOpen ? "CLOSE" : "READ ANSWER"}
+                  </span>
                 </button>
                 <div style={{
                   display: "grid", gridTemplateRows: isOpen ? "1fr" : "0fr",
