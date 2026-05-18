@@ -604,37 +604,49 @@ function S7() {
       </Card>
 
       <div style={{ marginTop: 24, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
-        {[["IDR 2.54B", "Annual NOI"], ["IDR 583K", "Revenue / m² / mo"], ["IDR 3.9–6.6B", "5yr rent savings vs competitors"]].map(([v, l]) => (
+        {[["IDR 2.69B", "Annual NOI (Moderate)"], ["IDR 671K", "Revenue / m² / mo"], ["IDR 3.9–6.6B", "5yr rent savings vs competitors"]].map(([v, l]) => (
           <Card key={l}><div style={{ fontSize: 22, fontWeight: 800 }}>{v}</div><div style={{ fontSize: 11, color: C.dim, marginTop: 6 }}>{l}</div></Card>
         ))}
       </div>
-      <div style={{ marginTop: 32 }}>
-        <div style={{ fontSize: 10, color: C.dim, letterSpacing: 2, marginBottom: 12 }}>SENSITIVITY ANALYSIS</div>
-        <Card p={0}>
-          <div className="deck-table-wrap"><table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
-            <thead>
-              <tr style={{ background: C.card2 }}>
-                {["Scenario", "Members", "ARPU", "Revenue", "Opex", "NOI", "Margin", "Payback"].map(h => (
-                  <th key={h} style={{ padding: 10, textAlign: "left", color: C.dim, fontSize: 10, letterSpacing: 1, borderBottom: `1px solid ${C.border}` }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {sensitivity.map((s, i) => (
-                <tr key={s.scenario} style={{ borderBottom: `1px solid ${C.border}`, background: i === 2 ? C.card2 : "transparent" }}>
-                  <td style={{ padding: 10, fontWeight: 700, color: i === 2 ? C.white : C.off }}>{s.scenario}</td>
-                  <td style={{ padding: 10, color: C.mid, fontFamily: "monospace" }}>{s.members}</td>
-                  <td style={{ padding: 10, color: C.mid, fontFamily: "monospace" }}>{s.arpu}M</td>
-                  <td style={{ padding: 10, color: C.mid, fontFamily: "monospace" }}>{s.revenue}M</td>
-                  <td style={{ padding: 10, color: C.mid, fontFamily: "monospace" }}>{s.opex}M</td>
-                  <td style={{ padding: 10, color: C.off, fontFamily: "monospace" }}>{s.noi}M</td>
-                  <td style={{ padding: 10, color: C.off, fontFamily: "monospace" }}>{s.margin}</td>
-                  <td style={{ padding: 10, color: C.mid, fontFamily: "monospace" }}>{s.payback}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table></div>
-        </Card>
+      <div style={{ marginTop: 40 }}>
+        <div style={{ fontSize: 10, color: C.dim, letterSpacing: 2, marginBottom: 16 }}>3-SCENARIO ROI FRAMEWORK</div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+          {sensitivity.map((s, i) => {
+            const inv = i === 1;
+            return (
+              <div key={s.scenario} style={{
+                padding: 24, background: inv ? C.white : C.card,
+                color: inv ? C.bg : C.off, border: `1px solid ${inv ? C.white : C.border}`,
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                  <div style={{ fontSize: 11, letterSpacing: 2, fontWeight: 700, opacity: 0.7 }}>
+                    {String(i + 1).padStart(2, "0")} / 03
+                  </div>
+                  {inv && <span style={{ fontSize: 9, padding: "3px 8px", background: C.bg, color: C.white, letterSpacing: 1 }}>BASE CASE</span>}
+                </div>
+                <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: -1, marginBottom: 6 }}>{s.scenario.toUpperCase()}</div>
+                <p style={{ fontSize: 12, opacity: 0.75, fontStyle: "italic", lineHeight: 1.5, margin: "0 0 20px" }}>{s.tagline}</p>
+                <div style={{ display: "grid", gap: 8, marginBottom: 16 }}>
+                  {[
+                    ["Members", `${s.members}`],
+                    ["Revenue", `IDR ${s.revenue}M`],
+                    ["Monthly NOI", `IDR ${s.noi}M`],
+                    ["Margin", s.margin],
+                    ["Payback", s.payback],
+                  ].map(([k, v]) => (
+                    <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 13, padding: "6px 0", borderTop: `1px solid ${inv ? "#0001" : C.border}` }}>
+                      <span style={{ opacity: 0.65 }}>{k}</span>
+                      <span style={{ fontWeight: 700, fontFamily: "monospace" }}>{v}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ fontSize: 11, opacity: 0.65, lineHeight: 1.5, paddingTop: 12, borderTop: `1px solid ${inv ? "#0002" : C.border2}` }}>
+                  {s.drivers}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
