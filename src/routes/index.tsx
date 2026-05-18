@@ -226,7 +226,7 @@ function S0() {
           Jakarta's first capital-efficient HYROX sports compound. 750m² on free land. Cilandak, South Jakarta.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 48, maxWidth: 720 }}>
-          {[["IDR 8.2B", "Total Raise"], ["33 mo", "Payback"], ["49%", "NOI Margin"]].map(([v, l]) => (
+          {[["IDR 10.4B", "Total Raise"], ["3.8 yr", "Payback"], ["45%", "NOI Margin"]].map(([v, l]) => (
             <div key={l} style={{ borderTop: `1px solid ${C.border2}`, paddingTop: 12 }}>
               <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: -1 }}>{v}</div>
               <div style={{ fontSize: 11, color: C.dim, letterSpacing: 1, marginTop: 4 }}>{l}</div>
