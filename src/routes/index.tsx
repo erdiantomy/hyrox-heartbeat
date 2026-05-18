@@ -1197,12 +1197,6 @@ function SRevenue() {
       </p>
 
       {/* Tabs */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10, flexWrap: "wrap" }}>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 10, letterSpacing: 1.5, color: C.dim, border: `1px solid ${C.border2}`, padding: "4px 8px", borderRadius: 999 }}>
-          <span style={{ width: 6, height: 6, borderRadius: 999, background: C.white, animation: "pulseDot 1.6s ease-in-out infinite" }} />
-          TAP EACH TAB TO VIEW ITS CONTENT
-        </span>
-      </div>
       <div style={{ display: "flex", gap: 1, background: C.border, marginBottom: 24, border: `1px solid ${C.border2}` }}>
         {tabs.map(tab => (
           <button key={tab.key} onClick={() => setActiveTab(tab.key)} style={{
