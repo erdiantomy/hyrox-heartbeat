@@ -599,7 +599,7 @@ function S7() {
         ))}
         <div style={{ display: "flex", justifyContent: "space-between", padding: "16px 20px", background: C.white, color: C.bg, fontWeight: 800 }}>
           <span style={{ letterSpacing: 1 }}>TOTAL MONTHLY OPEX</span>
-          <span style={{ fontFamily: "monospace" }}>IDR 225M</span>
+          <span style={{ fontFamily: "monospace" }}>IDR 279M</span>
         </div>
       </Card>
 
