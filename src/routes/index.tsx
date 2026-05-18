@@ -1352,6 +1352,51 @@ function SRevenue() {
   );
 }
 
+// Per-slide interactive hints. Indices map to the `slides` array in Deck.
+// 2: S2 (wide competitor table), 6: SRevenue (tabs + tables),
+// 7: S6 (CAPEX collapsibles), 8: S7 (OPEX collapsibles), 12: SFAQ.
+const SLIDE_HINTS: Record<number, { icon: string; text: string; anim: string }[]> = {
+  2: [{ icon: "↔", text: "DRAG TABLE SIDEWAYS", anim: "nudgeX" }],
+  6: [
+    { icon: "●", text: "TAP EACH TAB ABOVE", anim: "pulseDot" },
+    { icon: "↔", text: "DRAG TABLE SIDEWAYS", anim: "nudgeX" },
+  ],
+  7: [{ icon: "+", text: "TAP ANY ROW TO EXPAND", anim: "pulseDot" }],
+  8: [{ icon: "+", text: "TAP ANY ROW TO EXPAND", anim: "pulseDot" }],
+  12: [{ icon: "+", text: "TAP A QUESTION TO READ ANSWER", anim: "pulseDot" }],
+};
+
+function SlideHints({ idx }: { idx: number }) {
+  const hints = SLIDE_HINTS[idx];
+  const [visible, setVisible] = useState(true);
+  useEffect(() => {
+    setVisible(true);
+    const t = setTimeout(() => setVisible(false), 6000);
+    return () => clearTimeout(t);
+  }, [idx]);
+  if (!hints || !visible) return null;
+  return (
+    <div style={{
+      position: "fixed", top: 12, left: 0, right: 0, zIndex: 9,
+      display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap",
+      padding: "0 12px", pointerEvents: "none",
+    }}>
+      {hints.map((h, i) => (
+        <span key={i} style={{
+          display: "inline-flex", alignItems: "center", gap: 6,
+          padding: "5px 10px", borderRadius: 999,
+          background: "rgba(0,0,0,0.78)", border: `1px solid ${C.border2}`,
+          color: C.off, fontSize: 10, letterSpacing: 1.5, fontWeight: 600,
+          backdropFilter: "blur(8px)",
+        }}>
+          <span style={{ animation: `${h.anim} 1.4s ease-in-out infinite`, color: C.white }}>{h.icon}</span>
+          {h.text}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function Deck() {
   const slides = [S0, S1, S2, S3, S4, S5, SRevenue, S6, S7, SModel, S8, S9, SFAQ, S10];
   const [idx, setIdx] = useState(0);
