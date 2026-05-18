@@ -19,41 +19,53 @@ const tt = { background: "#111", border: "1px solid #333", borderRadius: 8, font
 
 // ─── DATA ───
 const capexDetailed = [
-  { cat: "FACILITY BUILDOUT", total: 2800, items: [
-    { name: "Demolition & site preparation", cost: 180 },
-    { name: "Structural works & partitions", cost: 420 },
-    { name: "MEP (mechanical, electrical, plumbing)", cost: 560 },
-    { name: "HVAC system (heavy-duty for gym)", cost: 380 },
-    { name: "Flooring (rubber matting + turf)", cost: 340 },
-    { name: "Locker rooms & showers buildout", cost: 320 },
-    { name: "Reception & lounge finishing", cost: 180 },
-    { name: "Lighting design & installation", cost: 160 },
+  { cat: "FACILITY BUILDOUT", total: 4500, items: [
+    { name: "Demolition & site preparation", cost: 200 },
+    { name: "Structural works & partitions", cost: 500 },
+    { name: "MEP (electrical + plumbing heavy)", cost: 650 },
+    { name: "HVAC industrial gym system", cost: 950 },
+    { name: "Flooring (rubber matting + turf)", cost: 450 },
+    { name: "Locker rooms & showers (waterproofed)", cost: 550 },
+    { name: "Reception & lounge finishing", cost: 250 },
+    { name: "Lighting design (zoned)", cost: 220 },
     { name: "Signage & exterior branding", cost: 120 },
-    { name: "Fire safety & compliance", cost: 140 },
+    { name: "Fire safety & compliance", cost: 180 },
+    { name: "Painting & final touches", cost: 130 },
+    { name: "Permits & building management", cost: 100 },
+    { name: "Waste disposal & cleanup", cost: 50 },
+    { name: "Furniture (lounge + reception)", cost: 80 },
+    { name: "Acoustic treatment", cost: 70 },
   ]},
-  { cat: "STRENGTH EQUIPMENT", total: 1600, items: [
-    { name: "Power racks × 4 (Rogue/Rep style)", cost: 280 },
-    { name: "Olympic platforms × 4", cost: 120 },
-    { name: "Dumbbells (5–40kg complete set)", cost: 220 },
-    { name: "Barbells & bumper plates", cost: 180 },
-    { name: "Cable machines × 3", cost: 240 },
-    { name: "Benches (flat, incline, decline) × 6", cost: 90 },
-    { name: "Kettlebells (8–32kg sets)", cost: 80 },
-    { name: "Cardio (treadmills × 4, bikes × 4)", cost: 320 },
-    { name: "Accessories (bands, mats, rollers)", cost: 70 },
+  { cat: "STRENGTH EQUIPMENT", total: 1500, items: [
+    { name: "Power racks × 4", cost: 130 },
+    { name: "Olympic platforms × 4", cost: 80 },
+    { name: "Dumbbells (5–40kg complete set)", cost: 170 },
+    { name: "Barbells & bumper plates", cost: 140 },
+    { name: "Cable machines × 3", cost: 180 },
+    { name: "Benches × 6 (flat/incline/decline)", cost: 65 },
+    { name: "Kettlebells (8–32kg sets)", cost: 65 },
+    { name: "Treadmills × 4 commercial", cost: 200 },
+    { name: "Spin bikes × 4", cost: 120 },
+    { name: "Accessories (bands, mats, rollers)", cost: 60 },
+    { name: "Delivery & installation", cost: 90 },
+    { name: "Warranty & service contracts (1yr)", cost: 50 },
+    { name: "Spare parts buffer", cost: 50 },
   ]},
-  { cat: "HYROX EQUIPMENT", total: 1400, items: [
-    { name: "Concept2 SkiErg × 6", cost: 210 },
-    { name: "Concept2 Rower × 6", cost: 240 },
-    { name: "Prowler sleds × 2 + weight plates", cost: 120 },
-    { name: "Artificial turf lane (20m × 3m)", cost: 160 },
-    { name: "Wall ball targets × 8 + balls", cost: 60 },
-    { name: "Sandbags (various weights × 20)", cost: 50 },
-    { name: "Farmer's carry handles × 10 pairs", cost: 40 },
-    { name: "Assault/Echo bikes × 4", cost: 200 },
-    { name: "Battle ropes, box jumps, misc", cost: 80 },
-    { name: "Sled track rail system", cost: 120 },
-    { name: "Timer displays × 3 + sound system", cost: 120 },
+  { cat: "HYROX EQUIPMENT", total: 1200, items: [
+    { name: "Concept2 SkiErg × 6 (@IDR 22M)", cost: 132 },
+    { name: "Concept2 RowErg × 6 (@IDR 28M)", cost: 168 },
+    { name: "Prowler sleds × 2 + weight plates", cost: 65 },
+    { name: "Artificial turf lane (20m × 3m)", cost: 55 },
+    { name: "Wall ball targets × 8 + balls", cost: 50 },
+    { name: "Sandbags various weights × 20", cost: 20 },
+    { name: "Farmer carry handles × 10 pairs", cost: 30 },
+    { name: "Assault bikes × 4", cost: 130 },
+    { name: "Battle ropes + box jumps + misc", cost: 50 },
+    { name: "Sled track rail system", cost: 100 },
+    { name: "Timer displays × 3 + sound system", cost: 90 },
+    { name: "Delivery, import duty & install", cost: 110 },
+    { name: "Replacement parts buffer (1yr)", cost: 50 },
+    { name: "HYROX branding & zone graphics", cost: 50 },
   ]},
   { cat: "PRE-OPENING MARKETING", total: 400, items: [
     { name: "Brand identity & design system", cost: 60 },
@@ -64,54 +76,63 @@ const capexDetailed = [
     { name: "PR & media outreach", cost: 30 },
     { name: "Merchandise (first batch)", cost: 40 },
   ]},
-  { cat: "TECHNOLOGY & SYSTEMS", total: 200, items: [
+  { cat: "TECHNOLOGY & SYSTEMS", total: 250, items: [
     { name: "Gym management SaaS (annual)", cost: 48 },
-    { name: "Access control & turnstile", cost: 45 },
-    { name: "CCTV & security system", cost: 35 },
-    { name: "POS terminal & payment gateway", cost: 22 },
-    { name: "Wi-Fi infrastructure", cost: 20 },
-    { name: "Body scan device (InBody or equiv)", cost: 30 },
+    { name: "Access control & turnstile", cost: 50 },
+    { name: "CCTV & security (16 cameras)", cost: 45 },
+    { name: "POS terminal & payment gateway", cost: 20 },
+    { name: "Wi-Fi commercial grade", cost: 20 },
+    { name: "Body scan InBody device", cost: 40 },
+    { name: "TV displays × 3 for schedules", cost: 27 },
   ]},
-  { cat: "WORKING CAPITAL", total: 1000, items: [
-    { name: "Staff salaries (6-month runway)", cost: 720 },
-    { name: "Utilities buffer (6 months)", cost: 180 },
+  { cat: "WORKING CAPITAL", total: 1200, items: [
+    { name: "Staff salaries (5-month runway)", cost: 690 },
+    { name: "Staff statutory (BPJS + THR)", cost: 90 },
+    { name: "Utilities buffer (5 months)", cost: 240 },
     { name: "Consumables & cleaning supplies", cost: 60 },
     { name: "Insurance deposits", cost: 40 },
+    { name: "Emergency buffer", cost: 80 },
   ]},
-  { cat: "LEGAL & PERMITS", total: 200, items: [
+  { cat: "LEGAL & PERMITS", total: 250, items: [
     { name: "PT company formation", cost: 25 },
-    { name: "Building permits & compliance", cost: 60 },
-    { name: "Insurance policies (property + liability)", cost: 65 },
-    { name: "Legal advisory & contracts", cost: 50 },
+    { name: "Building permits (IMB/PBG)", cost: 80 },
+    { name: "Insurance (property + liability)", cost: 70 },
+    { name: "Legal advisory & contracts", cost: 40 },
+    { name: "Environmental compliance", cost: 20 },
+    { name: "Accounting setup", cost: 15 },
   ]},
-  { cat: "CONTINGENCY (10%)", total: 600, items: [
-    { name: "Construction overrun buffer", cost: 300 },
-    { name: "Equipment price fluctuation", cost: 150 },
-    { name: "Unforeseen regulatory costs", cost: 100 },
-    { name: "FX risk buffer", cost: 50 },
+  { cat: "CONTINGENCY (12%)", total: 1100, items: [
+    { name: "Construction overrun buffer", cost: 550 },
+    { name: "Equipment price fluctuation", cost: 200 },
+    { name: "Unforeseen regulatory costs", cost: 150 },
+    { name: "FX risk buffer (USD imports)", cost: 100 },
+    { name: "Timeline delay buffer", cost: 100 },
   ]},
 ];
 
 const opexDetailed = [
-  { cat: "PEOPLE", total: 120, items: [
+  { cat: "PEOPLE", total: 138, items: [
     { role: "GM / CEO (Amelie)", cost: 20, notes: "Founder salary, equity-weighted" },
     { role: "Head Coach — HYROX", cost: 18, notes: "Must be HYROX certified" },
-    { role: "Coaches × 3", cost: 36, notes: "IDR 12M avg + PT commissions" },
+    { role: "Coaches × 3", cost: 36, notes: "IDR 12M avg + commissions" },
     { role: "Front Desk / Sales × 2", cost: 16, notes: "Split shifts, 7-day coverage" },
     { role: "Cleaning / Maint × 2", cost: 10, notes: "Daily deep clean required" },
     { role: "Part-time Coaches × 2–3", cost: 20, notes: "Per-class rate for peak hours" },
+    { role: "Staff statutory (BPJS + THR)", cost: 18, notes: "Mandatory employer contributions ~13%" },
   ]},
-  { cat: "FACILITY", total: 50, items: [
-    { role: "Electricity (heavy AC + equipment)", cost: 25, notes: "750m² gym runs hot" },
-    { role: "Water", cost: 5, notes: "Showers drive this" },
+  { cat: "FACILITY", total: 56, items: [
+    { role: "Electricity (heavy AC + equipment)", cost: 45, notes: "750m² industrial HVAC 15hrs/day" },
+    { role: "Water", cost: 8, notes: "6 showers peak usage" },
     { role: "Internet & telecom", cost: 3, notes: "Fiber + backup" },
-    { role: "Maintenance & repairs", cost: 10, notes: "Equipment servicing monthly" },
-    { role: "Cleaning supplies & consumables", cost: 7, notes: "Towels, toiletries, etc" },
   ]},
-  { cat: "MARKETING & GROWTH", total: 25, items: [
-    { role: "Digital ads (IG, Google)", cost: 10, notes: "Performance marketing" },
+  { cat: "MAINTENANCE", total: 18, items: [
+    { role: "Equipment servicing", cost: 10, notes: "Monthly preventive" },
+    { role: "Cleaning supplies & consumables", cost: 8, notes: "Towels, toiletries, etc" },
+  ]},
+  { cat: "MARKETING & GROWTH", total: 27, items: [
+    { role: "Digital ads (IG, Google)", cost: 12, notes: "Performance marketing" },
     { role: "Content creation", cost: 5, notes: "Photo/video production" },
-    { role: "Events & community", cost: 7, notes: "Monthly races, workshops" },
+    { role: "Events & community", cost: 7, notes: "Monthly HYROX races" },
     { role: "Partnerships & collabs", cost: 3, notes: "Brand activation budget" },
   ]},
   { cat: "TECHNOLOGY", total: 10, items: [
@@ -119,34 +140,39 @@ const opexDetailed = [
     { role: "Payment processing fees", cost: 4, notes: "~1% of revenue" },
     { role: "App & digital tools", cost: 2, notes: "Booking, CRM" },
   ]},
-  { cat: "ADMIN & INSURANCE", total: 20, items: [
-    { role: "Insurance premiums", cost: 8, notes: "Property + liability + WC" },
-    { role: "Accounting & bookkeeping", cost: 5, notes: "Outsourced initially" },
-    { role: "Legal retainer", cost: 3, notes: "Contract review, compliance" },
-    { role: "Miscellaneous buffer", cost: 4, notes: "Unplanned operational costs" },
+  { cat: "ADMIN & INSURANCE", total: 30, items: [
+    { role: "Insurance premiums", cost: 10, notes: "Property + liability + WC" },
+    { role: "Accounting & bookkeeping", cost: 8, notes: "Outsourced initially" },
+    { role: "Legal retainer", cost: 4, notes: "Contract review, compliance" },
+    { role: "Miscellaneous buffer", cost: 8, notes: "Unplanned operational costs" },
   ]},
 ];
 
 const cashFlow = [
-  { month: "M1", inflow: 40, outflow: -200, cumulative: -160, members: 100, label: "Founding member cash" },
-  { month: "M2", inflow: 80, outflow: -200, cumulative: -280, members: 140, label: "Pre-sales ramp" },
-  { month: "M3", inflow: 135, outflow: -210, cumulative: -355, members: 180, label: "Word of mouth kicks in" },
-  { month: "M4", inflow: 180, outflow: -215, cumulative: -390, members: 210, label: "Corporate packages start" },
-  { month: "M5", inflow: 222, outflow: -220, cumulative: -388, members: 240, label: "Near break-even" },
-  { month: "M6", inflow: 265, outflow: -220, cumulative: -343, members: 270, label: "Cash flow positive" },
-  { month: "M7", inflow: 310, outflow: -225, cumulative: -258, members: 300, label: "Momentum building" },
-  { month: "M8", inflow: 350, outflow: -225, cumulative: -133, members: 330, label: "Waitlist forming" },
-  { month: "M9", inflow: 380, outflow: -225, cumulative: 22, members: 350, label: "Working capital recovered" },
-  { month: "M10", inflow: 410, outflow: -225, cumulative: 207, members: 370, label: "Profit accumulation" },
-  { month: "M11", inflow: 430, outflow: -225, cumulative: 412, members: 380, label: "Steady state nearing" },
-  { month: "M12", inflow: 449, outflow: -225, cumulative: 636, members: 390, label: "Year 1 complete" },
+  { month: "M1", inflow: 115, outflow: -250, cumulative: -135, members: 100, label: "Founding member cash" },
+  { month: "M2", inflow: 161, outflow: -255, cumulative: -229, members: 140, label: "Pre-sales ramp" },
+  { month: "M3", inflow: 207, outflow: -260, cumulative: -282, members: 180, label: "Word of mouth kicks in" },
+  { month: "M4", inflow: 247, outflow: -265, cumulative: -300, members: 215, label: "Corporate packages start" },
+  { month: "M5", inflow: 288, outflow: -270, cumulative: -282, members: 250, label: "Approaching break-even" },
+  { month: "M6", inflow: 322, outflow: -275, cumulative: -235, members: 280, label: "Margin building" },
+  { month: "M7", inflow: 357, outflow: -275, cumulative: -153, members: 310, label: "Momentum building" },
+  { month: "M8", inflow: 391, outflow: -279, cumulative: -41, members: 340, label: "Near working capital recovery" },
+  { month: "M9", inflow: 414, outflow: -279, cumulative: 94, members: 360, label: "Working capital recovered" },
+  { month: "M10", inflow: 431, outflow: -279, cumulative: 246, members: 375, label: "Profit accumulation" },
+  { month: "M11", inflow: 443, outflow: -279, cumulative: 410, members: 385, label: "Steady state nearing" },
+  { month: "M12", inflow: 449, outflow: -279, cumulative: 580, members: 390, label: "Year 1 complete" },
 ];
 
 const sensitivity = [
-  { scenario: "Bear Case", members: 250, arpu: 1.0, revenue: 250, opex: 210, noi: 40, margin: "16%", payback: "205 mo" },
-  { scenario: "Conservative", members: 320, arpu: 1.1, revenue: 352, opex: 220, noi: 132, margin: "38%", payback: "62 mo" },
-  { scenario: "Base Case", members: 380, arpu: 1.15, revenue: 437, opex: 225, noi: 212, margin: "49%", payback: "39 mo" },
-  { scenario: "Upside", members: 420, arpu: 1.2, revenue: 504, opex: 230, noi: 274, margin: "54%", payback: "30 mo" },
+  { scenario: "Conservative", members: 300, arpu: 1.05, revenue: 347, opex: 250, noi: 97, margin: "28%", payback: "107 mo",
+    tagline: "Survive — free land means no death spiral even at worst case",
+    drivers: "Lean staffing, 300 members, ARPU IDR 1.05M, +10% ancillary. Annual NOI IDR 1.16B." },
+  { scenario: "Moderate", members: 380, arpu: 1.15, revenue: 503, opex: 279, noi: 224, margin: "45%", payback: "46 mo",
+    tagline: "Base case — solid return with realistic execution",
+    drivers: "Full staffing, 380 members, ARPU IDR 1.15M, +15% ancillary. Annual NOI IDR 2.69B." },
+  { scenario: "Aggressive", members: 440, arpu: 1.3, revenue: 686, opex: 295, noi: 391, margin: "57%", payback: "27 mo",
+    tagline: "Full potential — if HYROX wave hits and compound fires on all cylinders",
+    drivers: "Premium mix, 440 members, ARPU IDR 1.3M, +20% ancillary. Annual NOI IDR 4.69B." },
 ];
 
 const competitorData = [
@@ -200,7 +226,7 @@ function S0() {
           Jakarta's first capital-efficient HYROX sports compound. 750m² on free land. Cilandak, South Jakarta.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 48, maxWidth: 720 }}>
-          {[["IDR 8.2B", "Total Raise"], ["33 mo", "Payback"], ["49%", "NOI Margin"]].map(([v, l]) => (
+          {[["IDR 10.4B", "Total Raise"], ["3.8 yr", "Payback"], ["45%", "NOI Margin"]].map(([v, l]) => (
             <div key={l} style={{ borderTop: `1px solid ${C.border2}`, paddingTop: 12 }}>
               <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: -1 }}>{v}</div>
               <div style={{ fontSize: 11, color: C.dim, letterSpacing: 1, marginTop: 4 }}>{l}</div>
@@ -521,8 +547,8 @@ function S6() {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
-      <SectionTitle n="06 / 11" t="CAPEX · IDR 8.2B" />
-      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Every line item. Tap to expand. 48% below original IDR 15.7B proposal.</p>
+      <SectionTitle n="06 / 11" t="CAPEX · IDR 10.4B" />
+      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Every line item. Tap to expand. Audited build budget with 12% contingency baked in.</p>
       <div style={{ height: 280, marginBottom: 32 }}>
         <ResponsiveContainer>
           <BarChart data={capexDetailed} margin={{ top: 10, right: 10, left: 0, bottom: 60 }}>
@@ -547,7 +573,7 @@ function S6() {
         ))}
         <div style={{ display: "flex", justifyContent: "space-between", padding: "16px 20px", background: C.white, color: C.bg, fontWeight: 800 }}>
           <span style={{ letterSpacing: 1 }}>TOTAL CAPEX</span>
-          <span style={{ fontFamily: "monospace" }}>IDR 8.2B</span>
+          <span style={{ fontFamily: "monospace" }}>IDR 10.4B</span>
         </div>
       </Card>
     </div>
@@ -559,7 +585,7 @@ function S7() {
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="07 / 11" t="OPEX & P&L" />
-      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Monthly operating cost: IDR 225M. No rent. That's the thesis.</p>
+      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Monthly operating cost: IDR 279M. No rent. That's the thesis.</p>
       <Card p={0}>
         {opexDetailed.map((cat, i) => (
           <CollapsibleSection
@@ -573,42 +599,54 @@ function S7() {
         ))}
         <div style={{ display: "flex", justifyContent: "space-between", padding: "16px 20px", background: C.white, color: C.bg, fontWeight: 800 }}>
           <span style={{ letterSpacing: 1 }}>TOTAL MONTHLY OPEX</span>
-          <span style={{ fontFamily: "monospace" }}>IDR 225M</span>
+          <span style={{ fontFamily: "monospace" }}>IDR 279M</span>
         </div>
       </Card>
 
       <div style={{ marginTop: 24, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
-        {[["IDR 2.54B", "Annual NOI"], ["IDR 583K", "Revenue / m² / mo"], ["IDR 3.9–6.6B", "5yr rent savings vs competitors"]].map(([v, l]) => (
+        {[["IDR 2.69B", "Annual NOI (Moderate)"], ["IDR 671K", "Revenue / m² / mo"], ["IDR 3.9–6.6B", "5yr rent savings vs competitors"]].map(([v, l]) => (
           <Card key={l}><div style={{ fontSize: 22, fontWeight: 800 }}>{v}</div><div style={{ fontSize: 11, color: C.dim, marginTop: 6 }}>{l}</div></Card>
         ))}
       </div>
-      <div style={{ marginTop: 32 }}>
-        <div style={{ fontSize: 10, color: C.dim, letterSpacing: 2, marginBottom: 12 }}>SENSITIVITY ANALYSIS</div>
-        <Card p={0}>
-          <div className="deck-table-wrap"><table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
-            <thead>
-              <tr style={{ background: C.card2 }}>
-                {["Scenario", "Members", "ARPU", "Revenue", "Opex", "NOI", "Margin", "Payback"].map(h => (
-                  <th key={h} style={{ padding: 10, textAlign: "left", color: C.dim, fontSize: 10, letterSpacing: 1, borderBottom: `1px solid ${C.border}` }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {sensitivity.map((s, i) => (
-                <tr key={s.scenario} style={{ borderBottom: `1px solid ${C.border}`, background: i === 2 ? C.card2 : "transparent" }}>
-                  <td style={{ padding: 10, fontWeight: 700, color: i === 2 ? C.white : C.off }}>{s.scenario}</td>
-                  <td style={{ padding: 10, color: C.mid, fontFamily: "monospace" }}>{s.members}</td>
-                  <td style={{ padding: 10, color: C.mid, fontFamily: "monospace" }}>{s.arpu}M</td>
-                  <td style={{ padding: 10, color: C.mid, fontFamily: "monospace" }}>{s.revenue}M</td>
-                  <td style={{ padding: 10, color: C.mid, fontFamily: "monospace" }}>{s.opex}M</td>
-                  <td style={{ padding: 10, color: C.off, fontFamily: "monospace" }}>{s.noi}M</td>
-                  <td style={{ padding: 10, color: C.off, fontFamily: "monospace" }}>{s.margin}</td>
-                  <td style={{ padding: 10, color: C.mid, fontFamily: "monospace" }}>{s.payback}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table></div>
-        </Card>
+      <div style={{ marginTop: 40 }}>
+        <div style={{ fontSize: 10, color: C.dim, letterSpacing: 2, marginBottom: 16 }}>3-SCENARIO ROI FRAMEWORK</div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+          {sensitivity.map((s, i) => {
+            const inv = i === 1;
+            return (
+              <div key={s.scenario} style={{
+                padding: 24, background: inv ? C.white : C.card,
+                color: inv ? C.bg : C.off, border: `1px solid ${inv ? C.white : C.border}`,
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                  <div style={{ fontSize: 11, letterSpacing: 2, fontWeight: 700, opacity: 0.7 }}>
+                    {String(i + 1).padStart(2, "0")} / 03
+                  </div>
+                  {inv && <span style={{ fontSize: 9, padding: "3px 8px", background: C.bg, color: C.white, letterSpacing: 1 }}>BASE CASE</span>}
+                </div>
+                <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: -1, marginBottom: 6 }}>{s.scenario.toUpperCase()}</div>
+                <p style={{ fontSize: 12, opacity: 0.75, fontStyle: "italic", lineHeight: 1.5, margin: "0 0 20px" }}>{s.tagline}</p>
+                <div style={{ display: "grid", gap: 8, marginBottom: 16 }}>
+                  {[
+                    ["Members", `${s.members}`],
+                    ["Revenue", `IDR ${s.revenue}M`],
+                    ["Monthly NOI", `IDR ${s.noi}M`],
+                    ["Margin", s.margin],
+                    ["Payback", s.payback],
+                  ].map(([k, v]) => (
+                    <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 13, padding: "6px 0", borderTop: `1px solid ${inv ? "#0001" : C.border}` }}>
+                      <span style={{ opacity: 0.65 }}>{k}</span>
+                      <span style={{ fontWeight: 700, fontFamily: "monospace" }}>{v}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ fontSize: 11, opacity: 0.65, lineHeight: 1.5, paddingTop: 12, borderTop: `1px solid ${inv ? "#0002" : C.border2}` }}>
+                  {s.drivers}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -618,7 +656,7 @@ function S8() {
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="08 / 11" t="Cash Flow & Ramp" />
-      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Break-even Month 5–6. Working capital recovered by Month 9. IDR 636M cash generated in Year 1.</p>
+      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Break-even Month 8–9. Working capital recovered by Month 9. IDR 580M cash generated in Year 1.</p>
       <div style={{ height: 300, marginBottom: 24 }}>
         <ResponsiveContainer>
           <ComposedChart data={cashFlow}>
@@ -644,11 +682,11 @@ function S8() {
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 16 }}>
         {[
-          { yr: "Y1", rev: "3,740M", noi: "636M", note: "Ramp year" },
-          { yr: "Y2", rev: "5,244M", noi: "2,544M", note: "Steady state" },
-          { yr: "Y3", rev: "5,506M", noi: "2,706M", note: "+5% growth" },
-          { yr: "Y4", rev: "5,782M", noi: "2,882M", note: "Phase 2 triggers" },
-          { yr: "Y5", rev: "6,071M", noi: "3,071M", note: "Expansion ready" },
+          { yr: "Y1", rev: "3,825M", noi: "580M", note: "Ramp year (15% margin)" },
+          { yr: "Y2", rev: "6,036M", noi: "2,688M", note: "Steady moderate" },
+          { yr: "Y3", rev: "6,338M", noi: "2,856M", note: "+5% growth" },
+          { yr: "Y4", rev: "6,655M", noi: "3,024M", note: "Phase 2 triggers" },
+          { yr: "Y5", rev: "6,988M", noi: "3,192M", note: "Expansion ready" },
         ].map((y) => (
           <Card key={y.yr}>
             <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: -0.5, marginBottom: 8 }}>{y.yr}</div>
@@ -661,7 +699,7 @@ function S8() {
         ))}
       </div>
       <p style={{ marginTop: 24, fontSize: 13, color: C.mid, textAlign: "center" }}>
-        5-Year Cumulative NOI: <strong style={{ color: C.white }}>IDR 11.84B</strong> · CAPEX Multiple: <strong style={{ color: C.white }}>1.44×</strong>
+        5-Year Cumulative NOI: <strong style={{ color: C.white }}>IDR 12.34B</strong> · CAPEX Multiple: <strong style={{ color: C.white }}>1.19×</strong> (~1.5× with ancillary)
       </p>
     </div>
   );
@@ -717,29 +755,29 @@ function SFAQ() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   const useOfProceeds = [
-    { label: "Facility Buildout", amount: 2800, pct: 34, desc: "Construction, MEP, HVAC, flooring, lockers, finishing" },
-    { label: "Strength Equipment", amount: 1600, pct: 20, desc: "Racks, platforms, dumbbells, cardio, accessories" },
-    { label: "HYROX Equipment", amount: 1400, pct: 17, desc: "Ergs, rowers, sleds, turf lane, timing systems" },
-    { label: "Working Capital", amount: 1000, pct: 12, desc: "6-month salary + utilities runway" },
-    { label: "Contingency", amount: 600, pct: 7, desc: "10% buffer across construction & FX" },
-    { label: "Pre-Opening Marketing", amount: 400, pct: 5, desc: "Brand, founding member campaign, launch event" },
-    { label: "Technology & Systems", amount: 200, pct: 3, desc: "Gym SaaS, access control, CCTV, body scan" },
-    { label: "Legal & Permits", amount: 200, pct: 2, desc: "PT formation, permits, insurance, contracts" },
+    { label: "Facility Buildout", amount: 4500, pct: 43, desc: "Demo, structural, MEP, HVAC, flooring, lockers, finishing" },
+    { label: "Strength Equipment", amount: 1500, pct: 14, desc: "Racks, platforms, dumbbells, cardio, accessories" },
+    { label: "HYROX Equipment", amount: 1200, pct: 12, desc: "Ergs, rowers, sleds, turf lane, timing systems" },
+    { label: "Working Capital", amount: 1200, pct: 12, desc: "5-month salary + utilities runway + emergency buffer" },
+    { label: "Contingency", amount: 1100, pct: 11, desc: "12% buffer across construction, FX, and timeline" },
+    { label: "Pre-Opening Marketing", amount: 400, pct: 4, desc: "Brand, founding member campaign, launch event" },
+    { label: "Technology & Systems", amount: 250, pct: 2, desc: "Gym SaaS, access control, CCTV, body scan, displays" },
+    { label: "Legal & Permits", amount: 250, pct: 2, desc: "PT formation, permits, insurance, contracts, environmental" },
   ];
 
   const risks = [
     { risk: "Member ramp slower than projected", likelihood: "MED", impact: "HIGH",
-      mitigation: "100-person founding member pre-sale validates demand before opening. IDR 1B working capital covers 6 months of full burn even at zero new sign-ups. Sensitivity model shows positive NOI even in Bear case (250 members)." },
+      mitigation: "100-person founding member pre-sale validates demand before opening. IDR 1.2B working capital covers 5 months at full burn even at zero new sign-ups. Conservative scenario (300 members) still delivers 28% margin and IDR 1.16B annual NOI." },
     { risk: "HYROX format doesn't reach mainstream in Indonesia", likelihood: "LOW", impact: "HIGH",
       mitigation: "Space designed as strength + conditioning compound with HYROX as hero program — not single-format dependent. Strength floor, flex studio, and spa drive revenue independent of HYROX. We pivot the brand, not the building." },
     { risk: "Construction cost overrun", likelihood: "MED", impact: "MED",
-      mitigation: "10% contingency (IDR 600M) explicitly budgeted. Fixed-price contracts with vetted vendors. Edward (co-founder) personally manages buildout — same playbook as 6+ years of Inhaustudio projects." },
+      mitigation: "12% contingency (IDR 1.1B) explicitly budgeted. Fixed-price contracts with vetted vendors. Edward (co-founder) personally manages buildout — same playbook as 6+ years of Inhaustudio projects." },
     { risk: "Key person dependency on Amelie", likelihood: "LOW", impact: "HIGH",
       mitigation: "Equity vesting tied to 4-year tenure with 1-year cliff. Head Coach (HYROX certified) hired as operational backup. Programming systematized and documented. Tom handles all non-floor functions." },
     { risk: "New competitor enters Cilandak with similar format", likelihood: "MED", impact: "MED",
       mitigation: "Free land creates a permanent 15–20% cost structural advantage no rented competitor can match. First-mover community lock-in via race teams and 8-week training cycles." },
     { risk: "FX / equipment price volatility (IDR vs USD)", likelihood: "MED", impact: "LOW",
-      mitigation: "IDR 50M FX buffer in contingency. Equipment POs placed early in funding cycle to lock pricing. Domestic substitutes identified for non-critical items." },
+      mitigation: "IDR 100M FX buffer in contingency. Equipment POs placed early in funding cycle to lock pricing. Domestic substitutes identified for non-critical items." },
     { risk: "Regulatory / permit delays", likelihood: "LOW", impact: "MED",
       mitigation: "Pre-application engagement with local authorities. Legal advisory retained. Buffer built into Phase 1 timeline (Months 1–2 design + permits)." },
     { risk: "Recession / discretionary spend pullback", likelihood: "LOW", impact: "MED",
@@ -750,11 +788,11 @@ function SFAQ() {
     { q: "Why no rent? What's the actual land arrangement?",
       a: "The 750m² site is owned within the founder structure — there is no third-party lease. This creates a permanent cost moat: every competitor in South Jakarta pays IDR 65–110M/month in rent on comparable space. Over 5 years that's IDR 3.9–6.6B in savings flowing directly to NOI." },
     { q: "Who is on the cap table and what are investors getting?",
-      a: "Specific terms (equity %, valuation, preference) are discussed in person. Structure: SPV with founders holding majority, with investor seats sized to the IDR 8.2B raise. Standard preferred equity with liquidation preference and standard protective provisions." },
+      a: "Specific terms (equity %, valuation, preference) are discussed in person. Structure: SPV with founders holding majority, with investor seats sized to the IDR 10.4B raise (~USD 630K). Standard preferred equity with liquidation preference and standard protective provisions." },
     { q: "What happens if you miss the 380-member base case?",
-      a: "Conservative case (320 members) still generates IDR 132M/mo NOI and 38% margin with 62-month payback. Bear case (250 members) is break-even-ish at 16% margin. Working capital covers 6 months at zero new revenue. The downside is slower returns, not a blown business." },
+      a: "Conservative scenario (300 members, ARPU IDR 1.05M) still generates IDR 97M/mo NOI and 28% margin with 107-month payback. IDR 1.2B working capital covers 5 months at full burn at zero new revenue. The downside is slower returns, not a blown business — free land means no death spiral." },
     { q: "What's the exit?",
-      a: "Three credible paths: (1) Cash-flow asset held 5–10 years generating IDR 2.5B+ annual NOI distributable to investors. (2) Phase 2 expansion to 2–3 sites and sale to a regional fitness operator or PE rollup. (3) Master franchise/licensing of the Tom's HYROX brand once proven. Not optimizing for a quick flip." },
+      a: "Three credible paths: (1) Cash-flow asset held 5–10 years generating IDR 2.7B+ annual NOI distributable to investors. (2) Phase 2 expansion to 2–3 sites and sale to a regional fitness operator or PE rollup. (3) Master franchise/licensing of the Tom's HYROX brand once proven. Not optimizing for a quick flip." },
     { q: "Why not franchise an existing HYROX brand instead?",
       a: "Existing HYROX-affiliated clubs in Jakarta are constrained: small footprints, rented space, single-format. We're building a compound — the format HYROX itself doesn't operate. Plus, we own the brand and IP, which is the long-term value driver." },
     { q: "What's the timeline from funding close to opening?",
@@ -762,7 +800,7 @@ function SFAQ() {
     { q: "Who's actually running this day-to-day?",
       a: "Amelie — full-time CEO/Head of Operations from Day 1. She's on the floor, in the gym, with the members. 5 years at F45 Kemang gives her the muscle memory. Tom is upstream (capital, strategy, IR). Edward transitions to advisory post-launch." },
     { q: "What if the funding round doesn't fully close?",
-      a: "Minimum viable raise is IDR 6.5B (cuts: Phase 2 deferral, reduced working capital buffer to 4 months, contingency to 7%). Below that, we delay. We will not under-capitalize and over-promise — that's how gyms die in Month 9." },
+      a: "Minimum viable raise is IDR 8.5B (cuts: Phase 2 deferral, reduced working capital buffer to 4 months, contingency to 8%). Below that, we delay. We will not under-capitalize and over-promise — that's how gyms die in Month 9." },
   ];
 
   return (
@@ -774,7 +812,7 @@ function SFAQ() {
 
       {/* USE OF PROCEEDS */}
       <div style={{ marginBottom: 48 }}>
-        <div style={{ fontSize: 10, color: C.dim, letterSpacing: 2, marginBottom: 16 }}>USE OF PROCEEDS · IDR 8.2B</div>
+        <div style={{ fontSize: 10, color: C.dim, letterSpacing: 2, marginBottom: 16 }}>USE OF PROCEEDS · IDR 10.4B</div>
         <div style={{ display: "flex", height: 32, marginBottom: 16, border: `1px solid ${C.border}` }}>
           {useOfProceeds.map((u, i) => (
             <div key={u.label} title={`${u.label}: ${u.pct}%`} style={{
@@ -890,12 +928,12 @@ function S10() {
       <SectionTitle n="11 / 11" t="The Investment" />
       <div style={{ background: C.white, color: C.bg, padding: 48, marginBottom: 32, textAlign: "center" }}>
         <div style={{ fontSize: 11, letterSpacing: 3, opacity: 0.6 }}>TOTAL RAISE</div>
-        <div style={{ fontSize: 96, fontWeight: 900, letterSpacing: -4, lineHeight: 1, margin: "8px 0" }}>IDR 8.2B</div>
-        <div style={{ fontSize: 14, opacity: 0.6, letterSpacing: 2 }}>~USD 500,000</div>
+        <div style={{ fontSize: 96, fontWeight: 900, letterSpacing: -4, lineHeight: 1, margin: "8px 0" }}>IDR 10.4B</div>
+        <div style={{ fontSize: 14, opacity: 0.6, letterSpacing: 2 }}>~USD 630,000</div>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 1, background: C.border, marginBottom: 32 }}>
-        {[["380", "Target Members"], ["IDR 437M", "Monthly Revenue"], ["IDR 212M", "Monthly NOI"], ["49%", "Operating Margin"],
-          ["33 mo", "Payback Period"], ["IDR 11.84B", "5-Year Cum. NOI"], ["1.44×", "5-Yr CAPEX Multiple"], ["IDR 0", "Monthly Rent"]].map(([v, l]) => (
+        {[["380", "Target Members"], ["IDR 503M", "Monthly Revenue (incl ancillary)"], ["IDR 224M", "Monthly NOI"], ["45%", "Operating Margin"],
+          ["46 mo", "Payback Period"], ["IDR 12.34B", "5-Year Cum. NOI"], ["1.19×", "5-Yr CAPEX Multiple"], ["IDR 0", "Monthly Rent"]].map(([v, l]) => (
           <div key={l} style={{ background: C.bg, padding: 20 }}>
             <div style={{ fontSize: 20, fontWeight: 800 }}>{v}</div>
             <div style={{ fontSize: 10, color: C.dim, letterSpacing: 1, marginTop: 4 }}>{l}</div>
@@ -925,7 +963,7 @@ function S10() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
           {[
             ["HYROX doesn't go mainstream", "Position as strength + conditioning with HYROX as hero. Format-agnostic space."],
-            ["Slow member ramp", "Pre-sale 100+ founders. IDR 1B working capital covers 6mo burn."],
+            ["Slow member ramp", "Pre-sale 100+ founders. IDR 1.2B working capital covers 5 months at full burn."],
             ["Construction overrun", "Fixed-price contracts. Edward manages. 10% contingency."],
             ["Key person risk", "Equity vesting tied to tenure. Strong Head Coach bench."],
             ["Competitive entry", "Free land = permanent cost moat. Community lock-in."],
@@ -948,8 +986,8 @@ function S10() {
 }
 
 // ─── LIVE MODEL ───
-const CAPEX_TOTAL_M = 8200; // IDR M
-const BASE = { members: 380, arpu: 1.15, opex: 225 };
+const CAPEX_TOTAL_M = 10400; // IDR M
+const BASE = { members: 380, arpu: 1.15, opex: 279 };
 
 function ModelInput({
   label, unit, value, min, max, step, base, onChange,
@@ -1094,7 +1132,7 @@ function SModel() {
           <strong style={{ color: noi >= 0 ? C.white : "#ff6b6b" }}>
             IDR {Math.round(noi)}M/mo NOI ({margin.toFixed(0)}% margin)
           </strong>
-          {noi > 0 && <> and pays back the IDR 8.2B raise in <strong>{paybackMo.toFixed(0)} months</strong>.</>}
+          {noi > 0 && <> and pays back the IDR 10.4B raise in <strong>{paybackMo.toFixed(0)} months</strong>.</>}
           {noi <= 0 && <> — burning cash. Increase members, raise ARPU, or cut opex.</>}
         </p>
       </div>
