@@ -634,7 +634,7 @@ function S7() {
       </Card>
 
       <div style={{ marginTop: 24, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
-        {[["IDR 2.69B", "Annual NOI (Moderate)"], ["IDR 671K", "Revenue / m² / mo"], ["IDR 3.9–6.6B", "5yr rent savings vs competitors"]].map(([v, l]) => (
+        {[["IDR 3.35B", "Annual NOI (Moderate)"], ["IDR 744K", "Revenue / m² / mo"], ["IDR 3.9–6.6B", "5yr rent savings vs competitors"]].map(([v, l]) => (
           <Card key={l}><div style={{ fontSize: 22, fontWeight: 800 }}>{v}</div><div style={{ fontSize: 11, color: C.dim, marginTop: 6 }}>{l}</div></Card>
         ))}
       </div>
