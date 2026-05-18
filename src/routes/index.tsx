@@ -812,7 +812,7 @@ function SFAQ() {
 
       {/* USE OF PROCEEDS */}
       <div style={{ marginBottom: 48 }}>
-        <div style={{ fontSize: 10, color: C.dim, letterSpacing: 2, marginBottom: 16 }}>USE OF PROCEEDS · IDR 8.2B</div>
+        <div style={{ fontSize: 10, color: C.dim, letterSpacing: 2, marginBottom: 16 }}>USE OF PROCEEDS · IDR 10.4B</div>
         <div style={{ display: "flex", height: 32, marginBottom: 16, border: `1px solid ${C.border}` }}>
           {useOfProceeds.map((u, i) => (
             <div key={u.label} title={`${u.label}: ${u.pct}%`} style={{
