@@ -699,7 +699,7 @@ function S8() {
         ))}
       </div>
       <p style={{ marginTop: 24, fontSize: 13, color: C.mid, textAlign: "center" }}>
-        5-Year Cumulative NOI: <strong style={{ color: C.white }}>IDR 11.84B</strong> · CAPEX Multiple: <strong style={{ color: C.white }}>1.44×</strong>
+        5-Year Cumulative NOI: <strong style={{ color: C.white }}>IDR 12.34B</strong> · CAPEX Multiple: <strong style={{ color: C.white }}>1.19×</strong> (~1.5× with ancillary)
       </p>
     </div>
   );
