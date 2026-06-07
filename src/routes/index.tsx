@@ -19,8 +19,24 @@ const C = {
 const tt = { background: "#111", border: "1px solid #333", borderRadius: 8, fontSize: 11, color: "#fff" };
 
 // ─── DATA ───
-const capexDetailed = [
-  { cat: "FACILITY BUILDOUT", total: 4500, items: [
+// ── Numeric helpers (shared by CAPEX editor + Live Model) ──
+const numOr = (v: unknown, fb: number) =>
+  typeof v === "number" && Number.isFinite(v) ? v : fb;
+const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+
+// ── CAPEX seed data ──
+// Ordered top → bottom by operator priority.
+// P1 = cannot open without it. P2 = cannot operate at standard without it.
+// P3 = scalable / trimmable based on traction & cost overruns.
+type CapexItem = { name: string; cost: number };
+type CapexCategory = {
+  cat: string;
+  priority: "P1" | "P2" | "P3";
+  priorityNote: string;
+  items: CapexItem[];
+};
+const CAPEX_BASE: CapexCategory[] = [
+  { cat: "FACILITY BUILDOUT", priority: "P1", priorityNote: "Must-have to open · no shell = no venue", items: [
     { name: "Demolition & site preparation", cost: 200 },
     { name: "Structural works & partitions", cost: 500 },
     { name: "MEP (electrical + plumbing, heavy-duty)", cost: 650 },
@@ -34,19 +50,15 @@ const capexDetailed = [
     { name: "Painting, acoustic treatment & final touches", cost: 200 },
     { name: "Permits, waste disposal & furniture", cost: 230 },
   ]},
-  { cat: "STRENGTH EQUIPMENT", total: 1500, items: [
-    { name: "Power racks × 4 (commercial grade)", cost: 130 },
-    { name: "Olympic platforms × 4", cost: 80 },
-    { name: "Dumbbells 5–40kg complete set", cost: 170 },
-    { name: "Barbells & bumper plates", cost: 140 },
-    { name: "Cable machines × 3", cost: 180 },
-    { name: "Benches × 6 (flat/incline/decline)", cost: 65 },
-    { name: "Kettlebells 8–32kg sets", cost: 65 },
-    { name: "Treadmills × 4 commercial", cost: 200 },
-    { name: "Spin bikes × 4", cost: 120 },
-    { name: "Accessories, delivery, warranty & spares", cost: 250 },
+  { cat: "WORKING CAPITAL (5 MONTHS)", priority: "P1", priorityNote: "Must-have to survive · payroll + utilities buffer", items: [
+    { name: "Staff salaries 5-month runway", cost: 690 },
+    { name: "Staff statutory BPJS + THR (mandatory)", cost: 90 },
+    { name: "Utilities buffer 5 months", cost: 240 },
+    { name: "Consumables & cleaning supplies", cost: 60 },
+    { name: "Insurance deposits", cost: 40 },
+    { name: "Emergency buffer", cost: 80 },
   ]},
-  { cat: "HYROX EQUIPMENT", total: 1200, items: [
+  { cat: "HYROX EQUIPMENT", priority: "P1", priorityNote: "Core product differentiator · why members pay premium", items: [
     { name: "Concept2 SkiErg × 6 (@IDR 22M each)", cost: 132 },
     { name: "Concept2 RowErg × 6 (@IDR 28M each)", cost: 168 },
     { name: "Prowler sleds × 2 + weight plates", cost: 65 },
@@ -60,16 +72,27 @@ const capexDetailed = [
     { name: "Delivery, import duty, install & zone branding", cost: 160 },
     { name: "Replacement parts buffer (Year 1)", cost: 50 },
   ]},
-  { cat: "PRE-OPENING MARKETING", total: 400, items: [
-    { name: "Brand identity & design system", cost: 60 },
-    { name: "Website & booking app development", cost: 80 },
-    { name: "Social media content production", cost: 50 },
-    { name: "Founding member campaign (ads + events)", cost: 100 },
-    { name: "Launch event production", cost: 40 },
-    { name: "PR & media outreach", cost: 30 },
-    { name: "Merchandise first batch", cost: 40 },
+  { cat: "STRENGTH EQUIPMENT", priority: "P2", priorityNote: "Core daily-use kit · base membership promise", items: [
+    { name: "Power racks × 4 (commercial grade)", cost: 130 },
+    { name: "Olympic platforms × 4", cost: 80 },
+    { name: "Dumbbells 5–40kg complete set", cost: 170 },
+    { name: "Barbells & bumper plates", cost: 140 },
+    { name: "Cable machines × 3", cost: 180 },
+    { name: "Benches × 6 (flat/incline/decline)", cost: 65 },
+    { name: "Kettlebells 8–32kg sets", cost: 65 },
+    { name: "Treadmills × 4 commercial", cost: 200 },
+    { name: "Spin bikes × 4", cost: 120 },
+    { name: "Accessories, delivery, warranty & spares", cost: 250 },
   ]},
-  { cat: "TECHNOLOGY & SYSTEMS", total: 250, items: [
+  { cat: "LEGAL & PERMITS", priority: "P2", priorityNote: "Required to operate · non-negotiable", items: [
+    { name: "PT company formation", cost: 25 },
+    { name: "Building permits IMB/PBG", cost: 80 },
+    { name: "Insurance (property + liability + WC)", cost: 70 },
+    { name: "Legal advisory & contracts", cost: 40 },
+    { name: "Environmental compliance", cost: 20 },
+    { name: "Accounting setup", cost: 15 },
+  ]},
+  { cat: "TECHNOLOGY & SYSTEMS", priority: "P2", priorityNote: "Operations backbone · phasable but needed at open", items: [
     { name: "Gym management SaaS (annual)", cost: 48 },
     { name: "Access control & turnstile", cost: 50 },
     { name: "CCTV & security (16 cameras)", cost: 45 },
@@ -78,23 +101,16 @@ const capexDetailed = [
     { name: "Body scan device (InBody)", cost: 40 },
     { name: "TV displays × 3 for schedules & content", cost: 27 },
   ]},
-  { cat: "WORKING CAPITAL (5 MONTHS)", total: 1200, items: [
-    { name: "Staff salaries 5-month runway", cost: 690 },
-    { name: "Staff statutory BPJS + THR (mandatory)", cost: 90 },
-    { name: "Utilities buffer 5 months", cost: 240 },
-    { name: "Consumables & cleaning supplies", cost: 60 },
-    { name: "Insurance deposits", cost: 40 },
-    { name: "Emergency buffer", cost: 80 },
+  { cat: "PRE-OPENING MARKETING", priority: "P3", priorityNote: "Drives ramp · scale up/down with founding traction", items: [
+    { name: "Brand identity & design system", cost: 60 },
+    { name: "Website & booking app development", cost: 80 },
+    { name: "Social media content production", cost: 50 },
+    { name: "Founding member campaign (ads + events)", cost: 100 },
+    { name: "Launch event production", cost: 40 },
+    { name: "PR & media outreach", cost: 30 },
+    { name: "Merchandise first batch", cost: 40 },
   ]},
-  { cat: "LEGAL & PERMITS", total: 250, items: [
-    { name: "PT company formation", cost: 25 },
-    { name: "Building permits IMB/PBG", cost: 80 },
-    { name: "Insurance (property + liability + WC)", cost: 70 },
-    { name: "Legal advisory & contracts", cost: 40 },
-    { name: "Environmental compliance", cost: 20 },
-    { name: "Accounting setup", cost: 15 },
-  ]},
-  { cat: "CONTINGENCY (12%)", total: 1100, items: [
+  { cat: "CONTINGENCY (12%)", priority: "P3", priorityNote: "Risk buffer · first to trim if other rows under budget", items: [
     { name: "Construction overrun buffer", cost: 550 },
     { name: "Equipment price fluctuation", cost: 200 },
     { name: "Unforeseen regulatory costs", cost: 150 },
@@ -102,6 +118,99 @@ const capexDetailed = [
     { name: "Timeline delay buffer", cost: 100 },
   ]},
 ];
+
+// ── CAPEX context (shared across slides) ──
+type CapexCtx = {
+  capex: CapexCategory[];
+  totalM: number;
+  setItemCost: (catIdx: number, itemIdx: number, cost: number) => void;
+  resetCategory: (catIdx: number) => void;
+  resetAll: () => void;
+  // Scale every line item proportionally so total matches `newTotal` (IDR M).
+  // Used by the Live Model slider to keep the breakdown consistent.
+  scaleTotalTo: (newTotal: number) => void;
+};
+const CapexContext = createContext<CapexCtx | null>(null);
+const CAPEX_KEY = "tomshyrox:capex:v1";
+
+function sanitizeCapex(raw: unknown): CapexCategory[] | null {
+  if (!Array.isArray(raw)) return null;
+  const cleaned: CapexCategory[] = [];
+  for (let i = 0; i < CAPEX_BASE.length; i++) {
+    const baseCat = CAPEX_BASE[i];
+    const found = (raw as Array<Record<string, unknown>>).find(c => c && c.cat === baseCat.cat);
+    if (!found || !Array.isArray(found.items)) {
+      cleaned.push({ ...baseCat, items: baseCat.items.map(it => ({ ...it })) });
+      continue;
+    }
+    const items = baseCat.items.map(baseIt => {
+      const persisted = (found.items as Array<Record<string, unknown>>).find(it => it && it.name === baseIt.name);
+      const cost = persisted ? clamp(numOr(persisted.cost, baseIt.cost), 0, 50000) : baseIt.cost;
+      return { name: baseIt.name, cost };
+    });
+    cleaned.push({ ...baseCat, items });
+  }
+  return cleaned;
+}
+
+function CapexProvider({ children }: { children: React.ReactNode }) {
+  const [capex, setCapex] = useState<CapexCategory[]>(() =>
+    CAPEX_BASE.map(c => ({ ...c, items: c.items.map(it => ({ ...it })) })));
+
+  useEffect(() => {
+    try {
+      const raw = typeof window !== "undefined" ? window.localStorage.getItem(CAPEX_KEY) : null;
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      const sane = sanitizeCapex(parsed);
+      if (sane) setCapex(sane);
+    } catch { /* ignore */ }
+  }, []);
+  useEffect(() => {
+    try { window.localStorage.setItem(CAPEX_KEY, JSON.stringify(capex)); } catch { /* ignore */ }
+  }, [capex]);
+
+  const totalM = capex.reduce((s, c) => s + c.items.reduce((a, b) => a + b.cost, 0), 0);
+
+  const setItemCost: CapexCtx["setItemCost"] = (catIdx, itemIdx, cost) => {
+    const clamped = clamp(numOr(cost, 0), 0, 50000);
+    setCapex(prev => prev.map((c, i) => i !== catIdx ? c : {
+      ...c, items: c.items.map((it, j) => j !== itemIdx ? it : { ...it, cost: clamped }),
+    }));
+  };
+  const resetCategory: CapexCtx["resetCategory"] = (catIdx) => {
+    setCapex(prev => prev.map((c, i) => i !== catIdx ? c : {
+      ...c, items: CAPEX_BASE[catIdx].items.map(it => ({ ...it })),
+    }));
+  };
+  const resetAll: CapexCtx["resetAll"] = () => {
+    setCapex(CAPEX_BASE.map(c => ({ ...c, items: c.items.map(it => ({ ...it })) })));
+  };
+  const scaleTotalTo: CapexCtx["scaleTotalTo"] = (newTotal) => {
+    const current = capex.reduce((s, c) => s + c.items.reduce((a, b) => a + b.cost, 0), 0);
+    if (current <= 0 || !Number.isFinite(newTotal) || newTotal <= 0) return;
+    const factor = newTotal / current;
+    setCapex(prev => prev.map(c => ({
+      ...c, items: c.items.map(it => ({ ...it, cost: Math.max(0, Math.round(it.cost * factor)) })),
+    })));
+  };
+
+  return (
+    <CapexContext.Provider value={{ capex, totalM, setItemCost, resetCategory, resetAll, scaleTotalTo }}>
+      {children}
+    </CapexContext.Provider>
+  );
+}
+function useCapex() {
+  const ctx = useContext(CapexContext);
+  if (!ctx) throw new Error("useCapex must be used inside CapexProvider");
+  return ctx;
+}
+function fmtTotalIDR(m: number) {
+  return m >= 1000 ? `IDR ${(m / 1000).toFixed(2)}B` : `IDR ${m}M`;
+}
+
+
 
 const opexDetailed = [
   { cat: "PEOPLE (50%)", total: 138, items: [
