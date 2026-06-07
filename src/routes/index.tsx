@@ -1192,6 +1192,89 @@ function SModel() {
       </div>
 
 
+      </div>
+
+      {/* ── Save & Compare Scenarios ── */}
+      <div style={{ border: `1px solid ${C.border}`, background: C.card, padding: 16, marginBottom: 32 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, flexWrap: "wrap", gap: 8 }}>
+          <div style={{ fontSize: 11, color: C.dim, letterSpacing: 2, fontWeight: 600 }}>SAVED SCENARIOS · {scenarios.length}</div>
+          {scenarios.length > 0 && (
+            <button onClick={clearScenarios} style={{
+              padding: "4px 10px", background: "transparent", color: C.mid,
+              border: `1px solid ${C.border2}`, fontSize: 9, letterSpacing: 1.5, cursor: "pointer", fontWeight: 600,
+            }}>CLEAR ALL</button>
+          )}
+        </div>
+        <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+          <input
+            type="text" value={nameDraft} onChange={e => setNameDraft(e.target.value)}
+            placeholder="Name this scenario (e.g. Bull case)" maxLength={32}
+            onKeyDown={e => { if (e.key === "Enter") saveScenario(); }}
+            style={{
+              flex: "1 1 220px", minWidth: 180, padding: "8px 12px", background: C.bg, color: C.white,
+              border: `1px solid ${C.border2}`, fontSize: 12, outline: "none", fontFamily: "inherit",
+            }}
+          />
+          <button onClick={saveScenario} style={{
+            padding: "8px 16px", background: C.white, color: C.bg, border: "none",
+            fontSize: 11, letterSpacing: 1.5, cursor: "pointer", fontWeight: 700,
+          }}>+ SAVE CURRENT</button>
+        </div>
+
+        {scenarios.length === 0 ? (
+          <div style={{ fontSize: 12, color: C.mute, fontStyle: "italic", padding: "12px 0" }}>
+            No scenarios saved yet. Adjust the sliders, name your scenario, and hit save to compare side-by-side.
+          </div>
+        ) : (
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12, minWidth: 760 }}>
+              <thead>
+                <tr style={{ borderBottom: `1px solid ${C.border2}` }}>
+                  {["", "MEMBERS", "ARPU", "OPEX", "CAPEX", "REVENUE", "NOI", "MARGIN", "PAYBACK", "5-YR ×", ""].map((h, i) => (
+                    <th key={i} style={{ textAlign: i === 0 ? "left" : "right", padding: "8px 10px", color: C.dim, fontSize: 9, letterSpacing: 1.5, fontWeight: 600 }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {compareRows.map(s => {
+                  const isCurrent = s.id === "current";
+                  return (
+                    <tr key={s.id} style={{ borderBottom: `1px solid ${C.border}`, background: isCurrent ? C.card2 : "transparent" }}>
+                      <td style={{ padding: "10px", color: C.white, fontWeight: 700 }}>
+                        {isCurrent ? <span style={{ color: C.dim, fontSize: 9, letterSpacing: 1.5 }}>● LIVE</span> : s.name}
+                      </td>
+                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>{s.members}</td>
+                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>{s.arpu.toFixed(2)}</td>
+                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>{s.opex}M</td>
+                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>{(s.capex / 1000).toFixed(2)}B</td>
+                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>{Math.round(s.revenue)}M</td>
+                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: s.noi >= 0 ? C.white : "#ff6b6b", fontWeight: 700 }}>{Math.round(s.noi)}M</td>
+                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>{s.margin.toFixed(0)}%</td>
+                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>{isFinite(s.paybackMo) ? `${s.paybackMo.toFixed(0)}mo` : "—"}</td>
+                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.white, fontWeight: 700 }}>{s.noi > 0 ? `${s.fiveYrMultiple.toFixed(2)}×` : "—"}</td>
+                      <td style={{ padding: "10px", textAlign: "right", whiteSpace: "nowrap" }}>
+                        {!isCurrent && (
+                          <>
+                            <button onClick={() => loadScenario(s)} title="Load" style={{
+                              padding: "4px 8px", background: "transparent", color: C.off, border: `1px solid ${C.border2}`,
+                              fontSize: 9, letterSpacing: 1.2, cursor: "pointer", fontWeight: 600, marginRight: 4,
+                            }}>↑ LOAD</button>
+                            <button onClick={() => deleteScenario(s.id)} title="Delete" style={{
+                              padding: "4px 8px", background: "transparent", color: C.mid, border: `1px solid ${C.border2}`,
+                              fontSize: 9, cursor: "pointer", fontWeight: 600,
+                            }}>×</button>
+                          </>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
       <div style={{ marginBottom: 12, fontSize: 10, color: C.dim, letterSpacing: 2 }}>
         12-MONTH PROJECTION · linear ramp from 100 members to target
       </div>
