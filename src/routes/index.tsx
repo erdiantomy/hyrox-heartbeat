@@ -1343,7 +1343,7 @@ function SModel() {
   const baseNOI = baseRevenue - BASE.opex;
   const noiDelta = noi - baseNOI;
 
-  const reset = () => { setMembers(BASE.members); setArpu(BASE.arpu); setOpex(BASE.opex); setCapex(BASE.capex); };
+  const reset = () => { setMembers(BASE.members); setArpu(BASE.arpu); setOpex(BASE.opex); resetCapex(); };
 
   // ── Saved scenarios (persist in localStorage) ──
   type Scenario = {
