@@ -1134,6 +1134,7 @@ function SModel() {
         <ModelInput label="MEMBERS" unit="active" value={members} min={100} max={600} step={10} base={BASE.members} onChange={setMembers} />
         <ModelInput label="ARPU" unit="IDR M / month" value={arpu} min={0.6} max={2.0} step={0.05} base={BASE.arpu} onChange={setArpu} />
         <ModelInput label="MONTHLY OPEX" unit="IDR M" value={opex} min={150} max={350} step={5} base={BASE.opex} onChange={setOpex} />
+        <ModelInput label="CAPEX RAISE" unit="IDR M" value={capex} min={6000} max={15000} step={100} base={BASE.capex} onChange={setCapex} />
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 1, background: C.border, marginBottom: 32 }}>
@@ -1142,7 +1143,10 @@ function SModel() {
         <Stat label="MARGIN" value={`${margin.toFixed(0)}%`} delta={noi > 0 ? "operating" : "LOSS"} big />
         <Stat label="PAYBACK" value={isFinite(paybackMo) ? `${paybackMo.toFixed(0)} mo` : "—"} delta={isFinite(paybackMo) ? `${(paybackMo / 12).toFixed(1)} years` : "no NOI"} big />
         <Stat label="ANNUAL NOI" value={`IDR ${(annualNOI / 1000).toFixed(2)}B`} delta="if steady state" big />
+        <Stat label="CAPEX" value={`IDR ${(capex / 1000).toFixed(2)}B`} delta={`${capex - BASE.capex >= 0 ? "+" : ""}${Math.round(capex - BASE.capex)}M vs base`} big />
+        <Stat label="5-YR MULTIPLE" value={noi > 0 ? `${fiveYrMultiple.toFixed(2)}×` : "—"} delta="annual NOI × 5 / capex" big />
       </div>
+
 
       <div style={{ marginBottom: 12, fontSize: 10, color: C.dim, letterSpacing: 2 }}>
         12-MONTH PROJECTION · linear ramp from 100 members to target
