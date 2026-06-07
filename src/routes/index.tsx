@@ -828,6 +828,8 @@ function S6() {
           </BarChart>
         </ResponsiveContainer>
       </div>
+      <ScalingDetailsPanel capex={capex} totalM={totalM} baseTotalM={baseTotalM} />
+
       <Card p={0}>
         {capex.map((cat, i) => (
           <CapexEditableSection
