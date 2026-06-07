@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, createContext, useContext } from "react";
 import heroImage from "@/assets/hero-toms-hyrox.png";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area,
@@ -7,7 +7,10 @@ import {
   PolarAngleAxis, PolarRadiusAxis, ComposedChart, Cell,
 } from "recharts";
 
-export const Route = createFileRoute("/")({ component: Deck });
+function DeckWithProviders() {
+  return <CapexProvider><Deck /></CapexProvider>;
+}
+export const Route = createFileRoute("/")({ component: DeckWithProviders });
 
 // ─── MONOCHROME PALETTE ───
 const C = {
@@ -19,8 +22,24 @@ const C = {
 const tt = { background: "#111", border: "1px solid #333", borderRadius: 8, fontSize: 11, color: "#fff" };
 
 // ─── DATA ───
-const capexDetailed = [
-  { cat: "FACILITY BUILDOUT", total: 4500, items: [
+// ── Numeric helpers (shared by CAPEX editor + Live Model) ──
+const numOr = (v: unknown, fb: number) =>
+  typeof v === "number" && Number.isFinite(v) ? v : fb;
+const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+
+// ── CAPEX seed data ──
+// Ordered top → bottom by operator priority.
+// P1 = cannot open without it. P2 = cannot operate at standard without it.
+// P3 = scalable / trimmable based on traction & cost overruns.
+type CapexItem = { name: string; cost: number };
+type CapexCategory = {
+  cat: string;
+  priority: "P1" | "P2" | "P3";
+  priorityNote: string;
+  items: CapexItem[];
+};
+const CAPEX_BASE: CapexCategory[] = [
+  { cat: "FACILITY BUILDOUT", priority: "P1", priorityNote: "Must-have to open · no shell = no venue", items: [
     { name: "Demolition & site preparation", cost: 200 },
     { name: "Structural works & partitions", cost: 500 },
     { name: "MEP (electrical + plumbing, heavy-duty)", cost: 650 },
@@ -34,19 +53,15 @@ const capexDetailed = [
     { name: "Painting, acoustic treatment & final touches", cost: 200 },
     { name: "Permits, waste disposal & furniture", cost: 230 },
   ]},
-  { cat: "STRENGTH EQUIPMENT", total: 1500, items: [
-    { name: "Power racks × 4 (commercial grade)", cost: 130 },
-    { name: "Olympic platforms × 4", cost: 80 },
-    { name: "Dumbbells 5–40kg complete set", cost: 170 },
-    { name: "Barbells & bumper plates", cost: 140 },
-    { name: "Cable machines × 3", cost: 180 },
-    { name: "Benches × 6 (flat/incline/decline)", cost: 65 },
-    { name: "Kettlebells 8–32kg sets", cost: 65 },
-    { name: "Treadmills × 4 commercial", cost: 200 },
-    { name: "Spin bikes × 4", cost: 120 },
-    { name: "Accessories, delivery, warranty & spares", cost: 250 },
+  { cat: "WORKING CAPITAL (5 MONTHS)", priority: "P1", priorityNote: "Must-have to survive · payroll + utilities buffer", items: [
+    { name: "Staff salaries 5-month runway", cost: 690 },
+    { name: "Staff statutory BPJS + THR (mandatory)", cost: 90 },
+    { name: "Utilities buffer 5 months", cost: 240 },
+    { name: "Consumables & cleaning supplies", cost: 60 },
+    { name: "Insurance deposits", cost: 40 },
+    { name: "Emergency buffer", cost: 80 },
   ]},
-  { cat: "HYROX EQUIPMENT", total: 1200, items: [
+  { cat: "HYROX EQUIPMENT", priority: "P1", priorityNote: "Core product differentiator · why members pay premium", items: [
     { name: "Concept2 SkiErg × 6 (@IDR 22M each)", cost: 132 },
     { name: "Concept2 RowErg × 6 (@IDR 28M each)", cost: 168 },
     { name: "Prowler sleds × 2 + weight plates", cost: 65 },
@@ -60,16 +75,27 @@ const capexDetailed = [
     { name: "Delivery, import duty, install & zone branding", cost: 160 },
     { name: "Replacement parts buffer (Year 1)", cost: 50 },
   ]},
-  { cat: "PRE-OPENING MARKETING", total: 400, items: [
-    { name: "Brand identity & design system", cost: 60 },
-    { name: "Website & booking app development", cost: 80 },
-    { name: "Social media content production", cost: 50 },
-    { name: "Founding member campaign (ads + events)", cost: 100 },
-    { name: "Launch event production", cost: 40 },
-    { name: "PR & media outreach", cost: 30 },
-    { name: "Merchandise first batch", cost: 40 },
+  { cat: "STRENGTH EQUIPMENT", priority: "P2", priorityNote: "Core daily-use kit · base membership promise", items: [
+    { name: "Power racks × 4 (commercial grade)", cost: 130 },
+    { name: "Olympic platforms × 4", cost: 80 },
+    { name: "Dumbbells 5–40kg complete set", cost: 170 },
+    { name: "Barbells & bumper plates", cost: 140 },
+    { name: "Cable machines × 3", cost: 180 },
+    { name: "Benches × 6 (flat/incline/decline)", cost: 65 },
+    { name: "Kettlebells 8–32kg sets", cost: 65 },
+    { name: "Treadmills × 4 commercial", cost: 200 },
+    { name: "Spin bikes × 4", cost: 120 },
+    { name: "Accessories, delivery, warranty & spares", cost: 250 },
   ]},
-  { cat: "TECHNOLOGY & SYSTEMS", total: 250, items: [
+  { cat: "LEGAL & PERMITS", priority: "P2", priorityNote: "Required to operate · non-negotiable", items: [
+    { name: "PT company formation", cost: 25 },
+    { name: "Building permits IMB/PBG", cost: 80 },
+    { name: "Insurance (property + liability + WC)", cost: 70 },
+    { name: "Legal advisory & contracts", cost: 40 },
+    { name: "Environmental compliance", cost: 20 },
+    { name: "Accounting setup", cost: 15 },
+  ]},
+  { cat: "TECHNOLOGY & SYSTEMS", priority: "P2", priorityNote: "Operations backbone · phasable but needed at open", items: [
     { name: "Gym management SaaS (annual)", cost: 48 },
     { name: "Access control & turnstile", cost: 50 },
     { name: "CCTV & security (16 cameras)", cost: 45 },
@@ -78,23 +104,16 @@ const capexDetailed = [
     { name: "Body scan device (InBody)", cost: 40 },
     { name: "TV displays × 3 for schedules & content", cost: 27 },
   ]},
-  { cat: "WORKING CAPITAL (5 MONTHS)", total: 1200, items: [
-    { name: "Staff salaries 5-month runway", cost: 690 },
-    { name: "Staff statutory BPJS + THR (mandatory)", cost: 90 },
-    { name: "Utilities buffer 5 months", cost: 240 },
-    { name: "Consumables & cleaning supplies", cost: 60 },
-    { name: "Insurance deposits", cost: 40 },
-    { name: "Emergency buffer", cost: 80 },
+  { cat: "PRE-OPENING MARKETING", priority: "P3", priorityNote: "Drives ramp · scale up/down with founding traction", items: [
+    { name: "Brand identity & design system", cost: 60 },
+    { name: "Website & booking app development", cost: 80 },
+    { name: "Social media content production", cost: 50 },
+    { name: "Founding member campaign (ads + events)", cost: 100 },
+    { name: "Launch event production", cost: 40 },
+    { name: "PR & media outreach", cost: 30 },
+    { name: "Merchandise first batch", cost: 40 },
   ]},
-  { cat: "LEGAL & PERMITS", total: 250, items: [
-    { name: "PT company formation", cost: 25 },
-    { name: "Building permits IMB/PBG", cost: 80 },
-    { name: "Insurance (property + liability + WC)", cost: 70 },
-    { name: "Legal advisory & contracts", cost: 40 },
-    { name: "Environmental compliance", cost: 20 },
-    { name: "Accounting setup", cost: 15 },
-  ]},
-  { cat: "CONTINGENCY (12%)", total: 1100, items: [
+  { cat: "CONTINGENCY (12%)", priority: "P3", priorityNote: "Risk buffer · first to trim if other rows under budget", items: [
     { name: "Construction overrun buffer", cost: 550 },
     { name: "Equipment price fluctuation", cost: 200 },
     { name: "Unforeseen regulatory costs", cost: 150 },
@@ -102,6 +121,99 @@ const capexDetailed = [
     { name: "Timeline delay buffer", cost: 100 },
   ]},
 ];
+
+// ── CAPEX context (shared across slides) ──
+type CapexCtx = {
+  capex: CapexCategory[];
+  totalM: number;
+  setItemCost: (catIdx: number, itemIdx: number, cost: number) => void;
+  resetCategory: (catIdx: number) => void;
+  resetAll: () => void;
+  // Scale every line item proportionally so total matches `newTotal` (IDR M).
+  // Used by the Live Model slider to keep the breakdown consistent.
+  scaleTotalTo: (newTotal: number) => void;
+};
+const CapexContext = createContext<CapexCtx | null>(null);
+const CAPEX_KEY = "tomshyrox:capex:v1";
+
+function sanitizeCapex(raw: unknown): CapexCategory[] | null {
+  if (!Array.isArray(raw)) return null;
+  const cleaned: CapexCategory[] = [];
+  for (let i = 0; i < CAPEX_BASE.length; i++) {
+    const baseCat = CAPEX_BASE[i];
+    const found = (raw as Array<Record<string, unknown>>).find(c => c && c.cat === baseCat.cat);
+    if (!found || !Array.isArray(found.items)) {
+      cleaned.push({ ...baseCat, items: baseCat.items.map(it => ({ ...it })) });
+      continue;
+    }
+    const items = baseCat.items.map(baseIt => {
+      const persisted = (found.items as Array<Record<string, unknown>>).find(it => it && it.name === baseIt.name);
+      const cost = persisted ? clamp(numOr(persisted.cost, baseIt.cost), 0, 50000) : baseIt.cost;
+      return { name: baseIt.name, cost };
+    });
+    cleaned.push({ ...baseCat, items });
+  }
+  return cleaned;
+}
+
+function CapexProvider({ children }: { children: React.ReactNode }) {
+  const [capex, setCapex] = useState<CapexCategory[]>(() =>
+    CAPEX_BASE.map(c => ({ ...c, items: c.items.map(it => ({ ...it })) })));
+
+  useEffect(() => {
+    try {
+      const raw = typeof window !== "undefined" ? window.localStorage.getItem(CAPEX_KEY) : null;
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      const sane = sanitizeCapex(parsed);
+      if (sane) setCapex(sane);
+    } catch { /* ignore */ }
+  }, []);
+  useEffect(() => {
+    try { window.localStorage.setItem(CAPEX_KEY, JSON.stringify(capex)); } catch { /* ignore */ }
+  }, [capex]);
+
+  const totalM = capex.reduce((s, c) => s + c.items.reduce((a, b) => a + b.cost, 0), 0);
+
+  const setItemCost: CapexCtx["setItemCost"] = (catIdx, itemIdx, cost) => {
+    const clamped = clamp(numOr(cost, 0), 0, 50000);
+    setCapex(prev => prev.map((c, i) => i !== catIdx ? c : {
+      ...c, items: c.items.map((it, j) => j !== itemIdx ? it : { ...it, cost: clamped }),
+    }));
+  };
+  const resetCategory: CapexCtx["resetCategory"] = (catIdx) => {
+    setCapex(prev => prev.map((c, i) => i !== catIdx ? c : {
+      ...c, items: CAPEX_BASE[catIdx].items.map(it => ({ ...it })),
+    }));
+  };
+  const resetAll: CapexCtx["resetAll"] = () => {
+    setCapex(CAPEX_BASE.map(c => ({ ...c, items: c.items.map(it => ({ ...it })) })));
+  };
+  const scaleTotalTo: CapexCtx["scaleTotalTo"] = (newTotal) => {
+    const current = capex.reduce((s, c) => s + c.items.reduce((a, b) => a + b.cost, 0), 0);
+    if (current <= 0 || !Number.isFinite(newTotal) || newTotal <= 0) return;
+    const factor = newTotal / current;
+    setCapex(prev => prev.map(c => ({
+      ...c, items: c.items.map(it => ({ ...it, cost: Math.max(0, Math.round(it.cost * factor)) })),
+    })));
+  };
+
+  return (
+    <CapexContext.Provider value={{ capex, totalM, setItemCost, resetCategory, resetAll, scaleTotalTo }}>
+      {children}
+    </CapexContext.Provider>
+  );
+}
+function useCapex() {
+  const ctx = useContext(CapexContext);
+  if (!ctx) throw new Error("useCapex must be used inside CapexProvider");
+  return ctx;
+}
+function fmtTotalIDR(m: number) {
+  return m >= 1000 ? `IDR ${(m / 1000).toFixed(2)}B` : `IDR ${m}M`;
+}
+
+
 
 const opexDetailed = [
   { cat: "PEOPLE (50%)", total: 138, items: [
@@ -575,15 +687,138 @@ function fmtIDR(m: number) {
   return `IDR ${m >= 1000 ? (m / 1000).toFixed(1) + "B" : m + "M"}`;
 }
 
+// Per-category editable section for slide 6.
+function CapexEditableSection({
+  cat, catIdx, isOpen, onToggle,
+}: {
+  cat: CapexCategory; catIdx: number; isOpen: boolean; onToggle: () => void;
+}) {
+  const { setItemCost, resetCategory } = useCapex();
+  const subtotal = cat.items.reduce((s, it) => s + it.cost, 0);
+  const baseSubtotal = CAPEX_BASE[catIdx].items.reduce((s, it) => s + it.cost, 0);
+  const delta = subtotal - baseSubtotal;
+  const priColor = cat.priority === "P1" ? C.white : cat.priority === "P2" ? C.off : C.mid;
+  return (
+    <div style={{ borderBottom: `1px solid ${C.border}` }}>
+      <button
+        onClick={onToggle} aria-expanded={isOpen}
+        style={{
+          width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center",
+          padding: "14px 16px", background: isOpen ? C.card2 : "transparent",
+          border: "none", color: "inherit", cursor: "pointer", textAlign: "left", transition: "background .15s",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0, flex: 1 }}>
+          <span style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            width: 18, height: 18, borderRadius: 4,
+            border: `1px solid ${isOpen ? C.white : C.border2}`,
+            background: isOpen ? C.white : "transparent",
+            color: isOpen ? C.bg : C.off, fontSize: 11, lineHeight: 1, fontWeight: 700, flexShrink: 0,
+          }}>{isOpen ? "−" : "+"}</span>
+          <span style={{
+            fontSize: 9, fontWeight: 800, letterSpacing: 1.2, color: priColor,
+            border: `1px solid ${priColor}`, padding: "2px 6px", borderRadius: 3, flexShrink: 0,
+          }}>{cat.priority}</span>
+          <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1.2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            {cat.cat}
+          </span>
+          <span style={{ fontSize: 10, color: C.dim, fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>
+            ({cat.items.length})
+          </span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginLeft: 12 }}>
+          {delta !== 0 && (
+            <span style={{
+              fontSize: 9, letterSpacing: 1, fontFamily: "monospace",
+              color: delta > 0 ? "#ffcf7a" : "#7aff9c", whiteSpace: "nowrap",
+            }}>{delta > 0 ? "+" : ""}{delta}M</span>
+          )}
+          <div style={{ fontFamily: "monospace", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap" }}>
+            {fmtTotalIDR(subtotal)}
+          </div>
+        </div>
+      </button>
+      <div style={{ display: "grid", gridTemplateRows: isOpen ? "1fr" : "0fr", transition: "grid-template-rows .3s ease", background: C.card2 }}>
+        <div style={{ overflow: "hidden" }}>
+          <div style={{ padding: "4px 16px 14px 32px" }}>
+            <div style={{
+              fontSize: 10, color: C.dim, letterSpacing: 1.2, fontStyle: "italic",
+              padding: "6px 0 10px", borderBottom: `1px solid ${C.border}`, marginBottom: 4,
+            }}>
+              {cat.priorityNote}
+            </div>
+            {cat.items.map((it, idx) => (
+              <div key={it.name} style={{
+                display: "grid", gridTemplateColumns: "1fr auto", gap: 12,
+                padding: "8px 0", borderTop: idx === 0 ? "none" : `1px solid ${C.border}`,
+                fontSize: 12, alignItems: "center",
+              }}>
+                <div style={{ minWidth: 0, color: C.off, lineHeight: 1.4 }}>{it.name}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 4, whiteSpace: "nowrap" }}>
+                  <span style={{ color: C.dim, fontSize: 10, fontFamily: "monospace" }}>IDR</span>
+                  <input
+                    type="number" min={0} max={50000} step={5} value={it.cost}
+                    onChange={(e) => setItemCost(catIdx, idx, parseFloat(e.target.value))}
+                    onClick={(e) => e.stopPropagation()}
+                    style={{
+                      width: 78, padding: "4px 6px", background: C.bg, color: C.white,
+                      border: `1px solid ${C.border2}`, fontFamily: "monospace", fontWeight: 600,
+                      fontSize: 12, textAlign: "right", outline: "none",
+                    }}
+                  />
+                  <span style={{ color: C.dim, fontSize: 10, fontFamily: "monospace" }}>M</span>
+                </div>
+              </div>
+            ))}
+            <div style={{
+              display: "flex", justifyContent: "space-between", alignItems: "center",
+              padding: "10px 0 0", marginTop: 6, borderTop: `1px solid ${C.border2}`,
+            }}>
+              <button
+                onClick={(e) => { e.stopPropagation(); resetCategory(catIdx); }}
+                style={{
+                  background: "transparent", color: C.mid, border: `1px solid ${C.border2}`,
+                  padding: "3px 8px", fontSize: 9, letterSpacing: 1.2, cursor: "pointer", fontWeight: 600,
+                }}
+              >↻ RESET CATEGORY</button>
+              <div style={{ fontSize: 10, color: C.dim, letterSpacing: 1.5 }}>
+                SUBTOTAL <span style={{ fontFamily: "monospace", color: C.off, marginLeft: 6 }}>{fmtTotalIDR(subtotal)}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function S6() {
   const [open, setOpen] = useState<number | null>(0);
+  const { capex, totalM, resetAll } = useCapex();
+  const baseTotalM = CAPEX_BASE.reduce((s, c) => s + c.items.reduce((a, b) => a + b.cost, 0), 0);
+  const chartData = capex.map(c => ({ cat: c.cat, total: c.items.reduce((s, it) => s + it.cost, 0), priority: c.priority }));
+  const delta = totalM - baseTotalM;
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
-      <SectionTitle n="06 / 11" t="CAPEX · IDR 10.4B" />
-      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Every line item. Tap to expand. Audited build budget with 12% contingency baked in.</p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12, flexWrap: "wrap", gap: 12 }}>
+        <SectionTitle n="06 / 11" t={`CAPEX · ${fmtTotalIDR(totalM)}`} />
+        <button onClick={resetAll} style={{
+          padding: "8px 14px", background: "transparent", color: C.off,
+          border: `1px solid ${C.border2}`, fontSize: 10, letterSpacing: 2, cursor: "pointer", fontWeight: 600,
+        }}>↻ RESET ALL</button>
+      </div>
+      <p style={{ fontSize: 18, color: C.mid, marginBottom: 24 }}>
+        Ordered top → bottom by build priority. Tap any row to edit line items — totals, chart and the Live Model rebalance instantly.
+        {delta !== 0 && (
+          <span style={{ display: "block", marginTop: 6, fontSize: 13, fontFamily: "monospace", color: delta > 0 ? "#ffcf7a" : "#7aff9c" }}>
+            {delta > 0 ? "+" : ""}{delta}M vs base ({fmtTotalIDR(baseTotalM)})
+          </span>
+        )}
+      </p>
       <div style={{ height: 280, marginBottom: 32 }}>
         <ResponsiveContainer>
-          <BarChart data={capexDetailed} margin={{ top: 10, right: 10, left: 0, bottom: 60 }}>
+          <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 60 }}>
             <CartesianGrid stroke={C.border} vertical={false} />
             <XAxis dataKey="cat" tick={{ fill: C.dim, fontSize: 9 }} angle={-30} textAnchor="end" interval={0} height={60} />
             <YAxis tick={{ fill: C.dim, fontSize: 10 }} tickFormatter={v => `${v}M`} />
@@ -593,24 +828,22 @@ function S6() {
         </ResponsiveContainer>
       </div>
       <Card p={0}>
-        {capexDetailed.map((cat, i) => (
-          <CollapsibleSection
-            key={cat.cat}
-            title={cat.cat}
-            total={fmtIDR(cat.total)}
-            items={cat.items.map(it => ({ label: it.name, cost: it.cost }))}
-            isOpen={open === i}
-            onToggle={() => setOpen(open === i ? null : i)}
+        {capex.map((cat, i) => (
+          <CapexEditableSection
+            key={cat.cat} cat={cat} catIdx={i}
+            isOpen={open === i} onToggle={() => setOpen(open === i ? null : i)}
           />
         ))}
         <div style={{ display: "flex", justifyContent: "space-between", padding: "16px 20px", background: C.white, color: C.bg, fontWeight: 800 }}>
           <span style={{ letterSpacing: 1 }}>TOTAL CAPEX</span>
-          <span style={{ fontFamily: "monospace" }}>IDR 10.4B</span>
+          <span style={{ fontFamily: "monospace" }}>{fmtTotalIDR(totalM)}</span>
         </div>
       </Card>
     </div>
   );
 }
+
+
 
 function S7() {
   const [openOp, setOpenOp] = useState<number | null>(0);
@@ -1079,7 +1312,11 @@ function SModel() {
   const [members, setMembers] = useState(BASE.members);
   const [arpu, setArpu] = useState(BASE.arpu);
   const [opex, setOpex] = useState(BASE.opex);
-  const [capex, setCapex] = useState(BASE.capex);
+  // CAPEX is the live total from the shared CAPEX context (slide 6).
+  // Dragging the slider scales every line item proportionally so the two views
+  // stay consistent.
+  const { totalM: capex, scaleTotalTo, resetAll: resetCapex } = useCapex();
+  const setCapex = (v: number) => scaleTotalTo(v);
 
   // Live projections
   const revenue = members * arpu; // IDR M / month
@@ -1109,7 +1346,7 @@ function SModel() {
   const baseNOI = baseRevenue - BASE.opex;
   const noiDelta = noi - baseNOI;
 
-  const reset = () => { setMembers(BASE.members); setArpu(BASE.arpu); setOpex(BASE.opex); setCapex(BASE.capex); };
+  const reset = () => { setMembers(BASE.members); setArpu(BASE.arpu); setOpex(BASE.opex); resetCapex(); };
 
   // ── Saved scenarios (persist in localStorage) ──
   type Scenario = {
@@ -1127,9 +1364,7 @@ function SModel() {
   // numeric input to the same bounds the sliders enforce, recompute every
   // derived metric from inputs (never trust persisted derived values), and
   // drop entries that don't have usable inputs at all.
-  const numOr = (v: unknown, fb: number) =>
-    typeof v === "number" && Number.isFinite(v) ? v : fb;
-  const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+  // numOr / clamp are hoisted to module scope (shared with CapexProvider).
   const sanitizeScenario = (raw: unknown): Scenario | null => {
     if (!raw || typeof raw !== "object") return null;
     const r = raw as Record<string, unknown>;
