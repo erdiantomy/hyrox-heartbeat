@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import * as React from "react";
-import { useState, useEffect, useRef, createContext, useContext } from "react";
+import { useState, useEffect, useRef } from "react";
 import heroImage from "@/assets/hero-toms-hyrox.png";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area,
@@ -134,7 +134,7 @@ type CapexCtx = {
   // Used by the Live Model slider to keep the breakdown consistent.
   scaleTotalTo: (newTotal: number) => void;
 };
-const CapexContext = createContext<CapexCtx | null>(null);
+const CapexContext = React.createContext<CapexCtx | null>(null);
 const CAPEX_KEY = "tomshyrox:capex:v1";
 
 function sanitizeCapex(raw: unknown): CapexCategory[] | null {
@@ -206,7 +206,7 @@ function CapexProvider({ children }: { children: React.ReactNode }) {
   );
 }
 function useCapex() {
-  const ctx = useContext(CapexContext);
+  const ctx = React.useContext(CapexContext);
   if (!ctx) throw new Error("useCapex must be used inside CapexProvider");
   return ctx;
 }
