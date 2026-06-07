@@ -1196,6 +1196,31 @@ function SModel() {
   const deleteScenario = (id: string) => setScenarios(s => s.filter(x => x.id !== id));
   const clearScenarios = () => setScenarios([]);
 
+  // ── Inline editing of saved rows ──
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const updateScenarioField = (
+    id: string,
+    field: "name" | "members" | "arpu" | "opex" | "capex",
+    raw: string,
+  ) => {
+    setScenarios(prev => prev.map(row => {
+      if (row.id !== id) return row;
+      const next: Scenario = { ...row };
+      if (field === "name") {
+        next.name = raw.slice(0, 32);
+      } else {
+        const n = parseFloat(raw);
+        (next as Record<string, unknown>)[field] = Number.isFinite(n) ? n : 0;
+      }
+      // Recompute through sanitizeScenario so clamps + derived metrics use
+      // the SAME rules as initial load and CSV save.
+      const sane = sanitizeScenario(next);
+      // If user temporarily zeroed every input mid-edit, keep the row visible
+      // by falling back to the un-sanitized merge (sanitize would return null).
+      return sane ?? next;
+    }));
+  };
+
   // "Current" pseudo-scenario for comparison
   const current: Scenario = {
     id: "current", name: "Current",
