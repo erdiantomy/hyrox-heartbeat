@@ -684,15 +684,138 @@ function fmtIDR(m: number) {
   return `IDR ${m >= 1000 ? (m / 1000).toFixed(1) + "B" : m + "M"}`;
 }
 
+// Per-category editable section for slide 6.
+function CapexEditableSection({
+  cat, catIdx, isOpen, onToggle,
+}: {
+  cat: CapexCategory; catIdx: number; isOpen: boolean; onToggle: () => void;
+}) {
+  const { setItemCost, resetCategory } = useCapex();
+  const subtotal = cat.items.reduce((s, it) => s + it.cost, 0);
+  const baseSubtotal = CAPEX_BASE[catIdx].items.reduce((s, it) => s + it.cost, 0);
+  const delta = subtotal - baseSubtotal;
+  const priColor = cat.priority === "P1" ? C.white : cat.priority === "P2" ? C.off : C.mid;
+  return (
+    <div style={{ borderBottom: `1px solid ${C.border}` }}>
+      <button
+        onClick={onToggle} aria-expanded={isOpen}
+        style={{
+          width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center",
+          padding: "14px 16px", background: isOpen ? C.card2 : "transparent",
+          border: "none", color: "inherit", cursor: "pointer", textAlign: "left", transition: "background .15s",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0, flex: 1 }}>
+          <span style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            width: 18, height: 18, borderRadius: 4,
+            border: `1px solid ${isOpen ? C.white : C.border2}`,
+            background: isOpen ? C.white : "transparent",
+            color: isOpen ? C.bg : C.off, fontSize: 11, lineHeight: 1, fontWeight: 700, flexShrink: 0,
+          }}>{isOpen ? "−" : "+"}</span>
+          <span style={{
+            fontSize: 9, fontWeight: 800, letterSpacing: 1.2, color: priColor,
+            border: `1px solid ${priColor}`, padding: "2px 6px", borderRadius: 3, flexShrink: 0,
+          }}>{cat.priority}</span>
+          <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1.2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            {cat.cat}
+          </span>
+          <span style={{ fontSize: 10, color: C.dim, fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>
+            ({cat.items.length})
+          </span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginLeft: 12 }}>
+          {delta !== 0 && (
+            <span style={{
+              fontSize: 9, letterSpacing: 1, fontFamily: "monospace",
+              color: delta > 0 ? "#ffcf7a" : "#7aff9c", whiteSpace: "nowrap",
+            }}>{delta > 0 ? "+" : ""}{delta}M</span>
+          )}
+          <div style={{ fontFamily: "monospace", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap" }}>
+            {fmtTotalIDR(subtotal)}
+          </div>
+        </div>
+      </button>
+      <div style={{ display: "grid", gridTemplateRows: isOpen ? "1fr" : "0fr", transition: "grid-template-rows .3s ease", background: C.card2 }}>
+        <div style={{ overflow: "hidden" }}>
+          <div style={{ padding: "4px 16px 14px 32px" }}>
+            <div style={{
+              fontSize: 10, color: C.dim, letterSpacing: 1.2, fontStyle: "italic",
+              padding: "6px 0 10px", borderBottom: `1px solid ${C.border}`, marginBottom: 4,
+            }}>
+              {cat.priorityNote}
+            </div>
+            {cat.items.map((it, idx) => (
+              <div key={it.name} style={{
+                display: "grid", gridTemplateColumns: "1fr auto", gap: 12,
+                padding: "8px 0", borderTop: idx === 0 ? "none" : `1px solid ${C.border}`,
+                fontSize: 12, alignItems: "center",
+              }}>
+                <div style={{ minWidth: 0, color: C.off, lineHeight: 1.4 }}>{it.name}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 4, whiteSpace: "nowrap" }}>
+                  <span style={{ color: C.dim, fontSize: 10, fontFamily: "monospace" }}>IDR</span>
+                  <input
+                    type="number" min={0} max={50000} step={5} value={it.cost}
+                    onChange={(e) => setItemCost(catIdx, idx, parseFloat(e.target.value))}
+                    onClick={(e) => e.stopPropagation()}
+                    style={{
+                      width: 78, padding: "4px 6px", background: C.bg, color: C.white,
+                      border: `1px solid ${C.border2}`, fontFamily: "monospace", fontWeight: 600,
+                      fontSize: 12, textAlign: "right", outline: "none",
+                    }}
+                  />
+                  <span style={{ color: C.dim, fontSize: 10, fontFamily: "monospace" }}>M</span>
+                </div>
+              </div>
+            ))}
+            <div style={{
+              display: "flex", justifyContent: "space-between", alignItems: "center",
+              padding: "10px 0 0", marginTop: 6, borderTop: `1px solid ${C.border2}`,
+            }}>
+              <button
+                onClick={(e) => { e.stopPropagation(); resetCategory(catIdx); }}
+                style={{
+                  background: "transparent", color: C.mid, border: `1px solid ${C.border2}`,
+                  padding: "3px 8px", fontSize: 9, letterSpacing: 1.2, cursor: "pointer", fontWeight: 600,
+                }}
+              >↻ RESET CATEGORY</button>
+              <div style={{ fontSize: 10, color: C.dim, letterSpacing: 1.5 }}>
+                SUBTOTAL <span style={{ fontFamily: "monospace", color: C.off, marginLeft: 6 }}>{fmtTotalIDR(subtotal)}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function S6() {
   const [open, setOpen] = useState<number | null>(0);
+  const { capex, totalM, resetAll } = useCapex();
+  const baseTotalM = CAPEX_BASE.reduce((s, c) => s + c.items.reduce((a, b) => a + b.cost, 0), 0);
+  const chartData = capex.map(c => ({ cat: c.cat, total: c.items.reduce((s, it) => s + it.cost, 0), priority: c.priority }));
+  const delta = totalM - baseTotalM;
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
-      <SectionTitle n="06 / 11" t="CAPEX · IDR 10.4B" />
-      <p style={{ fontSize: 18, color: C.mid, marginBottom: 32 }}>Every line item. Tap to expand. Audited build budget with 12% contingency baked in.</p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12, flexWrap: "wrap", gap: 12 }}>
+        <SectionTitle n="06 / 11" t={`CAPEX · ${fmtTotalIDR(totalM)}`} />
+        <button onClick={resetAll} style={{
+          padding: "8px 14px", background: "transparent", color: C.off,
+          border: `1px solid ${C.border2}`, fontSize: 10, letterSpacing: 2, cursor: "pointer", fontWeight: 600,
+        }}>↻ RESET ALL</button>
+      </div>
+      <p style={{ fontSize: 18, color: C.mid, marginBottom: 24 }}>
+        Ordered top → bottom by build priority. Tap any row to edit line items — totals, chart and the Live Model rebalance instantly.
+        {delta !== 0 && (
+          <span style={{ display: "block", marginTop: 6, fontSize: 13, fontFamily: "monospace", color: delta > 0 ? "#ffcf7a" : "#7aff9c" }}>
+            {delta > 0 ? "+" : ""}{delta}M vs base ({fmtTotalIDR(baseTotalM)})
+          </span>
+        )}
+      </p>
       <div style={{ height: 280, marginBottom: 32 }}>
         <ResponsiveContainer>
-          <BarChart data={capexDetailed} margin={{ top: 10, right: 10, left: 0, bottom: 60 }}>
+          <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 60 }}>
             <CartesianGrid stroke={C.border} vertical={false} />
             <XAxis dataKey="cat" tick={{ fill: C.dim, fontSize: 9 }} angle={-30} textAnchor="end" interval={0} height={60} />
             <YAxis tick={{ fill: C.dim, fontSize: 10 }} tickFormatter={v => `${v}M`} />
@@ -702,24 +825,22 @@ function S6() {
         </ResponsiveContainer>
       </div>
       <Card p={0}>
-        {capexDetailed.map((cat, i) => (
-          <CollapsibleSection
-            key={cat.cat}
-            title={cat.cat}
-            total={fmtIDR(cat.total)}
-            items={cat.items.map(it => ({ label: it.name, cost: it.cost }))}
-            isOpen={open === i}
-            onToggle={() => setOpen(open === i ? null : i)}
+        {capex.map((cat, i) => (
+          <CapexEditableSection
+            key={cat.cat} cat={cat} catIdx={i}
+            isOpen={open === i} onToggle={() => setOpen(open === i ? null : i)}
           />
         ))}
         <div style={{ display: "flex", justifyContent: "space-between", padding: "16px 20px", background: C.white, color: C.bg, fontWeight: 800 }}>
           <span style={{ letterSpacing: 1 }}>TOTAL CAPEX</span>
-          <span style={{ fontFamily: "monospace" }}>IDR 10.4B</span>
+          <span style={{ fontFamily: "monospace" }}>{fmtTotalIDR(totalM)}</span>
         </div>
       </Card>
     </div>
   );
 }
+
+
 
 function S7() {
   const [openOp, setOpenOp] = useState<number | null>(0);
