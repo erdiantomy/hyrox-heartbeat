@@ -1177,7 +1177,7 @@ function SModel() {
           <strong style={{ color: noi >= 0 ? C.white : "#ff6b6b" }}>
             IDR {Math.round(noi)}M/mo NOI ({margin.toFixed(0)}% margin)
           </strong>
-          {noi > 0 && <> and pays back the IDR 10.4B raise in <strong>{paybackMo.toFixed(0)} months</strong>.</>}
+          {noi > 0 && <> and pays back the <strong>IDR {(capex / 1000).toFixed(2)}B</strong> raise in <strong>{paybackMo.toFixed(0)} months</strong> ({fiveYrMultiple.toFixed(2)}× over 5 yrs).</>}
           {noi <= 0 && <> — burning cash. Increase members, raise ARPU, or cut opex.</>}
         </p>
       </div>
