@@ -797,7 +797,28 @@ function CapexEditableSection({
 function ScalingDetailsPanel({
   capex, totalM, baseTotalM,
 }: { capex: CapexCategory[]; totalM: number; baseTotalM: number }) {
-  const factor = baseTotalM > 0 ? totalM / baseTotalM : 1;
+  const { scaleTotalTo } = useCapex();
+  const liveFactor = baseTotalM > 0 ? totalM / baseTotalM : 1;
+  const [draft, setDraft] = useState<string>(liveFactor.toFixed(2));
+  // Re-sync the input whenever the live factor changes from outside (slider, edit, reset).
+  const lastSyncedRef = useRef(liveFactor);
+  useEffect(() => {
+    if (Math.abs(liveFactor - lastSyncedRef.current) > 0.0005) {
+      lastSyncedRef.current = liveFactor;
+      setDraft(liveFactor.toFixed(2));
+    }
+  }, [liveFactor]);
+  const parsed = parseFloat(draft);
+  const draftFactor = Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+  const canApply = draftFactor !== null && Math.abs(draftFactor - liveFactor) > 0.0005 && baseTotalM > 0;
+  const previewTotal = draftFactor !== null ? Math.round(baseTotalM * draftFactor) : totalM;
+  const applyRebalance = () => {
+    if (!canApply || draftFactor === null) return;
+    scaleTotalTo(baseTotalM * draftFactor);
+    lastSyncedRef.current = draftFactor;
+  };
+  const factor = liveFactor;
+
   const rows: { cat: string; name: string; base: number; cost: number; delta: number; pct: number }[] = [];
   capex.forEach((c, ci) => {
     c.items.forEach((it, ii) => {
@@ -836,6 +857,51 @@ function ScalingDetailsPanel({
           <span style={{ color: C.off }}>{fmtTotalIDR(baseTotalM)} → {fmtTotalIDR(totalM)}</span>
         </div>
       </div>
+      <div style={{
+        display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10,
+        padding: "12px 0", marginTop: 4,
+        borderTop: `1px solid ${C.border}`,
+      }}>
+        <span style={{ fontSize: 10, letterSpacing: 1.6, color: C.dim, fontWeight: 700 }}>
+          REBALANCE
+        </span>
+        <span style={{ fontSize: 10, color: C.dim, fontFamily: "monospace" }}>×</span>
+        <input
+          type="number" min={0.1} max={5} step={0.05} value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Enter") applyRebalance(); }}
+          style={{
+            width: 86, padding: "5px 8px", background: C.bg, color: C.white,
+            border: `1px solid ${C.border2}`, fontFamily: "monospace",
+            fontSize: 12, fontWeight: 700, textAlign: "right", outline: "none",
+          }}
+        />
+        <span style={{ fontSize: 10, color: C.dim, fontFamily: "monospace" }}>
+          → preview {fmtTotalIDR(previewTotal)}
+        </span>
+        <div style={{ flex: 1 }} />
+        <button
+          onClick={() => { setDraft("1.00"); scaleTotalTo(baseTotalM); lastSyncedRef.current = 1; }}
+          style={{
+            background: "transparent", color: C.mid, border: `1px solid ${C.border2}`,
+            padding: "5px 10px", fontSize: 9, letterSpacing: 1.4, cursor: "pointer", fontWeight: 700,
+          }}
+        >×1.00</button>
+        <button
+          onClick={applyRebalance}
+          disabled={!canApply}
+          style={{
+            background: canApply ? C.white : "transparent",
+            color: canApply ? C.bg : C.dim,
+            border: `1px solid ${canApply ? C.white : C.border2}`,
+            padding: "6px 14px", fontSize: 10, letterSpacing: 1.6,
+            cursor: canApply ? "pointer" : "not-allowed", fontWeight: 800,
+          }}
+        >⇄ REBALANCE</button>
+      </div>
+
+
+
       {!isBaseline && (
         <div style={{
           display: "grid", gridTemplateColumns: "1fr auto auto auto",
