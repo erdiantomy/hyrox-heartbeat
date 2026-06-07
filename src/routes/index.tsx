@@ -1187,7 +1187,11 @@ function SModel() {
     setNameDraft("");
   };
   const loadScenario = (s: Scenario) => {
-    setMembers(s.members); setArpu(s.arpu); setOpex(s.opex); setCapex(s.capex);
+    // Re-clamp on load: persisted values may predate current slider bounds.
+    setMembers(clamp(Math.round(numOr(s.members, BASE.members)), 100, 600));
+    setArpu(clamp(numOr(s.arpu, BASE.arpu), 0.6, 2.0));
+    setOpex(clamp(numOr(s.opex, BASE.opex), 150, 350));
+    setCapex(clamp(numOr(s.capex, BASE.capex), 6000, 15000));
   };
   const deleteScenario = (id: string) => setScenarios(s => s.filter(x => x.id !== id));
   const clearScenarios = () => setScenarios([]);
