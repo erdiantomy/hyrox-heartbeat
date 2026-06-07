@@ -1361,9 +1361,7 @@ function SModel() {
   // numeric input to the same bounds the sliders enforce, recompute every
   // derived metric from inputs (never trust persisted derived values), and
   // drop entries that don't have usable inputs at all.
-  const numOr = (v: unknown, fb: number) =>
-    typeof v === "number" && Number.isFinite(v) ? v : fb;
-  const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+  // numOr / clamp are hoisted to module scope (shared with CapexProvider).
   const sanitizeScenario = (raw: unknown): Scenario | null => {
     if (!raw || typeof raw !== "object") return null;
     const r = raw as Record<string, unknown>;
