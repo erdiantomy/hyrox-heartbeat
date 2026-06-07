@@ -898,6 +898,9 @@ function ScalingDetailsPanel({
             cursor: canApply ? "pointer" : "not-allowed", fontWeight: 800,
           }}
         >⇄ REBALANCE</button>
+      </div>
+
+
 
       {!isBaseline && (
         <div style={{
