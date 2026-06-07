@@ -1251,6 +1251,19 @@ function SModel() {
             }}>CLEAR ALL</button>
           )}
         </div>
+        {loadWarning && (
+          <div style={{
+            marginBottom: 12, padding: "8px 12px", background: "#3a2a1a",
+            border: `1px solid #6b4a1a`, color: "#ffcf7a", fontSize: 11, letterSpacing: 0.5,
+            display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8,
+          }}>
+            <span>⚠ {loadWarning}</span>
+            <button onClick={() => setLoadWarning(null)} style={{
+              background: "transparent", border: "none", color: "#ffcf7a", cursor: "pointer",
+              fontSize: 14, padding: "0 4px",
+            }} aria-label="Dismiss">×</button>
+          </div>
+        )}
         <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
           <input
             type="text" value={nameDraft} onChange={e => setNameDraft(e.target.value)}
