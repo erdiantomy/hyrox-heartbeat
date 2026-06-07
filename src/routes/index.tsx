@@ -1309,7 +1309,11 @@ function SModel() {
   const [members, setMembers] = useState(BASE.members);
   const [arpu, setArpu] = useState(BASE.arpu);
   const [opex, setOpex] = useState(BASE.opex);
-  const [capex, setCapex] = useState(BASE.capex);
+  // CAPEX is the live total from the shared CAPEX context (slide 6).
+  // Dragging the slider scales every line item proportionally so the two views
+  // stay consistent.
+  const { totalM: capex, scaleTotalTo, resetAll: resetCapex } = useCapex();
+  const setCapex = (v: number) => scaleTotalTo(v);
 
   // Live projections
   const revenue = members * arpu; // IDR M / month
