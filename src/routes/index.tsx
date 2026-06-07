@@ -857,6 +857,48 @@ function ScalingDetailsPanel({
           <span style={{ color: C.off }}>{fmtTotalIDR(baseTotalM)} → {fmtTotalIDR(totalM)}</span>
         </div>
       </div>
+      <div style={{
+        display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10,
+        padding: "12px 0", marginTop: 4,
+        borderTop: `1px solid ${C.border}`,
+      }}>
+        <span style={{ fontSize: 10, letterSpacing: 1.6, color: C.dim, fontWeight: 700 }}>
+          REBALANCE
+        </span>
+        <span style={{ fontSize: 10, color: C.dim, fontFamily: "monospace" }}>×</span>
+        <input
+          type="number" min={0.1} max={5} step={0.05} value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Enter") applyRebalance(); }}
+          style={{
+            width: 86, padding: "5px 8px", background: C.bg, color: C.white,
+            border: `1px solid ${C.border2}`, fontFamily: "monospace",
+            fontSize: 12, fontWeight: 700, textAlign: "right", outline: "none",
+          }}
+        />
+        <span style={{ fontSize: 10, color: C.dim, fontFamily: "monospace" }}>
+          → preview {fmtTotalIDR(previewTotal)}
+        </span>
+        <div style={{ flex: 1 }} />
+        <button
+          onClick={() => { setDraft("1.00"); scaleTotalTo(baseTotalM); lastSyncedRef.current = 1; }}
+          style={{
+            background: "transparent", color: C.mid, border: `1px solid ${C.border2}`,
+            padding: "5px 10px", fontSize: 9, letterSpacing: 1.4, cursor: "pointer", fontWeight: 700,
+          }}
+        >×1.00</button>
+        <button
+          onClick={applyRebalance}
+          disabled={!canApply}
+          style={{
+            background: canApply ? C.white : "transparent",
+            color: canApply ? C.bg : C.dim,
+            border: `1px solid ${canApply ? C.white : C.border2}`,
+            padding: "6px 14px", fontSize: 10, letterSpacing: 1.6,
+            cursor: canApply ? "pointer" : "not-allowed", fontWeight: 800,
+          }}
+        >⇄ REBALANCE</button>
+
       {!isBaseline && (
         <div style={{
           display: "grid", gridTemplateColumns: "1fr auto auto auto",
