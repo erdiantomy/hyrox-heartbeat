@@ -1196,6 +1196,31 @@ function SModel() {
   const deleteScenario = (id: string) => setScenarios(s => s.filter(x => x.id !== id));
   const clearScenarios = () => setScenarios([]);
 
+  // ── Inline editing of saved rows ──
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const updateScenarioField = (
+    id: string,
+    field: "name" | "members" | "arpu" | "opex" | "capex",
+    raw: string,
+  ) => {
+    setScenarios(prev => prev.map(row => {
+      if (row.id !== id) return row;
+      const next: Scenario = { ...row };
+      if (field === "name") {
+        next.name = raw.slice(0, 32);
+      } else {
+        const n = parseFloat(raw);
+        (next as Record<string, unknown>)[field] = Number.isFinite(n) ? n : 0;
+      }
+      // Recompute through sanitizeScenario so clamps + derived metrics use
+      // the SAME rules as initial load and CSV save.
+      const sane = sanitizeScenario(next);
+      // If user temporarily zeroed every input mid-edit, keep the row visible
+      // by falling back to the un-sanitized merge (sanitize would return null).
+      return sane ?? next;
+    }));
+  };
+
   // "Current" pseudo-scenario for comparison
   const current: Scenario = {
     id: "current", name: "Current",
@@ -1297,15 +1322,48 @@ function SModel() {
               <tbody>
                 {compareRows.map(s => {
                   const isCurrent = s.id === "current";
+                  const isEditing = !isCurrent && editingId === s.id;
+                  const inputStyle: React.CSSProperties = {
+                    width: "100%", padding: "4px 6px", background: C.bg, color: C.white,
+                    border: `1px solid ${C.border2}`, fontFamily: "monospace", fontSize: 11,
+                    textAlign: "right", outline: "none",
+                  };
                   return (
-                    <tr key={s.id} style={{ borderBottom: `1px solid ${C.border}`, background: isCurrent ? C.card2 : "transparent" }}>
+                    <tr key={s.id} style={{ borderBottom: `1px solid ${C.border}`, background: isCurrent ? C.card2 : (isEditing ? "#1a1f2e" : "transparent") }}>
                       <td style={{ padding: "10px", color: C.white, fontWeight: 700 }}>
-                        {isCurrent ? <span style={{ color: C.dim, fontSize: 9, letterSpacing: 1.5 }}>● LIVE</span> : s.name}
+                        {isCurrent ? (
+                          <span style={{ color: C.dim, fontSize: 9, letterSpacing: 1.5 }}>● LIVE</span>
+                        ) : isEditing ? (
+                          <input type="text" value={s.name} maxLength={32}
+                            onChange={e => updateScenarioField(s.id, "name", e.target.value)}
+                            style={{ ...inputStyle, textAlign: "left", fontFamily: "inherit", fontWeight: 700, minWidth: 80 }}
+                          />
+                        ) : s.name}
                       </td>
-                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>{s.members}</td>
-                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>{s.arpu.toFixed(2)}</td>
-                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>{s.opex}M</td>
-                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>{(s.capex / 1000).toFixed(2)}B</td>
+                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>
+                        {isEditing ? (
+                          <input type="number" min={0} max={10000} step={10} value={s.members}
+                            onChange={e => updateScenarioField(s.id, "members", e.target.value)} style={inputStyle} />
+                        ) : s.members}
+                      </td>
+                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>
+                        {isEditing ? (
+                          <input type="number" min={0} max={100} step={0.05} value={s.arpu}
+                            onChange={e => updateScenarioField(s.id, "arpu", e.target.value)} style={inputStyle} />
+                        ) : s.arpu.toFixed(2)}
+                      </td>
+                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>
+                        {isEditing ? (
+                          <input type="number" min={0} max={100000} step={5} value={s.opex}
+                            onChange={e => updateScenarioField(s.id, "opex", e.target.value)} style={inputStyle} />
+                        ) : `${s.opex}M`}
+                      </td>
+                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>
+                        {isEditing ? (
+                          <input type="number" min={0} max={1000000} step={100} value={s.capex}
+                            onChange={e => updateScenarioField(s.id, "capex", e.target.value)} style={inputStyle} />
+                        ) : `${(s.capex / 1000).toFixed(2)}B`}
+                      </td>
                       <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>{Math.round(s.revenue)}M</td>
                       <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: s.noi >= 0 ? C.white : "#ff6b6b", fontWeight: 700 }}>{Math.round(s.noi)}M</td>
                       <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>{s.margin.toFixed(0)}%</td>
@@ -1314,11 +1372,18 @@ function SModel() {
                       <td style={{ padding: "10px", textAlign: "right", whiteSpace: "nowrap" }}>
                         {!isCurrent && (
                           <>
-                            <button onClick={() => loadScenario(s)} title="Load" style={{
-                              padding: "4px 8px", background: "transparent", color: C.off, border: `1px solid ${C.border2}`,
-                              fontSize: 9, letterSpacing: 1.2, cursor: "pointer", fontWeight: 600, marginRight: 4,
-                            }}>↑ LOAD</button>
-                            <button onClick={() => deleteScenario(s.id)} title="Delete" style={{
+                            <button onClick={() => setEditingId(isEditing ? null : s.id)} title={isEditing ? "Done editing" : "Edit"} style={{
+                              padding: "4px 8px", background: isEditing ? C.white : "transparent",
+                              color: isEditing ? C.bg : C.off, border: `1px solid ${C.border2}`,
+                              fontSize: 9, letterSpacing: 1.2, cursor: "pointer", fontWeight: 700, marginRight: 4,
+                            }}>{isEditing ? "✓ DONE" : "✎ EDIT"}</button>
+                            {!isEditing && (
+                              <button onClick={() => loadScenario(s)} title="Load into sliders" style={{
+                                padding: "4px 8px", background: "transparent", color: C.off, border: `1px solid ${C.border2}`,
+                                fontSize: 9, letterSpacing: 1.2, cursor: "pointer", fontWeight: 600, marginRight: 4,
+                              }}>↑ LOAD</button>
+                            )}
+                            <button onClick={() => { if (editingId === s.id) setEditingId(null); deleteScenario(s.id); }} title="Delete" style={{
                               padding: "4px 8px", background: "transparent", color: C.mid, border: `1px solid ${C.border2}`,
                               fontSize: 9, cursor: "pointer", fontWeight: 600,
                             }}>×</button>
