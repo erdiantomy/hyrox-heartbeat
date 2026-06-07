@@ -7,7 +7,10 @@ import {
   PolarAngleAxis, PolarRadiusAxis, ComposedChart, Cell,
 } from "recharts";
 
-export const Route = createFileRoute("/")({ component: Deck });
+function DeckWithProviders() {
+  return <CapexProvider><Deck /></CapexProvider>;
+}
+export const Route = createFileRoute("/")({ component: DeckWithProviders });
 
 // ─── MONOCHROME PALETTE ───
 const C = {
