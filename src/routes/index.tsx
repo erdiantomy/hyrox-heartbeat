@@ -1191,7 +1191,7 @@ function SModel() {
         <Stat label="5-YR MULTIPLE" value={noi > 0 ? `${fiveYrMultiple.toFixed(2)}×` : "—"} delta="annual NOI × 5 / capex" big />
       </div>
 
-      {/* ── Save & Compare Scenarios ── */}
+      {/* Save & Compare Scenarios */}
       <div style={{ border: `1px solid ${C.border}`, background: C.card, padding: 16, marginBottom: 32 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, flexWrap: "wrap", gap: 8 }}>
           <div style={{ fontSize: 11, color: C.dim, letterSpacing: 2, fontWeight: 600 }}>SAVED SCENARIOS · {scenarios.length}</div>
