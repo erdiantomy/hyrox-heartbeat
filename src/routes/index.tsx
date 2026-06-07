@@ -1079,13 +1079,15 @@ function SModel() {
   const [members, setMembers] = useState(BASE.members);
   const [arpu, setArpu] = useState(BASE.arpu);
   const [opex, setOpex] = useState(BASE.opex);
+  const [capex, setCapex] = useState(BASE.capex);
 
   // Live projections
   const revenue = members * arpu; // IDR M / month
   const noi = revenue - opex;
   const margin = revenue > 0 ? (noi / revenue) * 100 : 0;
-  const paybackMo = noi > 0 ? CAPEX_TOTAL_M / noi : Infinity;
+  const paybackMo = noi > 0 ? capex / noi : Infinity;
   const annualNOI = noi * 12;
+  const fiveYrMultiple = capex > 0 ? (annualNOI * 5) / capex : 0;
 
   // Project 12-month ramp: assume linear member ramp from 100 to target, ARPU & opex constant.
   const projection = Array.from({ length: 12 }, (_, i) => {
@@ -1107,7 +1109,7 @@ function SModel() {
   const baseNOI = baseRevenue - BASE.opex;
   const noiDelta = noi - baseNOI;
 
-  const reset = () => { setMembers(BASE.members); setArpu(BASE.arpu); setOpex(BASE.opex); };
+  const reset = () => { setMembers(BASE.members); setArpu(BASE.arpu); setOpex(BASE.opex); setCapex(BASE.capex); };
 
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
