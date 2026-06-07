@@ -1026,8 +1026,7 @@ function S10() {
 }
 
 // ─── LIVE MODEL ───
-const CAPEX_TOTAL_M = 10400; // IDR M
-const BASE = { members: 380, arpu: 1.15, opex: 279 };
+const BASE = { members: 380, arpu: 1.15, opex: 279, capex: 10400 };
 
 function ModelInput({
   label, unit, value, min, max, step, base, onChange,
@@ -1080,13 +1079,15 @@ function SModel() {
   const [members, setMembers] = useState(BASE.members);
   const [arpu, setArpu] = useState(BASE.arpu);
   const [opex, setOpex] = useState(BASE.opex);
+  const [capex, setCapex] = useState(BASE.capex);
 
   // Live projections
   const revenue = members * arpu; // IDR M / month
   const noi = revenue - opex;
   const margin = revenue > 0 ? (noi / revenue) * 100 : 0;
-  const paybackMo = noi > 0 ? CAPEX_TOTAL_M / noi : Infinity;
+  const paybackMo = noi > 0 ? capex / noi : Infinity;
   const annualNOI = noi * 12;
+  const fiveYrMultiple = capex > 0 ? (annualNOI * 5) / capex : 0;
 
   // Project 12-month ramp: assume linear member ramp from 100 to target, ARPU & opex constant.
   const projection = Array.from({ length: 12 }, (_, i) => {
@@ -1108,7 +1109,7 @@ function SModel() {
   const baseNOI = baseRevenue - BASE.opex;
   const noiDelta = noi - baseNOI;
 
-  const reset = () => { setMembers(BASE.members); setArpu(BASE.arpu); setOpex(BASE.opex); };
+  const reset = () => { setMembers(BASE.members); setArpu(BASE.arpu); setOpex(BASE.opex); setCapex(BASE.capex); };
 
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
@@ -1133,6 +1134,7 @@ function SModel() {
         <ModelInput label="MEMBERS" unit="active" value={members} min={100} max={600} step={10} base={BASE.members} onChange={setMembers} />
         <ModelInput label="ARPU" unit="IDR M / month" value={arpu} min={0.6} max={2.0} step={0.05} base={BASE.arpu} onChange={setArpu} />
         <ModelInput label="MONTHLY OPEX" unit="IDR M" value={opex} min={150} max={350} step={5} base={BASE.opex} onChange={setOpex} />
+        <ModelInput label="CAPEX RAISE" unit="IDR M" value={capex} min={6000} max={15000} step={100} base={BASE.capex} onChange={setCapex} />
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 1, background: C.border, marginBottom: 32 }}>
@@ -1141,7 +1143,10 @@ function SModel() {
         <Stat label="MARGIN" value={`${margin.toFixed(0)}%`} delta={noi > 0 ? "operating" : "LOSS"} big />
         <Stat label="PAYBACK" value={isFinite(paybackMo) ? `${paybackMo.toFixed(0)} mo` : "—"} delta={isFinite(paybackMo) ? `${(paybackMo / 12).toFixed(1)} years` : "no NOI"} big />
         <Stat label="ANNUAL NOI" value={`IDR ${(annualNOI / 1000).toFixed(2)}B`} delta="if steady state" big />
+        <Stat label="CAPEX" value={`IDR ${(capex / 1000).toFixed(2)}B`} delta={`${capex - BASE.capex >= 0 ? "+" : ""}${Math.round(capex - BASE.capex)}M vs base`} big />
+        <Stat label="5-YR MULTIPLE" value={noi > 0 ? `${fiveYrMultiple.toFixed(2)}×` : "—"} delta="annual NOI × 5 / capex" big />
       </div>
+
 
       <div style={{ marginBottom: 12, fontSize: 10, color: C.dim, letterSpacing: 2 }}>
         12-MONTH PROJECTION · linear ramp from 100 members to target
@@ -1172,7 +1177,7 @@ function SModel() {
           <strong style={{ color: noi >= 0 ? C.white : "#ff6b6b" }}>
             IDR {Math.round(noi)}M/mo NOI ({margin.toFixed(0)}% margin)
           </strong>
-          {noi > 0 && <> and pays back the IDR 10.4B raise in <strong>{paybackMo.toFixed(0)} months</strong>.</>}
+          {noi > 0 && <> and pays back the <strong>IDR {(capex / 1000).toFixed(2)}B</strong> raise in <strong>{paybackMo.toFixed(0)} months</strong> ({fiveYrMultiple.toFixed(2)}× over 5 yrs).</>}
           {noi <= 0 && <> — burning cash. Increase members, raise ARPU, or cut opex.</>}
         </p>
       </div>
