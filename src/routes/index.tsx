@@ -205,7 +205,7 @@ export function CapexProvider({ children }: { children: React.ReactNode }) {
     </CapexContext.Provider>
   );
 }
-function useCapex() {
+export function useCapex() {
   const ctx = React.useContext(CapexContext);
   if (!ctx) throw new Error("useCapex must be used inside CapexProvider");
   return ctx;
