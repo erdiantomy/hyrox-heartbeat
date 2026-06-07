@@ -1120,12 +1120,57 @@ function SModel() {
   const SCEN_KEY = "tomshyrox:scenarios:v1";
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
   const [nameDraft, setNameDraft] = useState("");
+  const [loadWarning, setLoadWarning] = useState<string | null>(null);
+
+  // ── Validation / sanitization for scenarios loaded from localStorage ──
+  // localStorage can be tampered with or contain stale schemas. Clamp every
+  // numeric input to the same bounds the sliders enforce, recompute every
+  // derived metric from inputs (never trust persisted derived values), and
+  // drop entries that don't have usable inputs at all.
+  const numOr = (v: unknown, fb: number) =>
+    typeof v === "number" && Number.isFinite(v) ? v : fb;
+  const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+  const sanitizeScenario = (raw: unknown): Scenario | null => {
+    if (!raw || typeof raw !== "object") return null;
+    const r = raw as Record<string, unknown>;
+    const members = clamp(Math.round(numOr(r.members, BASE.members)), 0, 10000);
+    const arpu = clamp(numOr(r.arpu, BASE.arpu), 0, 100);
+    const opex = clamp(numOr(r.opex, BASE.opex), 0, 100000);
+    const capex = clamp(numOr(r.capex, BASE.capex), 0, 1000000);
+    // Require at least one meaningful input to keep the row
+    if (members === 0 && arpu === 0 && opex === 0 && capex === 0) return null;
+    const revenue = members * arpu;
+    const noi = revenue - opex;
+    const margin = revenue > 0 ? (noi / revenue) * 100 : 0;
+    const paybackMo = noi > 0 ? capex / noi : Infinity;
+    const annualNOI = noi * 12;
+    const fiveYrMultiple = capex > 0 ? (annualNOI * 5) / capex : 0;
+    const id = typeof r.id === "string" && r.id.length > 0
+      ? r.id.slice(0, 64)
+      : `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    const name = (typeof r.name === "string" && r.name.trim().length > 0
+      ? r.name.trim()
+      : "Scenario").slice(0, 32);
+    return { id, name, members, arpu, opex, capex, revenue, noi, margin, paybackMo, annualNOI, fiveYrMultiple };
+  };
 
   useEffect(() => {
     try {
       const raw = typeof window !== "undefined" ? window.localStorage.getItem(SCEN_KEY) : null;
-      if (raw) setScenarios(JSON.parse(raw));
-    } catch { /* ignore */ }
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) { setLoadWarning("Saved scenarios were malformed and have been reset."); return; }
+      const cleaned: Scenario[] = [];
+      let dropped = 0;
+      for (const item of parsed) {
+        const s = sanitizeScenario(item);
+        if (s) cleaned.push(s); else dropped++;
+      }
+      setScenarios(cleaned);
+      if (dropped > 0) setLoadWarning(`${dropped} saved scenario${dropped === 1 ? "" : "s"} were invalid and were skipped.`);
+    } catch {
+      setLoadWarning("Saved scenarios couldn't be read and have been reset.");
+    }
   }, []);
   useEffect(() => {
     try { window.localStorage.setItem(SCEN_KEY, JSON.stringify(scenarios)); } catch { /* ignore */ }
@@ -1142,7 +1187,11 @@ function SModel() {
     setNameDraft("");
   };
   const loadScenario = (s: Scenario) => {
-    setMembers(s.members); setArpu(s.arpu); setOpex(s.opex); setCapex(s.capex);
+    // Re-clamp on load: persisted values may predate current slider bounds.
+    setMembers(clamp(Math.round(numOr(s.members, BASE.members)), 100, 600));
+    setArpu(clamp(numOr(s.arpu, BASE.arpu), 0.6, 2.0));
+    setOpex(clamp(numOr(s.opex, BASE.opex), 150, 350));
+    setCapex(clamp(numOr(s.capex, BASE.capex), 6000, 15000));
   };
   const deleteScenario = (id: string) => setScenarios(s => s.filter(x => x.id !== id));
   const clearScenarios = () => setScenarios([]);
@@ -1202,6 +1251,19 @@ function SModel() {
             }}>CLEAR ALL</button>
           )}
         </div>
+        {loadWarning && (
+          <div style={{
+            marginBottom: 12, padding: "8px 12px", background: "#3a2a1a",
+            border: `1px solid #6b4a1a`, color: "#ffcf7a", fontSize: 11, letterSpacing: 0.5,
+            display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8,
+          }}>
+            <span>⚠ {loadWarning}</span>
+            <button onClick={() => setLoadWarning(null)} style={{
+              background: "transparent", border: "none", color: "#ffcf7a", cursor: "pointer",
+              fontSize: 14, padding: "0 4px",
+            }} aria-label="Dismiss">×</button>
+          </div>
+        )}
         <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
           <input
             type="text" value={nameDraft} onChange={e => setNameDraft(e.target.value)}
