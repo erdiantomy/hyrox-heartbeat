@@ -794,7 +794,82 @@ function CapexEditableSection({
   );
 }
 
+function ScalingDetailsPanel({
+  capex, totalM, baseTotalM,
+}: { capex: CapexCategory[]; totalM: number; baseTotalM: number }) {
+  const factor = baseTotalM > 0 ? totalM / baseTotalM : 1;
+  const rows: { cat: string; name: string; base: number; cost: number; delta: number; pct: number }[] = [];
+  capex.forEach((c, ci) => {
+    c.items.forEach((it, ii) => {
+      const base = CAPEX_BASE[ci].items[ii].cost;
+      const delta = it.cost - base;
+      if (delta !== 0) rows.push({
+        cat: c.cat, name: it.name, base, cost: it.cost, delta,
+        pct: base > 0 ? (delta / base) * 100 : 0,
+      });
+    });
+  });
+  rows.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
+  const isBaseline = rows.length === 0;
+  const factorColor = factor > 1.001 ? "#ffcf7a" : factor < 0.999 ? "#7aff9c" : C.off;
+  return (
+    <div style={{
+      marginBottom: 24, border: `1px solid ${C.border2}`, background: C.card,
+      padding: "14px 16px",
+    }}>
+      <div style={{
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        gap: 12, flexWrap: "wrap", marginBottom: rows.length ? 12 : 0,
+      }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+          <span style={{ fontSize: 10, letterSpacing: 1.6, color: C.dim, fontWeight: 700 }}>
+            SCALING DETAILS
+          </span>
+          <span style={{ fontSize: 9, color: C.dim, letterSpacing: 1.2 }}>
+            {isBaseline ? "AT BASE" : `${rows.length} ITEM${rows.length === 1 ? "" : "S"} ADJUSTED`}
+          </span>
+        </div>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 14, fontFamily: "monospace", fontSize: 12 }}>
+          <span style={{ color: C.dim, fontSize: 10, letterSpacing: 1.2 }}>FACTOR</span>
+          <span style={{ color: factorColor, fontWeight: 800 }}>×{factor.toFixed(3)}</span>
+          <span style={{ color: C.dim }}>·</span>
+          <span style={{ color: C.off }}>{fmtTotalIDR(baseTotalM)} → {fmtTotalIDR(totalM)}</span>
+        </div>
+      </div>
+      {!isBaseline && (
+        <div style={{
+          display: "grid", gridTemplateColumns: "1fr auto auto auto",
+          gap: "4px 14px", fontSize: 11, fontFamily: "monospace",
+          maxHeight: 180, overflowY: "auto", paddingTop: 8,
+          borderTop: `1px solid ${C.border}`,
+        }}>
+          <div style={{ color: C.dim, fontSize: 9, letterSpacing: 1.2 }}>ITEM</div>
+          <div style={{ color: C.dim, fontSize: 9, letterSpacing: 1.2, textAlign: "right" }}>BASE</div>
+          <div style={{ color: C.dim, fontSize: 9, letterSpacing: 1.2, textAlign: "right" }}>NEW</div>
+          <div style={{ color: C.dim, fontSize: 9, letterSpacing: 1.2, textAlign: "right" }}>Δ</div>
+          {rows.map((r) => {
+            const color = r.delta > 0 ? "#ffcf7a" : "#7aff9c";
+            return (
+              <React.Fragment key={`${r.cat}-${r.name}`}>
+                <div style={{ color: C.off, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  <span style={{ color: C.dim }}>{r.cat.split(" ")[0]}</span> · {r.name}
+                </div>
+                <div style={{ color: C.mid, textAlign: "right" }}>{r.base}M</div>
+                <div style={{ color: C.off, textAlign: "right" }}>{r.cost}M</div>
+                <div style={{ color, textAlign: "right" }}>
+                  {r.delta > 0 ? "+" : ""}{r.delta}M ({r.pct > 0 ? "+" : ""}{r.pct.toFixed(1)}%)
+                </div>
+              </React.Fragment>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function S6() {
+
   const [open, setOpen] = useState<number | null>(0);
   const { capex, totalM, resetAll } = useCapex();
   const baseTotalM = CAPEX_BASE.reduce((s, c) => s + c.items.reduce((a, b) => a + b.cost, 0), 0);
@@ -828,6 +903,8 @@ function S6() {
           </BarChart>
         </ResponsiveContainer>
       </div>
+      <ScalingDetailsPanel capex={capex} totalM={totalM} baseTotalM={baseTotalM} />
+
       <Card p={0}>
         {capex.map((cat, i) => (
           <CapexEditableSection
