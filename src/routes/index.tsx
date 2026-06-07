@@ -1111,6 +1111,50 @@ function SModel() {
 
   const reset = () => { setMembers(BASE.members); setArpu(BASE.arpu); setOpex(BASE.opex); setCapex(BASE.capex); };
 
+  // ── Saved scenarios (persist in localStorage) ──
+  type Scenario = {
+    id: string; name: string;
+    members: number; arpu: number; opex: number; capex: number;
+    revenue: number; noi: number; margin: number; paybackMo: number; annualNOI: number; fiveYrMultiple: number;
+  };
+  const SCEN_KEY = "tomshyrox:scenarios:v1";
+  const [scenarios, setScenarios] = useState<Scenario[]>([]);
+  const [nameDraft, setNameDraft] = useState("");
+
+  useEffect(() => {
+    try {
+      const raw = typeof window !== "undefined" ? window.localStorage.getItem(SCEN_KEY) : null;
+      if (raw) setScenarios(JSON.parse(raw));
+    } catch { /* ignore */ }
+  }, []);
+  useEffect(() => {
+    try { window.localStorage.setItem(SCEN_KEY, JSON.stringify(scenarios)); } catch { /* ignore */ }
+  }, [scenarios]);
+
+  const saveScenario = () => {
+    const name = (nameDraft.trim() || `Scenario ${scenarios.length + 1}`).slice(0, 32);
+    const snap: Scenario = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      name, members, arpu, opex, capex,
+      revenue, noi, margin, paybackMo, annualNOI, fiveYrMultiple,
+    };
+    setScenarios(s => [...s, snap]);
+    setNameDraft("");
+  };
+  const loadScenario = (s: Scenario) => {
+    setMembers(s.members); setArpu(s.arpu); setOpex(s.opex); setCapex(s.capex);
+  };
+  const deleteScenario = (id: string) => setScenarios(s => s.filter(x => x.id !== id));
+  const clearScenarios = () => setScenarios([]);
+
+  // "Current" pseudo-scenario for comparison
+  const current: Scenario = {
+    id: "current", name: "Current",
+    members, arpu, opex, capex,
+    revenue, noi, margin, paybackMo, annualNOI, fiveYrMultiple,
+  };
+  const compareRows = [current, ...scenarios];
+
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 32, flexWrap: "wrap", gap: 16 }}>
