@@ -157,7 +157,7 @@ function sanitizeCapex(raw: unknown): CapexCategory[] | null {
   return cleaned;
 }
 
-function CapexProvider({ children }: { children: React.ReactNode }) {
+export function CapexProvider({ children }: { children: React.ReactNode }) {
   const [capex, setCapex] = useState<CapexCategory[]>(() =>
     CAPEX_BASE.map(c => ({ ...c, items: c.items.map(it => ({ ...it })) })));
 
