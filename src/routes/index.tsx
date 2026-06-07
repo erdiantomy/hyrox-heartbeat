@@ -797,7 +797,28 @@ function CapexEditableSection({
 function ScalingDetailsPanel({
   capex, totalM, baseTotalM,
 }: { capex: CapexCategory[]; totalM: number; baseTotalM: number }) {
-  const factor = baseTotalM > 0 ? totalM / baseTotalM : 1;
+  const { scaleTotalTo } = useCapex();
+  const liveFactor = baseTotalM > 0 ? totalM / baseTotalM : 1;
+  const [draft, setDraft] = useState<string>(liveFactor.toFixed(2));
+  // Re-sync the input whenever the live factor changes from outside (slider, edit, reset).
+  const lastSyncedRef = useRef(liveFactor);
+  useEffect(() => {
+    if (Math.abs(liveFactor - lastSyncedRef.current) > 0.0005) {
+      lastSyncedRef.current = liveFactor;
+      setDraft(liveFactor.toFixed(2));
+    }
+  }, [liveFactor]);
+  const parsed = parseFloat(draft);
+  const draftFactor = Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+  const canApply = draftFactor !== null && Math.abs(draftFactor - liveFactor) > 0.0005 && baseTotalM > 0;
+  const previewTotal = draftFactor !== null ? Math.round(baseTotalM * draftFactor) : totalM;
+  const applyRebalance = () => {
+    if (!canApply || draftFactor === null) return;
+    scaleTotalTo(baseTotalM * draftFactor);
+    lastSyncedRef.current = draftFactor;
+  };
+  const factor = liveFactor;
+
   const rows: { cat: string; name: string; base: number; cost: number; delta: number; pct: number }[] = [];
   capex.forEach((c, ci) => {
     c.items.forEach((it, ii) => {
