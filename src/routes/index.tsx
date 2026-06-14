@@ -14,18 +14,28 @@ function DeckWithProviders() {
 }
 export const Route = createFileRoute("/")({ component: DeckWithProviders });
 
-// ─── SIRA PALETTE — cream paper, silver tone, charcoal ink ───
+// ─── SIRA OFFICIAL PALETTE ───
+// Bone White → Jet Black scale + Titanium Gold premium accent.
 // Semantic names retained: "white" = strongest ink, "bg" = paper.
 const C = {
-  bg: "#EFECE3", card: "#E6E1D3", card2: "#DCD5C3",
-  border: "#C9C1AB", border2: "#B0A78C",
-  white: "#0A0A0A", off: "#1F1C16", mid: "#5F5A4E",
-  dim: "#877F6C", mute: "#ADA48E", dark: "#C9C1AB",
+  bg:      "#F5F4F1", // Bone White
+  card:    "#ECEAE6", // Warm Ivory
+  card2:   "#D7D5D1", // Light Concrete
+  border:  "#D7D5D1", // Light Concrete
+  border2: "#B8B5B1", // Concrete Gray
+  mute:    "#B8B5B1", // Concrete Gray
+  dim:     "#9B9894", // Stone Gray
+  mid:     "#7A7774", // Industrial Gray
+  off:     "#4E4B49", // Graphite
+  white:   "#111111", // Jet Black (strongest ink)
+  dark:    "#B8B5B1", // Concrete Gray (legacy alias)
+  // Premium accent
+  gold:    "#B89B5E", // Titanium Gold
   // Accent semantics (legible on cream):
-  over: "#8a5a1a", under: "#2f6b3a", danger: "#a02e2e",
-  warnBg: "#F0E3CC", warnBorder: "#D4B88A", editBg: "#E0D8C2",
+  over:    "#8a5a1a", under: "#2f6b3a", danger: "#a02e2e",
+  warnBg:  "#ECEAE6", warnBorder: "#B89B5E", editBg: "#D7D5D1",
 };
-const tt = { background: "#1A1815", border: "1px solid #3a362d", borderRadius: 8, fontSize: 11, color: "#EFECE3" };
+const tt = { background: "#111111", border: "1px solid #4E4B49", borderRadius: 8, fontSize: 11, color: "#F5F4F1" };
 
 // ─── DATA ───
 // ── Numeric helpers (shared by CAPEX editor + Live Model) ──
