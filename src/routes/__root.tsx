@@ -9,7 +9,6 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
-import siraLogoAsset from "@/assets/sira-logo.png.asset.json";
 
 function NotFoundComponent() {
   return (
@@ -73,18 +72,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SIRA Muscle Studios — Investor Pitch Deck" },
-      { name: "description", content: "Strength · Intensity · Recovery · Agility. Jakarta's premium muscle compound, operated by Toms. IDR 8.2B raise." },
-      { name: "author", content: "Toms Ventures" },
-      { property: "og:title", content: "SIRA Muscle Studios — Investor Pitch Deck" },
-      { property: "og:description", content: "Strength · Intensity · Recovery · Agility. Jakarta's premium muscle compound, operated by Toms." },
+      { title: "SIRA Muscle Studios" },
+      { name: "description", content: "Jakarta's first capital-efficient Muscle Studios compound." },
+      { name: "author", content: "Tom's Ventures" },
+      { property: "og:title", content: "SIRA Muscle Studios" },
+      { property: "og:description", content: "Jakarta's first capital-efficient Muscle Studios compound." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "SIRA Muscle Studios — Investor Pitch Deck" },
-      { name: "twitter:description", content: "Strength · Intensity · Recovery · Agility. Jakarta's premium muscle compound, operated by Toms." },
-      { property: "og:image", content: siraLogoAsset.url },
-      { name: "twitter:image", content: siraLogoAsset.url },
+      { name: "twitter:title", content: "SIRA Muscle Studios" },
+      { name: "twitter:description", content: "Jakarta's first capital-efficient Muscle Studios compound." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/6eSzKyIqppU18gsIked8YPCqEht1/social-images/social-1781415475065-C31CF8D1-141C-4B23-89BE-0503CD7BD116.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/6eSzKyIqppU18gsIked8YPCqEht1/social-images/social-1781415475065-C31CF8D1-141C-4B23-89BE-0503CD7BD116.webp" },
     ],
     links: [
       {
