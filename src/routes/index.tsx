@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 import siraLogoAsset from "@/assets/sira-logo.png.asset.json";
+import siraProgramsAsset from "@/assets/sira-programs.png.asset.json";
 const heroImage = siraLogoAsset.url;
+const programsImage = siraProgramsAsset.url;
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area,
   LineChart, Line, CartesianGrid, Legend, RadarChart, Radar, PolarGrid,
@@ -490,12 +492,45 @@ function S3() {
     { z: "Back of House", m: 30, pct: 4, desc: "Storage, staff area, cleaning supplies, utilities." },
     { z: "Circulation & Structure", m: 100, pct: 13, desc: "Hallways, walls, structural columns. Non-negotiable in any layout." },
   ];
+  const programs = [
+    ["CALISTHENICS", "Bodyweight strength · open floor"],
+    ["CROSS-FIT", "Mixed-modal conditioning · daily WODs"],
+    ["ROWING", "Concept2 ergs · race-prep blocks"],
+    ["SPINNING", "Indoor cycling · zone-based intervals"],
+    ["HIIT", "30-min metcon · before-work & lunch slots"],
+    ["TRX", "Suspension · mobility & accessory work"],
+    ["YOGA", "Flex Studio · recovery & breath"],
+    ["PILATES", "Reformer-style core · flex-instructor revshare"],
+    ["HYROX", "Hero program · race format · 8-week cycles"],
+  ];
   return (
     <div style={{ minHeight: "100vh", padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
       <SectionTitle n="03 / 11" t="The Compound" />
       <p style={{ fontSize: 18, color: C.mid, maxWidth: 720, marginBottom: 32 }}>
         750m². 4 revenue-driving zones. Every square meter earns or retains. Not a gym — a compound with spa, café, and flex space.
       </p>
+
+      {/* Programs & Classes — the lineup that fills the compound */}
+      <div style={{ marginBottom: 40, border: `1px solid ${C.border2}`, background: "#111111", borderRadius: 4, overflow: "hidden", position: "relative" }}>
+        <div style={{ padding: "20px 24px 12px", display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 16, borderBottom: `1px solid #2a2a2a` }}>
+          <div>
+            <div style={{ fontSize: 10, letterSpacing: 3, color: C.gold, marginBottom: 6 }}>PROGRAMS · CLASSES · DAILY TIMETABLE</div>
+            <div style={{ fontSize: 22, fontWeight: 800, color: "#F5F4F1", letterSpacing: "-0.01em" }}>Nine disciplines. One compound.</div>
+          </div>
+          <div style={{ fontSize: 11, color: "#9B9894", maxWidth: 360, textAlign: "right", lineHeight: 1.5 }}>
+            HYROX is the hero. Strength, conditioning, and recovery fill the rest of the week so members come 4+ times — not 2.
+          </div>
+        </div>
+        <img src={programsImage} alt="SIRA program lineup — calisthenics, cross-fit, rowing, spinning, HIIT, TRX, yoga, pilates, HYROX" style={{ display: "block", width: "100%", height: "auto" }} />
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 0, borderTop: `1px solid #2a2a2a` }}>
+          {programs.map(([t, d], i) => (
+            <div key={t} style={{ padding: "14px 18px", borderRight: i % 3 !== 2 ? `1px solid #2a2a2a` : "none", borderBottom: i < 6 ? `1px solid #2a2a2a` : "none" }}>
+              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: 2, color: "#F5F4F1", marginBottom: 4 }}>{t}</div>
+              <div style={{ fontSize: 11, color: "#9B9894", lineHeight: 1.5 }}>{d}</div>
+            </div>
+          ))}
+        </div>
+      </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }}>
         {zones.map((z) => (
           <Card key={z.z}>

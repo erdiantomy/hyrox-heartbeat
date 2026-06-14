@@ -153,4 +153,17 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
+
+  /* Sketch / paper-grain texture — applied across the deck for a hand-drawn,
+     pencil-on-cream feel that matches the logo + program illustrations. */
+  .deck-root {
+    background-color: var(--sira-white);
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.07  0 0 0 0 0.07  0 0 0 0 0.07  0 0 0 0.16 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),
+      radial-gradient(1200px 800px at 18% 8%, rgba(184,155,94,0.06), transparent 60%),
+      radial-gradient(900px 700px at 88% 92%, rgba(17,17,17,0.05), transparent 60%);
+    background-attachment: fixed, fixed, fixed;
+    background-size: 220px 220px, auto, auto;
+  }
 }
+
