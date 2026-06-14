@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
-import heroImage from "@/assets/hero-toms-hyrox.png";
+import siraLogoAsset from "@/assets/sira-logo.png.asset.json";
+const heroImage = siraLogoAsset.url;
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area,
   LineChart, Line, CartesianGrid, Legend, RadarChart, Radar, PolarGrid,
@@ -13,14 +14,18 @@ function DeckWithProviders() {
 }
 export const Route = createFileRoute("/")({ component: DeckWithProviders });
 
-// ─── MONOCHROME PALETTE ───
+// ─── SIRA PALETTE — cream paper, silver tone, charcoal ink ───
+// Semantic names retained: "white" = strongest ink, "bg" = paper.
 const C = {
-  bg: "#000000", card: "#0A0A0A", card2: "#111111",
-  border: "#1A1A1A", border2: "#252525",
-  white: "#FFFFFF", off: "#E8E8E8", mid: "#999999",
-  dim: "#666666", mute: "#444444", dark: "#222222",
+  bg: "#EFECE3", card: "#E6E1D3", card2: "#DCD5C3",
+  border: "#C9C1AB", border2: "#B0A78C",
+  white: "#0A0A0A", off: "#1F1C16", mid: "#5F5A4E",
+  dim: "#877F6C", mute: "#ADA48E", dark: "#C9C1AB",
+  // Accent semantics (legible on cream):
+  over: "#8a5a1a", under: "#2f6b3a", danger: "#a02e2e",
+  warnBg: "#F0E3CC", warnBorder: "#D4B88A", editBg: "#E0D8C2",
 };
-const tt = { background: "#111", border: "1px solid #333", borderRadius: 8, fontSize: 11, color: "#fff" };
+const tt = { background: "#1A1815", border: "1px solid #3a362d", borderRadius: 8, fontSize: 11, color: "#EFECE3" };
 
 // ─── DATA ───
 // ── Numeric helpers (shared by CAPEX editor + Live Model) ──
@@ -358,10 +363,10 @@ const Card = ({ children, p = 20 }: { children: React.ReactNode; p?: number }) =
 // ─── SLIDES ───
 function S0() {
   return (
-    <div style={{ minHeight: "100vh", position: "relative", display: "flex", flexDirection: "column", overflow: "hidden", background: "#000" }}>
+    <div style={{ minHeight: "100vh", position: "relative", display: "flex", flexDirection: "column", overflow: "hidden", background: C.bg }}>
       <img
         src={heroImage}
-        alt="TOM'S HYROX — Strength. Endurance. No Excuses."
+        alt="SIRA Muscle Studios — Strength · Intensity · Recovery · Agility"
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", zIndex: 0 }}
       />
       <div style={{ position: "relative", zIndex: 2, padding: "clamp(16px, 4vw, 32px)" }}>
@@ -437,7 +442,7 @@ function S2() {
               </tr>
             ))}
             <tr style={{ background: C.white, color: C.bg }}>
-              <td style={{ padding: 12, fontWeight: 800 }}>TOM'S HYROX</td>
+              <td style={{ padding: 12, fontWeight: 800 }}>SIRA Muscle Studios</td>
               <td style={{ padding: 12, fontWeight: 600 }}>Cilandak</td>
               <td style={{ padding: 12, fontWeight: 600 }}>COMPOUND</td>
               <td style={{ padding: 12, fontWeight: 600 }}>850K–2.5M</td>
@@ -455,7 +460,7 @@ function S2() {
             <PolarGrid stroke={C.border2} />
             <PolarAngleAxis dataKey="s" tick={{ fill: C.mid, fontSize: 11 }} />
             <PolarRadiusAxis tick={{ fill: C.dim, fontSize: 10 }} stroke={C.border2} />
-            <Radar name="Tom's HYROX" dataKey="us" stroke={C.white} fill={C.white} fillOpacity={0.3} strokeWidth={2} />
+            <Radar name="SIRA Muscle Studios" dataKey="us" stroke={C.white} fill={C.white} fillOpacity={0.3} strokeWidth={2} />
             <Radar name="Best Competitor" dataKey="best" stroke={C.dim} fill={C.dim} fillOpacity={0.1} strokeDasharray="4 4" />
             <Legend wrapperStyle={{ fontSize: 11, color: C.mid }} />
           </RadarChart>
@@ -732,7 +737,7 @@ function CapexEditableSection({
           {delta !== 0 && (
             <span style={{
               fontSize: 9, letterSpacing: 1, fontFamily: "monospace",
-              color: delta > 0 ? "#ffcf7a" : "#7aff9c", whiteSpace: "nowrap",
+              color: delta > 0 ? C.over : C.under, whiteSpace: "nowrap",
             }}>{delta > 0 ? "+" : ""}{delta}M</span>
           )}
           <div style={{ fontFamily: "monospace", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap" }}>
@@ -832,7 +837,7 @@ function ScalingDetailsPanel({
   });
   rows.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
   const isBaseline = rows.length === 0;
-  const factorColor = factor > 1.001 ? "#ffcf7a" : factor < 0.999 ? "#7aff9c" : C.off;
+  const factorColor = factor > 1.001 ? C.over : factor < 0.999 ? C.under : C.off;
   return (
     <div style={{
       marginBottom: 24, border: `1px solid ${C.border2}`, background: C.card,
@@ -914,7 +919,7 @@ function ScalingDetailsPanel({
           <div style={{ color: C.dim, fontSize: 9, letterSpacing: 1.2, textAlign: "right" }}>NEW</div>
           <div style={{ color: C.dim, fontSize: 9, letterSpacing: 1.2, textAlign: "right" }}>Δ</div>
           {rows.map((r) => {
-            const color = r.delta > 0 ? "#ffcf7a" : "#7aff9c";
+            const color = r.delta > 0 ? C.over : C.under;
             return (
               <React.Fragment key={`${r.cat}-${r.name}`}>
                 <div style={{ color: C.off, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
@@ -953,7 +958,7 @@ function S6() {
       <p style={{ fontSize: 18, color: C.mid, marginBottom: 24 }}>
         Ordered top → bottom by build priority. Tap any row to edit line items — totals, chart and the Live Model rebalance instantly.
         {delta !== 0 && (
-          <span style={{ display: "block", marginTop: 6, fontSize: 13, fontFamily: "monospace", color: delta > 0 ? "#ffcf7a" : "#7aff9c" }}>
+          <span style={{ display: "block", marginTop: 6, fontSize: 13, fontFamily: "monospace", color: delta > 0 ? C.over : C.under }}>
             {delta > 0 ? "+" : ""}{delta}M vs base ({fmtTotalIDR(baseTotalM)})
           </span>
         )}
@@ -1201,7 +1206,7 @@ function SFAQ() {
     { q: "What happens if you miss the 380-member base case?",
       a: "Conservative scenario (300 members, ARPU IDR 1.05M) still generates IDR 97M/mo NOI and 28% margin with 107-month payback. IDR 1.2B working capital covers 5 months at full burn at zero new revenue. The downside is slower returns, not a blown business — free land means no death spiral." },
     { q: "What's the exit?",
-      a: "Three credible paths: (1) Cash-flow asset held 5–10 years generating IDR 2.7B+ annual NOI distributable to investors. (2) Phase 2 expansion to 2–3 sites and sale to a regional fitness operator or PE rollup. (3) Master franchise/licensing of the Tom's HYROX brand once proven. Not optimizing for a quick flip." },
+      a: "Three credible paths: (1) Cash-flow asset held 5–10 years generating IDR 2.7B+ annual NOI distributable to investors. (2) Phase 2 expansion to 2–3 sites and sale to a regional fitness operator or PE rollup. (3) Master franchise/licensing of the SIRA Muscle Studios brand once proven. Not optimizing for a quick flip." },
     { q: "Why not franchise an existing HYROX brand instead?",
       a: "Existing HYROX-affiliated clubs in Jakarta are constrained: small footprints, rented space, single-format. We're building a compound — the format HYROX itself doesn't operate. Plus, we own the brand and IP, which is the long-term value driver." },
     { q: "What's the timeline from funding close to opening?",
@@ -1393,7 +1398,7 @@ function S10() {
         </div>
       </div>
       <div style={{ textAlign: "center", padding: "80px 0", borderTop: `1px solid ${C.border}` }}>
-        <img src={heroImage} alt="TOM'S HYROX" style={{ maxWidth: "min(640px, 100%)", width: "100%", height: "auto", margin: "0 auto", display: "block" }} />
+        <img src={heroImage} alt="SIRA Muscle Studios" style={{ maxWidth: "min(640px, 100%)", width: "100%", height: "auto", margin: "0 auto", display: "block" }} />
         <div style={{ fontSize: 11, color: C.mid, letterSpacing: 4, marginTop: 24 }}>BUILT FOR PERFORMANCE</div>
         <div style={{ fontSize: 11, color: C.mid, letterSpacing: 4, marginTop: 6 }}>DESIGNED FOR COMMUNITY</div>
         <div style={{ fontSize: 11, color: C.mid, letterSpacing: 4, marginTop: 6 }}>CAPITALIZED FOR REAL</div>
@@ -1657,13 +1662,13 @@ function SModel() {
         </div>
         {loadWarning && (
           <div style={{
-            marginBottom: 12, padding: "8px 12px", background: "#3a2a1a",
-            border: `1px solid #6b4a1a`, color: "#ffcf7a", fontSize: 11, letterSpacing: 0.5,
+            marginBottom: 12, padding: "8px 12px", background: C.warnBg,
+            border: `1px solid ${C.warnBorder}`, color: C.over, fontSize: 11, letterSpacing: 0.5,
             display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8,
           }}>
             <span>⚠ {loadWarning}</span>
             <button onClick={() => setLoadWarning(null)} style={{
-              background: "transparent", border: "none", color: "#ffcf7a", cursor: "pointer",
+              background: "transparent", border: "none", color: C.over, cursor: "pointer",
               fontSize: 14, padding: "0 4px",
             }} aria-label="Dismiss">×</button>
           </div>
@@ -1708,7 +1713,7 @@ function SModel() {
                     textAlign: "right", outline: "none",
                   };
                   return (
-                    <tr key={s.id} style={{ borderBottom: `1px solid ${C.border}`, background: isCurrent ? C.card2 : (isEditing ? "#1a1f2e" : "transparent") }}>
+                    <tr key={s.id} style={{ borderBottom: `1px solid ${C.border}`, background: isCurrent ? C.card2 : (isEditing ? C.editBg : "transparent") }}>
                       <td style={{ padding: "10px", color: C.white, fontWeight: 700 }}>
                         {isCurrent ? (
                           <span style={{ color: C.dim, fontSize: 9, letterSpacing: 1.5 }}>● LIVE</span>
@@ -1744,7 +1749,7 @@ function SModel() {
                         ) : `${(s.capex / 1000).toFixed(2)}B`}
                       </td>
                       <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>{Math.round(s.revenue)}M</td>
-                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: s.noi >= 0 ? C.white : "#ff6b6b", fontWeight: 700 }}>{Math.round(s.noi)}M</td>
+                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: s.noi >= 0 ? C.white : C.danger, fontWeight: 700 }}>{Math.round(s.noi)}M</td>
                       <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>{s.margin.toFixed(0)}%</td>
                       <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.off }}>{isFinite(s.paybackMo) ? `${s.paybackMo.toFixed(0)}mo` : "—"}</td>
                       <td style={{ padding: "10px", textAlign: "right", fontFamily: "monospace", color: C.white, fontWeight: 700 }}>{s.noi > 0 ? `${s.fiveYrMultiple.toFixed(2)}×` : "—"}</td>
@@ -1792,7 +1797,7 @@ function SModel() {
             <Bar dataKey="revenue" fill={C.mute} name="Revenue (IDR M)" />
             <Bar dataKey="noi" name="Monthly NOI">
               {cashFlowProj.map((d, i) => (
-                <Cell key={i} fill={d.noi >= 0 ? C.off : "#3a1a1a"} />
+                <Cell key={i} fill={d.noi >= 0 ? C.off : C.danger} />
               ))}
             </Bar>
             <Line type="monotone" dataKey="cumulative" stroke={C.white} strokeWidth={2} dot={{ fill: C.white, r: 3 }} name="Cumulative NOI" />
@@ -1804,7 +1809,7 @@ function SModel() {
         <div style={{ fontSize: 11, color: C.dim, letterSpacing: 2, marginBottom: 8 }}>SCENARIO READOUT</div>
         <p style={{ fontSize: 14, color: C.off, lineHeight: 1.6, margin: 0 }}>
           At <strong>{members} members</strong> paying <strong>IDR {arpu.toFixed(2)}M</strong> against <strong>IDR {opex}M</strong> monthly opex, this generates{" "}
-          <strong style={{ color: noi >= 0 ? C.white : "#ff6b6b" }}>
+          <strong style={{ color: noi >= 0 ? C.white : C.danger }}>
             IDR {Math.round(noi)}M/mo NOI ({margin.toFixed(0)}% margin)
           </strong>
           {noi > 0 && <> and pays back the <strong>IDR {(capex / 1000).toFixed(2)}B</strong> raise in <strong>{paybackMo.toFixed(0)} months</strong> ({fiveYrMultiple.toFixed(2)}× over 5 yrs).</>}
@@ -1950,7 +1955,7 @@ function SRevenue() {
       {activeTab === "perM2" && (
         <div>
           <p style={{ fontSize: 13, color: C.mid, marginBottom: 16, lineHeight: 1.6 }}>
-            Jakarta premium gym benchmark: IDR 400–600K/m²/month. TOM'S HYROX blended at IDR 744K/m² — top quartile. The HYROX zone at IDR 1,173K/m² is the highest-performing zone.
+            Jakarta premium gym benchmark: IDR 400–600K/m²/month. SIRA Muscle Studios blended at IDR 744K/m² — top quartile. The HYROX zone at IDR 1,173K/m² is the highest-performing zone.
           </p>
           <Card p={0}>
             <div className="deck-table-wrap"><table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
