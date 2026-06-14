@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
-import heroImage from "@/assets/hero-toms-hyrox.png";
+import siraLogoAsset from "@/assets/sira-logo.png.asset.json";
+const heroImage = siraLogoAsset.url;
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area,
   LineChart, Line, CartesianGrid, Legend, RadarChart, Radar, PolarGrid,
@@ -13,14 +14,18 @@ function DeckWithProviders() {
 }
 export const Route = createFileRoute("/")({ component: DeckWithProviders });
 
-// ─── MONOCHROME PALETTE ───
+// ─── SIRA PALETTE — cream paper, silver tone, charcoal ink ───
+// Semantic names retained: "white" = strongest ink, "bg" = paper.
 const C = {
-  bg: "#000000", card: "#0A0A0A", card2: "#111111",
-  border: "#1A1A1A", border2: "#252525",
-  white: "#FFFFFF", off: "#E8E8E8", mid: "#999999",
-  dim: "#666666", mute: "#444444", dark: "#222222",
+  bg: "#EFECE3", card: "#E6E1D3", card2: "#DCD5C3",
+  border: "#C9C1AB", border2: "#B0A78C",
+  white: "#0A0A0A", off: "#1F1C16", mid: "#5F5A4E",
+  dim: "#877F6C", mute: "#ADA48E", dark: "#C9C1AB",
+  // Accent semantics (legible on cream):
+  over: "#8a5a1a", under: "#2f6b3a", danger: "#a02e2e",
+  warnBg: "#F0E3CC", warnBorder: "#D4B88A", editBg: "#E0D8C2",
 };
-const tt = { background: "#111", border: "1px solid #333", borderRadius: 8, fontSize: 11, color: "#fff" };
+const tt = { background: "#1A1815", border: "1px solid #3a362d", borderRadius: 8, fontSize: 11, color: "#EFECE3" };
 
 // ─── DATA ───
 // ── Numeric helpers (shared by CAPEX editor + Live Model) ──
@@ -358,10 +363,10 @@ const Card = ({ children, p = 20 }: { children: React.ReactNode; p?: number }) =
 // ─── SLIDES ───
 function S0() {
   return (
-    <div style={{ minHeight: "100vh", position: "relative", display: "flex", flexDirection: "column", overflow: "hidden", background: "#000" }}>
+    <div style={{ minHeight: "100vh", position: "relative", display: "flex", flexDirection: "column", overflow: "hidden", background: C.bg }}>
       <img
         src={heroImage}
-        alt="TOM'S HYROX — Strength. Endurance. No Excuses."
+        alt="SIRA Muscle Studios — Strength · Intensity · Recovery · Agility"
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", zIndex: 0 }}
       />
       <div style={{ position: "relative", zIndex: 2, padding: "clamp(16px, 4vw, 32px)" }}>
